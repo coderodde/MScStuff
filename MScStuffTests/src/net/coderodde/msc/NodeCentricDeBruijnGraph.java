@@ -8,17 +8,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-public class NodeCentricDeBruijnGraph implements DeBruijnGraph {
+public class NodeCentricDeBruijnGraph extends AbstractDeBruijnGraph {
 
-    private final Map<String, Set<String>> childrenMap = new HashMap<>();
-    private final Map<String, Set<String>> parentsMap  = new HashMap<>();
-    private final int k;
-    
     public NodeCentricDeBruijnGraph(Collection<String> reads, int k) {
+        super(k);
         Objects.requireNonNull(reads, "The collection of reads is null.");
-        checkKMerSize(k);
-        this.k = k;
-        
         buildGraph(reads);
     }
     
@@ -104,21 +98,6 @@ public class NodeCentricDeBruijnGraph implements DeBruijnGraph {
                     childrenMap.get(kmer).add(childKmer);
                 }
             }
-        }
-    }
-    
-    private void checkKMerSize(int k) {
-        if (k < 2) {
-            throw new IllegalArgumentException(
-                    "The k is too small: " + k + ". Must be at least 2.");
-        }
-    }
-    
-    private void checkStringIsKmer(String string) {
-        if (string.length() != k) {
-            throw new IllegalArgumentException(
-                    "The input string \"" + string + "\" is not a " +
-                    k + "-mer.");
         }
     }
 }

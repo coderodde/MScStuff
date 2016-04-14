@@ -18,7 +18,7 @@ public class Main {
         System.out.println(graphToString(graph));
     }
     
-    private static String graphToString(DeBruijnGraph graph) {
+    private static String graphToString(AbstractDeBruijnGraph graph) {
         List<String> nodeList = new ArrayList<>(graph.getAllNodes());
         String tmp = Integer.toString(nodeList.size());
         int fieldLength = tmp.length();

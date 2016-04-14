@@ -1,24 +1,38 @@
 package net.coderodde.msc;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-public class EdgeCentricDeBruijnGraph {
-    
-    private final Map<String, Set<String>> childrenMap = new HashMap<>();
-    private final Map<String, Set<String>> parentMap   = new HashMap<>();
-    private final int k;
+public class EdgeCentricDeBruijnGraph extends AbstractDeBruijnGraph {
     
     public EdgeCentricDeBruijnGraph(Collection<String> reads, int k) {
+        super(k);
         Objects.requireNonNull(reads, "The collection of reads is null.");
-        checkKMerSize(k);
-        this.k = k;
-        
         buildGraph(reads);
+    }
+    
+    @Override
+    public Set<String> getAllNodes() {
+        return Collections.<String>unmodifiableSet(childrenMap.keySet());
+    }
+    
+    @Override
+    public Set<String> getChildrenOf(String kmer) {
+        Objects.requireNonNull(kmer, "The input kmer is null.");
+        checkStringIsKmer(kmer);
+        return Collections.<String>unmodifiableSet(childrenMap.get(kmer));
+    }
+    
+    @Override
+    public Set<String> getParentsOf(String kmer) {
+        Objects.requireNonNull(kmer, "The input kmer is null.");
+        checkStringIsKmer(kmer);
+        return Collections.<String>unmodifiableSet(parentsMap.get(kmer));
     }
     
     private void buildGraph(Collection<String> reads) {
@@ -49,8 +63,8 @@ public class EdgeCentricDeBruijnGraph {
                     childrenMap.put(kmer, new HashSet<>());
                 }
                 
-                if (!parentMap.containsKey(kmer)) {
-                    parentMap.put(kmer, new HashSet<>());
+                if (!parentsMap.containsKey(kmer)) {
+                    parentsMap.put(kmer, new HashSet<>());
                 }
                 
                 String kmerPrefix = kmer.substring(0, k - 1);
@@ -70,28 +84,24 @@ public class EdgeCentricDeBruijnGraph {
             }
         }
         
-        // Create edges.
-        childrenMap.keySet().stream().forEach((kmer) -> {
+        for (String kmer : childrenMap.keySet()) {
             String kmerPrefix = kmer.substring(0, k - 1);
             String kmerSuffix = kmer.substring(1);
             
-            Set<String> parentKmers = mapSuffixToKmers.get(kmerSuffix);
-            Set<String> childKmers  = mapPrefixToKmers.get(kmerPrefix);
+            Set<String> parentKmers = mapSuffixToKmers.get(kmerPrefix);
+            Set<String> childKmers  = mapPrefixToKmers.get(kmerSuffix);
             
-            parentKmers.stream().forEach((parentKmer) -> {
-                parentMap.get(kmer).add(parentKmer);
-            });
+            if (parentKmers != null) {
+                for (String parentKmer : parentKmers) {
+                    parentsMap.get(kmer).add(parentKmer);
+                }
+            }
             
-            childKmers.stream().forEach((childKmer) -> {
-                childrenMap.get(kmer).add(childKmer);
-            });
-        });
-    }
-    
-    private void checkKMerSize(int k) {
-        if (k < 2) {
-            throw new IllegalArgumentException(
-                    "The k is too small: " + k + ". Must be at least 2.");
+            if (childKmers != null) {
+                for (String childKmer : childKmers) {
+                    childrenMap.get(kmer).add(childKmer);
+                }
+            }
         }
     }
 }
