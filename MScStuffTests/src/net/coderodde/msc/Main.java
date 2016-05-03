@@ -12,10 +12,20 @@ public class Main {
                                               "TTACGG", 
                                               "GTTA", 
                                               "AATAG");
+        System.out.println("=== Node-centric de Bruijn graph ===");
         
         NodeCentricDeBruijnGraph graph = 
                 new NodeCentricDeBruijnGraph(readList, 3);
+        
         System.out.println(graphToString(graph));
+        
+        System.out.println();
+        System.out.println("=== Edge-centric de Bruijn graph ===");
+        
+        EdgeCentricDeBruijnGraph graph2 = 
+                new EdgeCentricDeBruijnGraph(readList, 3);
+        
+        System.out.println(graphToString(graph2));
     }
     
     private static String graphToString(AbstractDeBruijnGraph graph) {

@@ -1,3 +1,4 @@
 build*
 manifest.mf
 nbproject
+/StronglyConnectedComponents/target/
