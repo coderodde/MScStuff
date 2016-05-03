@@ -5,7 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import net.coderodde.graph.scc.Util;
 import net.coderodde.graph.DirectedGraph;
+
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -27,7 +29,14 @@ public class SCCFinderTest {
     }
     
     private void testCorrectnessOnce(final Random random) {
-        final DirectedGraph digraph = createRandomDigraph(random);
+        final int numberOfNodes = random.nextInt(MAXIMUM_NUMBER_OF_NODES + 1);
+        final float arcLoadFactor = Math.max(MINIMUM_ARC_LOAD_FACTOR,
+                                             random.nextFloat());
+        final int numberOfArcs = (int)(arcLoadFactor * 
+                                       Math.pow(numberOfNodes, 2.0));
+        final DirectedGraph digraph = Util.createRandomDigraph(random,
+                                                          numberOfNodes,
+                                                          numberOfArcs);
         
         final List<List<Integer>> scc1 = 
                 new RecursiveKosarajuSCCFinder()
@@ -72,26 +81,5 @@ public class SCCFinderTest {
         assertEquals(scc2set, scc3set);
     }
     
-    private static DirectedGraph createRandomDigraph(final Random random) {
-        final int numberOfNodes = random.nextInt(MAXIMUM_NUMBER_OF_NODES + 1);
-        final DirectedGraph digraph = new DirectedGraph();
-        
-        for (int i = 0; i < numberOfNodes; ++i) {
-            digraph.addNode(i);
-        }
-        
-        final float edgeLoadFactor = Math.max(MINIMUM_ARC_LOAD_FACTOR, 
-                                              random.nextFloat());
-        
-        final int numberOfEdges = (int)(edgeLoadFactor * 
-                                        Math.pow(numberOfNodes, 2.0));
-        
-        for (int i = 0; i < numberOfEdges; ++i) {
-            final int tail = random.nextInt(MAXIMUM_NUMBER_OF_NODES);
-            final int head = random.nextInt(MAXIMUM_NUMBER_OF_NODES);
-            digraph.addEdge(tail, head);   
-        }
-        
-        return digraph;
-    }
+    
 }
