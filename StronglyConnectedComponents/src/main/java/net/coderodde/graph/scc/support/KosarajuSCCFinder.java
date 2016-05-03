@@ -22,7 +22,7 @@ import net.coderodde.graph.scc.SCCFinder;
  * @author Rodion "rodde" Efremov
  * @version 1.6 (May 3, 2016)
  */
-public class KosarajuSCCFinder implements SCCFinder {
+public final class KosarajuSCCFinder implements SCCFinder {
     
     private DirectedGraph digraph;
     private List<Integer> nodeList;
@@ -179,11 +179,6 @@ public class KosarajuSCCFinder implements SCCFinder {
         digraph.addEdge(g, h);
         
         digraph.addEdge(h, h);  
-        
-//        digraph.addEdge(a, b);
-//        digraph.addEdge(b, c);
-//        digraph.addEdge(b, d);
-//        digraph.addEdge(d, a);
         
         final SCCFinder finder = new KosarajuSCCFinder();
         System.out.println(finder.findStronglyConnectedCmponents(digraph));

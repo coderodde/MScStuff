@@ -20,7 +20,7 @@ import net.coderodde.graph.scc.SCCFinder;
  * @author Rodion "rodde" Efremov
  * @version 1.6 (May 3, 2016)
  */
-public class RecursiveKosarajuSCCFinder implements SCCFinder {
+public final class RecursiveKosarajuSCCFinder implements SCCFinder {
 
     private DirectedGraph digraph;
     private List<Integer> nodeList;

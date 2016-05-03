@@ -1,17 +1,15 @@
 package net.coderodde.graph.scc.support;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import net.coderodde.graph.DirectedGraph;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class KosarajuSCCFinderTest {
+public class SCCFinderTest {
 
     private static final int ITERATIONS = 100;
     private static final int MAXIMUM_NUMBER_OF_NODES = 500;
@@ -38,6 +36,10 @@ public class KosarajuSCCFinderTest {
         final List<List<Integer>> scc2 = 
                 new KosarajuSCCFinder().findStronglyConnectedCmponents(digraph);
         
+        final List<List<Integer>> scc3 = 
+                new RecursiveTarjanSCCFinder()
+                .findStronglyConnectedCmponents(digraph);
+        
         for (final List<Integer> component : scc1) {
             Collections.sort(component);
         }
@@ -46,8 +48,13 @@ public class KosarajuSCCFinderTest {
             Collections.sort(component);
         }
         
+        for (final List<Integer> component : scc3) {
+            Collections.sort(component);
+        }
+        
         final Set<List<Integer>> scc1set = new HashSet<>();
         final Set<List<Integer>> scc2set = new HashSet<>();
+        final Set<List<Integer>> scc3set = new HashSet<>();
         
         for (final List<Integer> scc : scc1) {
             scc1set.add(scc);
@@ -57,7 +64,12 @@ public class KosarajuSCCFinderTest {
             scc2set.add(scc);
         }
         
+        for (final List<Integer> scc : scc3) {
+            scc3set.add(scc);
+        }
+        
         assertEquals(scc1set, scc2set);
+        assertEquals(scc2set, scc3set);
     }
     
     private static DirectedGraph createRandomDigraph(final Random random) {
@@ -68,16 +80,16 @@ public class KosarajuSCCFinderTest {
             digraph.addNode(i);
         }
         
-        final float edgeLoadFactor = Math.min(MINIMUM_ARC_LOAD_FACTOR, 
+        final float edgeLoadFactor = Math.max(MINIMUM_ARC_LOAD_FACTOR, 
                                               random.nextFloat());
         
         final int numberOfEdges = (int)(edgeLoadFactor * 
                                         Math.pow(numberOfNodes, 2.0));
         
         for (int i = 0; i < numberOfEdges; ++i) {
-            final int tail = random.nextInt(MAXIMUM_NUMBER_OF_NODES + 1);
-            final int head = random.nextInt(MAXIMUM_NUMBER_OF_NODES + 1);
-            digraph.addEdge(tail, head);
+            final int tail = random.nextInt(MAXIMUM_NUMBER_OF_NODES);
+            final int head = random.nextInt(MAXIMUM_NUMBER_OF_NODES);
+            digraph.addEdge(tail, head);   
         }
         
         return digraph;
