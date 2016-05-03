@@ -2,6 +2,7 @@ package net.coderodde.graph.scc.support;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -53,13 +54,17 @@ public class KosarajuSCCFinder implements SCCFinder {
     
     private List<List<Integer>> compute() {
         for (final Integer node : digraph.getAllNodes()) {
-            System.out.println("visit");
-            visit(node);
+            if (!visitedSet.contains(node)) {
+                System.out.println("visit");
+                visit(node);
+            }
         }
         
         for (int i = 0; i < indexMap.size(); ++i) {
             nodeList.add(indexMap.get(i));
         }
+        
+        Collections.<Integer>reverse(nodeList);
         
         for (final Integer node : nodeList) {
             assign(node, node);
@@ -82,40 +87,43 @@ public class KosarajuSCCFinder implements SCCFinder {
     }
     
     private void visit(final Integer node) {
+        if (visitedSet.contains(node)) {
+            return;
+        }
+        
+        visitedSet.add(node);
+        indexMap.put(counter++, node);
+        
+        final Deque<Integer> nodeStack = new ArrayDeque<>();
+        final Deque<Iterator<Integer>> nodeChildIteratorStack =
+                new ArrayDeque<>();
+        
         nodeStack.add(node);
-        iteratorStack.add(digraph.getChildrenOf(node).iterator());
+        nodeChildIteratorStack.add(digraph.getChildrenOf(node).iterator());
         
         outer:
         while (!nodeStack.isEmpty()) {
             final Integer currentNode = nodeStack.getLast();
-            final Iterator<Integer> currentNodeChildIterator = 
-                    iteratorStack.getLast();
-            
-            visitedSet.add(currentNode);
-//            if (visitedSet.contains(currentNode)) {
-//                nodeStack.removeLast();
-//                iteratorStack.removeLast();
-//                continue;
-//            }
+            final Iterator<Integer> currentNodeChildIterator =
+                    nodeChildIteratorStack.getLast();
             
             while (currentNodeChildIterator.hasNext()) {
                 final Integer child = currentNodeChildIterator.next();
                 
                 if (!visitedSet.contains(child)) {
                     visitedSet.add(child);
-                    indexMap.put(counter++, currentNode);
-                    System.out.println(currentNode);
                     nodeStack.addLast(child);
-                    iteratorStack.addLast(digraph.getChildrenOf(child)
-                                                 .iterator());
+                    nodeChildIteratorStack.addLast(digraph.getChildrenOf(child)
+                                                          .iterator());
                     continue outer;
                 }
             }
             
-            while (!iteratorStack.isEmpty() 
-                    && !iteratorStack.getLast().hasNext()) {
-                iteratorStack.removeLast();
-                nodeStack.removeLast();
+            while (!nodeChildIteratorStack.isEmpty() 
+                    && !nodeChildIteratorStack.getLast().hasNext()) {
+                final Integer topNode = nodeStack.removeLast();
+                nodeChildIteratorStack.removeLast();
+                indexMap.put(counter++, topNode);
             }
         }
     }
@@ -130,50 +138,55 @@ public class KosarajuSCCFinder implements SCCFinder {
         }
     }
     
-//    public static void main(String[] args) {
-//        final int a = 0;
-//        final int b = 1;
-//        final int c = 2;
-//        final int d = 3;
-//        final int e = 4;
-//        final int f = 5;
-//        final int g = 6;
-//        final int h = 7;
-//        
-//        final DirectedGraph digraph = new DirectedGraph();
-//        
-//        digraph.addNode(a);
-//        digraph.addNode(b);
-//        digraph.addNode(c);
-//        digraph.addNode(d);
-//        digraph.addNode(e);
-//        digraph.addNode(f);
-//        digraph.addNode(g);
-//        digraph.addNode(h);
-//        
+    public static void main(String[] args) {
+        final int a = 0;
+        final int b = 1;
+        final int c = 2;
+        final int d = 3;
+        final int e = 4;
+        final int f = 5;
+        final int g = 6;
+        final int h = 7;
+        
+        final DirectedGraph digraph = new DirectedGraph();
+        
+        digraph.addNode(a);
+        digraph.addNode(b);
+        digraph.addNode(c);
+        digraph.addNode(d);
+        digraph.addNode(e);
+        digraph.addNode(f);
+        digraph.addNode(g);
+        digraph.addNode(h);
+        
+        digraph.addEdge(a, b);
+        
+        digraph.addEdge(b, e);
+        digraph.addEdge(b, f);
+        digraph.addEdge(b, c);
+    
+        digraph.addEdge(c, d);
+        digraph.addEdge(c, g);
+        
+        digraph.addEdge(d, c);
+        digraph.addEdge(d, h);
+        
+        digraph.addEdge(e, a);
+        digraph.addEdge(e, f);
+        
+        digraph.addEdge(f, g);
+        
+        digraph.addEdge(g, f);
+        digraph.addEdge(g, h);
+        
+        digraph.addEdge(h, h);  
+        
 //        digraph.addEdge(a, b);
-//        
-//        digraph.addEdge(b, e);
-//        digraph.addEdge(b, f);
 //        digraph.addEdge(b, c);
-//    
-//        digraph.addEdge(c, d);
-//        digraph.addEdge(c, g);
-//        
-//        digraph.addEdge(d, c);
-//        digraph.addEdge(d, h);
-//        
-//        digraph.addEdge(e, a);
-//        digraph.addEdge(e, f);
-//        
-//        digraph.addEdge(f, g);
-//        
-//        digraph.addEdge(g, f);
-//        digraph.addEdge(g, h);
-//        
-//        digraph.addEdge(h, h);  
-//        
-//        final SCCFinder finder = new KosarajuSCCFinder();
-//        System.out.println(finder.findStronglyConnectedCmponents(digraph));
-//    }
+//        digraph.addEdge(b, d);
+//        digraph.addEdge(d, a);
+        
+        final SCCFinder finder = new KosarajuSCCFinder();
+        System.out.println(finder.findStronglyConnectedCmponents(digraph));
+    }
 }
