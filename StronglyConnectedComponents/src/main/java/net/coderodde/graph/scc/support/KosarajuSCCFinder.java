@@ -55,7 +55,6 @@ public class KosarajuSCCFinder implements SCCFinder {
     private List<List<Integer>> compute() {
         for (final Integer node : digraph.getAllNodes()) {
             if (!visitedSet.contains(node)) {
-                System.out.println("visit");
                 visit(node);
             }
         }
