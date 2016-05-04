@@ -29,8 +29,6 @@ public final class KosarajuSCCFinder implements SCCFinder {
     private Set<Integer> visitedSet;
     private Map<Integer, Integer> indexMap;
     private Map<Integer, Integer> assignmentMap;
-    private Deque<Integer> nodeStack;
-    private Deque<Iterator<Integer>> iteratorStack;
     private int counter;
     
     public KosarajuSCCFinder() {}
@@ -42,8 +40,6 @@ public final class KosarajuSCCFinder implements SCCFinder {
         this.visitedSet    = new HashSet<>(digraph.size());
         this.indexMap      = new HashMap<>(digraph.size());
         this.assignmentMap = new HashMap<>(digraph.size());
-        this.nodeStack     = new ArrayDeque<>();
-        this.iteratorStack = new ArrayDeque<>();
     }
     
     @Override
@@ -102,7 +98,6 @@ public final class KosarajuSCCFinder implements SCCFinder {
         
         outer:
         while (!nodeStack.isEmpty()) {
-            final Integer currentNode = nodeStack.getLast();
             final Iterator<Integer> currentNodeChildIterator =
                     nodeChildIteratorStack.getLast();
             
