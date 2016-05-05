@@ -2,3 +2,9 @@ build*
 manifest.mf
 nbproject
 /StronglyConnectedComponents/target/
+*.aux
+*.dvi
+*.log
+*.out
+*.synctex.gz
+*.toc
