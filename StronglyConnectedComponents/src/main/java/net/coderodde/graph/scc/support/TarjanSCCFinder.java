@@ -54,6 +54,7 @@ public final class TarjanSCCFinder implements SCCFinder {
         
         for (final Integer node : digraph.getAllNodes()) {
             if (!indexMap.containsKey(node)) {
+//                System.out.println("TOP: !indexMap.containsKey(" + node + ")");
                 strongConnect(node);
             }
         }
@@ -72,62 +73,70 @@ public final class TarjanSCCFinder implements SCCFinder {
         
         outer:
         while (!nodeStack.isEmpty()) {
-            indexMap.put(node, index);
-            lowLinkMap.put(node, index);
-            ++index;
-            stack.push(node);
-            onStackSet.add(node);
-            
+            final Integer current = nodeStack.getLast();
             final Iterator<Integer> currentNodeChildIterator = 
                     nodeChildIteratorStack.getLast();
-            final Integer current = nodeStack.getLast();
+//            System.out.println("strongConnect(" + current + ")");
+            
+            indexMap.put(current, index);
+            lowLinkMap.put(current, index);
+            onStackSet.add(current);
+            stack.push(current);
+            ++index;
+            
+            childStack.addLast(0);
             
             while (currentNodeChildIterator.hasNext()) {
                 final Integer child = currentNodeChildIterator.next();
+//                System.out.println("for child " + child);
+                childStack.removeLast();
                 childStack.addLast(child);
                 
                 if (!indexMap.containsKey(child)) {
+//                    System.out.println("!indexMap.containsKey(" + child + ")");
                     nodeStack.addLast(child);
                     nodeChildIteratorStack.addLast(
                             digraph.getChildrenOf(child).iterator());
-                    
                     continue outer;
                 } else if (onStackSet.contains(child)) {
+//                    System.out.println("onStackSet.contains(" + child + ")");
                     lowLinkMap.put(current, 
                                    Math.min(lowLinkMap.get(current),
                                               indexMap.get(child)));
                 }
-                
-                childStack.removeLast();
             }
-            
+                       
             if (lowLinkMap.get(current).equals(indexMap.get(current))) {
+//                System.out.println("lowLinkMap.get(" + current + ").equals(indexMap.get(" + current + "))");
                 final List<Integer> stronglyConnectedComponent = 
                         new ArrayList<>();
 
-                Integer w;
+                Integer top;
                 
                 do {
-                    w = stack.pop();
-                    onStackSet.remove(w);
-                    stronglyConnectedComponent.add(w);
-                } while (!w.equals(current));
+                    top = stack.pop();
+                    onStackSet.remove(top);
+                    stronglyConnectedComponent.add(top);
+                } while (!top.equals(current));
                 
                 this.solution.add(stronglyConnectedComponent);
             }
             
             while (!nodeChildIteratorStack.isEmpty()
                     && !nodeChildIteratorStack.getLast().hasNext()) {
-                final Integer tmp = nodeStack.removeLast();
+                final Integer topNode = nodeStack.removeLast();
+                final Integer topNodeChild = childStack.removeLast();
                 nodeChildIteratorStack.removeLast();
-                final Integer child = childStack.removeLast();
-                lowLinkMap.put(tmp, Math.min(lowLinkMap.get(tmp),
-                                             lowLinkMap.get(child)));
+                
+//                System.out.println("after recursive call for child " + topNodeChild);
+                
+                lowLinkMap.put(topNode, Math.min(lowLinkMap.get(topNode),
+                                                 indexMap.get(topNodeChild)));
             }
         }
     }
     
-    public static void main(String[] args) {
+    private static void main(String[] args) {
         final int a = 0;
         final int b = 1;
         final int c = 2;
@@ -170,7 +179,22 @@ public final class TarjanSCCFinder implements SCCFinder {
         
         digraph.addEdge(h, h);  
         
-        final SCCFinder finder = new KosarajuSCCFinder();
+        System.out.println("Fingers crossed: ");
+        final SCCFinder finder = new TarjanSCCFinder();
+//        System.out.println(finder.findStronglyConnectedCmponents(digraph));
+        
+        digraph.clear();
+        
+        digraph.addNode(0);
+        digraph.addNode(1);
+        digraph.addNode(2);
+        digraph.addNode(3);
+        
+        digraph.addEdge(0, 2);
+        digraph.addEdge(2, 0);
+        digraph.addEdge(0, 1);
+        digraph.addEdge(2, 3);
+        
         System.out.println(finder.findStronglyConnectedCmponents(digraph));
     }
 }

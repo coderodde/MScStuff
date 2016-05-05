@@ -19,7 +19,7 @@ public class SCCFinderTest {
     
     @Test
     public void testCorrectness() {
-        final long seed = System.nanoTime();
+        final long seed = 137559383958158L; System.nanoTime();
         final Random random = new Random(seed);
         System.out.println("Seed = " + seed);
         
@@ -49,6 +49,14 @@ public class SCCFinderTest {
                 new RecursiveTarjanSCCFinder()
                 .findStronglyConnectedCmponents(digraph);
         
+        final List<List<Integer>> scc4 = 
+                new RecursivePathBasedSCCFinder()
+                .findStronglyConnectedCmponents(digraph);
+        
+//        final List<List<Integer>> scc4 = 
+//                new TarjanSCCFinder()
+//                .findStronglyConnectedCmponents(digraph);
+        
         for (final List<Integer> component : scc1) {
             Collections.sort(component);
         }
@@ -61,9 +69,14 @@ public class SCCFinderTest {
             Collections.sort(component);
         }
         
+        for (final List<Integer> component : scc4) {
+            Collections.sort(component);
+        }
+        
         final Set<List<Integer>> scc1set = new HashSet<>();
         final Set<List<Integer>> scc2set = new HashSet<>();
         final Set<List<Integer>> scc3set = new HashSet<>();
+        final Set<List<Integer>> scc4set = new HashSet<>();
         
         for (final List<Integer> scc : scc1) {
             scc1set.add(scc);
@@ -77,9 +90,12 @@ public class SCCFinderTest {
             scc3set.add(scc);
         }
         
+        for (final List<Integer> scc : scc4) {
+            scc4set.add(scc);
+        }
+        
         assertEquals(scc1set, scc2set);
         assertEquals(scc2set, scc3set);
+        assertEquals(scc3set, scc4set);
     }
-    
-    
 }

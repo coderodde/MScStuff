@@ -94,7 +94,7 @@ public final class RecursiveKosarajuSCCFinder implements SCCFinder {
         }
     }
 
-    public static void main(String[] args) {
+    private static void main(String[] args) {
         final int a = 0;
         final int b = 1;
         final int c = 2;

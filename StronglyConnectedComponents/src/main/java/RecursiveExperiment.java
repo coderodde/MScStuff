@@ -4,13 +4,13 @@ import net.coderodde.graph.scc.SCCFinder;
 import net.coderodde.graph.scc.Util;
 import net.coderodde.graph.scc.support.KosarajuSCCFinder;
 import net.coderodde.graph.scc.support.RecursiveKosarajuSCCFinder;
+import net.coderodde.graph.scc.support.RecursivePathBasedSCCFinder;
 import net.coderodde.graph.scc.support.RecursiveTarjanSCCFinder;
-import net.coderodde.graph.scc.support.TarjanSCCFinder;
 
 public class RecursiveExperiment {
 
-    private static final int NUMBER_OF_NODES = 100000;
-    private static final int NUMBER_OF_ARCS  = 150000;
+    private static final int NUMBER_OF_NODES = 200_000;
+    private static final int NUMBER_OF_ARCS  = 250_000;
     
     private static final int WARMUP_NODES = 1000;
     private static final int WARMUP_ARCS = 1500;
@@ -29,21 +29,14 @@ public class RecursiveExperiment {
         
         System.out.println("Seed = " + seed);
         
-        final SCCFinder kosaraju          = new KosarajuSCCFinder();
-        final SCCFinder recursiveKosaraju = new RecursiveKosarajuSCCFinder();
-//        final SCCFinder tarjan            = new TarjanSCCFinder();
-        final SCCFinder recursiveTarjan   = new RecursiveTarjanSCCFinder();
+        final SCCFinder kosaraju           = new KosarajuSCCFinder();
+        final SCCFinder recursiveKosaraju  = new RecursiveKosarajuSCCFinder();
+        final SCCFinder recursiveTarjan    = new RecursiveTarjanSCCFinder();
+        final SCCFinder recursivePathBased = new RecursivePathBasedSCCFinder();
         
         long startTime = System.nanoTime();
-//        tarjan.findStronglyConnectedCmponents(digraph);
-        long endTime = System.nanoTime();
-        
-        System.out.printf("Tarjan's algorithm in %.2f milliseconds.\n",
-                          (endTime - startTime) / 1e6);
-        
-        startTime = System.nanoTime();
         recursiveTarjan.findStronglyConnectedCmponents(digraph);
-        endTime = System.nanoTime();
+        long endTime = System.nanoTime();
         
         System.out.printf(
                 "Recursive Tarjan's algorithm in %.2f milliseconds.\n",
@@ -62,6 +55,14 @@ public class RecursiveExperiment {
         
         System.out.printf(
                 "Recursive Kosaraju's algorithm in %.2f milliseconds.\n",
+                (endTime - startTime) / 1e6);
+        
+        startTime = System.nanoTime();
+        recursivePathBased.findStronglyConnectedCmponents(digraph);
+        endTime = System.nanoTime();
+        
+        System.out.printf(
+                "Recursive path-based algorithm in %.2f milliseconds.\n",
                 (endTime - startTime) / 1e6);
     }
 }

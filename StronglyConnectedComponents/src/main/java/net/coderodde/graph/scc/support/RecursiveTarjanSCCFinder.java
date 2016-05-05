@@ -53,6 +53,7 @@ public final class RecursiveTarjanSCCFinder implements SCCFinder {
         
         for (final Integer node : digraph.getAllNodes()) {
             if (!indexMap.containsKey(node)) {
+//                System.out.println("TOP: !indexMap.containsKey(" + node + ")");
                 strongConnect(node);
             }
         }
@@ -61,6 +62,7 @@ public final class RecursiveTarjanSCCFinder implements SCCFinder {
     }
     
     private void strongConnect(final Integer node) {
+//        System.out.println("strongConnect(" + node + ")");
         indexMap.put(node, index);
         lowLinkMap.put(node, index);
         ++index;
@@ -68,17 +70,23 @@ public final class RecursiveTarjanSCCFinder implements SCCFinder {
         onStackSet.add(node);
         
         for (final Integer child : digraph.getChildrenOf(node)) {
+//            System.out.println("for child " + child);
+            
             if (!indexMap.containsKey(child)) {
+//                System.out.println("!indexMap.containsKey(" + child + ")");
                 strongConnect(child);
+//                System.out.println("after recursive call for child " + child);
                 lowLinkMap.put(node, Math.min(lowLinkMap.get(node), 
                                               lowLinkMap.get(child)));
             } else if (onStackSet.contains(child)) {
+//                System.out.println("onStackSet.contains(" + child + ")");
                 lowLinkMap.put(node, Math.min(lowLinkMap.get(node), 
                                               indexMap.get(child)));
             }
         }
         
         if (lowLinkMap.get(node).equals(indexMap.get(node))) {
+//            System.out.println("lowLinkMap.get(" + node + ").equals(indexMap.get(" + node + "))");
             final List<Integer> newStronglyConnectedComponent = 
                     new ArrayList<>();
             
@@ -94,7 +102,7 @@ public final class RecursiveTarjanSCCFinder implements SCCFinder {
         }
     }
     
-    public static void main(String[] args) {
+    private static void main(String[] args) {
         final int a = 0;
         final int b = 1;
         final int c = 2;
@@ -137,7 +145,21 @@ public final class RecursiveTarjanSCCFinder implements SCCFinder {
         
         digraph.addEdge(h, h);  
         
-        final SCCFinder finder = new KosarajuSCCFinder();
+        final SCCFinder finder = new RecursiveTarjanSCCFinder();
+//        System.out.println(finder.findStronglyConnectedCmponents(digraph));
+        
+        digraph.clear();
+        
+        digraph.addNode(0);
+        digraph.addNode(1);
+        digraph.addNode(2);
+        digraph.addNode(3);
+        
+        digraph.addEdge(0, 2);
+        digraph.addEdge(2, 0);
+        digraph.addEdge(0, 1);
+        digraph.addEdge(2, 3);
+        
         System.out.println(finder.findStronglyConnectedCmponents(digraph));
     }
 }
