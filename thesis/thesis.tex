@@ -65,17 +65,20 @@
 % tocbibind renames the bibliography, use the following to change it back
 \settocbibname{References}
 
-% --- Theorem environment definitions ---
+%%%%%%%%%%%%% Algorithm2e %%%%%%%%%%%%%
+\SetKw{KwOutput}{output}
+\SetKw{KwNotMapped}{is not mapped in }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newtheorem{lau}{Lause}
-\newtheorem{lem}[lau]{Lemma}
-\newtheorem{kor}[lau]{Korollaari}
+% --- Theorem environment definitions ---
+\newtheorem{mythm}{Theorem}[section]
+\newtheorem{mylem}[mythm]{Lemma}
+\newtheorem{mycor}[mythm]{Corollary}
 
 \theoremstyle{definition}
-\newtheorem{maar}[lau]{Määritelmä}
-\newtheorem{ong}{Ongelma}
-\newtheorem{alg}[lau]{Algoritmi}
-\newtheorem{esim}[lau]{Esimerkki}
+\newtheorem{mydef}[mythm]{Definition}
+\newtheorem{alg}[mythm]{Algoritmi}
+\newtheorem{esim}[mythm]{Example}
 
 \theoremstyle{remark}
 \newtheorem*{huom}{Huomautus}
@@ -150,18 +153,37 @@
 \section*{Dummy section}
 
 \subsection{Strongly connected components}
-Since our methods require the input graph to be strongly connected, we review here briefly how to algorithmically validate that the input graph exhibits the requirement. A directed graph is called \textit{strongly connected} if and only if for every pair of nodes $u, v$ of the graph $u$ is reachable from $v$, and $v$ is reachable from $u$. Let $u \overset{r}{\sim} v$ denote the aforementioned reachability relation. Now, it is easy to see that
+Since our methods require the input graph to be strongly connected, we review here briefly how to algorithmically validate that the input graph exhibits the requirement. A strongly connected component is any subset of vertices $C$, such that any node $u \in C$ is reachable from any other node of $C$. A directed graph $G = (V, A)$ is called \textit{strongly connected} if and only if $V$ is a strongly connected component.
+
+We say that $u$ and $v$ are \textit{mutually reachable} whenever they are reachable from each other. Let $u \overset{r}{\sim} v$ denote the aforementioned reachability relation. Now, it is easy to see that
 \begin{description}
 \item[\textsc{(Reflexivity)}]  $u \overset{r}{\sim} u$, for all $u \in V(G)$.
 \item[\textsc{(Symmetry)}] if  $u \overset{r}{\sim} v$, then $v \overset{r}{\sim} u$.
 \item[\textsc{(Transitivity)}] If $u \overset{r}{\sim} v$ and $v \overset{r}{\sim} v'$, then $u \overset{r}{\sim} v'$.
 \end{description}
-The above three properties imply that $\overset{r}{\sim}$ is an equivalence relation, and as such, implies that the graph has a unique partition into strongly connected components.
+The above three properties imply that $\overset{r}{\sim}$ is an equivalence relation, and as such, implies that the graph has a unique partition into strongly connected components. Note that any node is contained within exactly one strongly connected component.
 
 Algorithms for finding all strongly connected components of a graph in linear time are known. We review three of them below.
 
 \subsubsection{Kosaraju's algorithm}
 
+% DEFINITION: Graph transpose
+\begin{mydef}
+Given a directed graph $G = (V, A)$, the transpose graph of $G$ is the graph $G^T = (V, A^T)$, where $A^T = \{ (v, u) \colon (u, v) \in A \}$.
+\end{mydef}
+
+% THEOREM: Graph and its transpose have same SCC
+\begin{mythm}
+Any directed graph $G = (V,A)$ has exactly the same strongly connected components as its transpose $G^T = (V, A^T)$.
+
+\begin{proof}
+Let $u, v \in V$ be two distinct nodes of the graph. We need to show that $u$ and $v$ are mutually reachable in $G$ if and only if they are mutually reachable in the transpose graph $G^T$. Suppose $u$ and $v$ are mutually reachable in $G$. Now, there are two distinct paths: $\pi_{uv}$ is an $u-v$ path, and $\pi_{vu}$ is a $v-u$ path. Taking the transpose of the graph (changing the direction of each arc), $\pi_{uv}$ becomes a $v-u$ path, and $\pi_{vu}$ becomes a $u-v$ path. Hence, the two nodes $u$ and $v$ are mutually reachable also in the transpose graph. Since we assumed the nodes $u$ and $v$ to be arbitrary, the result follows.
+\end{proof}
+\end{mythm}
+
+Kosaraju's algorithm sacrifices two depth-first search traversals over the input graph: the first one in forward direction and the second one in backward direction (from a node to its parents). As such, it relies on the fact that any directed graph $G$ has exaclty the same strongly connected components than its transpose $G^T$, and uses that observation for detecting strongly connected components.
+
+% ALGORITHM: KosarajuVisit
 \begin{algorithm}
 \If{$v \not \in S$}{
   $S \leftarrow S \cup \{ v \}$ \\
@@ -175,18 +197,20 @@ Algorithms for finding all strongly connected components of a graph in linear ti
 \label{alg:kosaraju_visit}
 \end{algorithm}
 
+% ALGORITHM: KosarajuAssign
 \begin{algorithm}
-\If{$(u \mapsto r) \not \in \mu$}{
+\If{$u$ \KwNotMapped $\mu$}{
   $\mu(u) \leftarrow r$ \\
   \nonl For all parents of $u$ \\
   \For{$(v, u) \in G(A)$}{
-    \textsc{KosarajuAssign}$(G \mu, v, r)$ \\
+    \textsc{KosarajuAssign}$(G, \mu, v, r)$ \\
   }
 }
 \caption{\textsc{KosarajuAssign}$(G, \mu, u, r)$}
 \label{alg:kosaraju_assign}
 \end{algorithm}
 
+% ALGORITHM: KosarajuSCC
 \begin{algorithm}
 $S \leftarrow \varnothing$ \\
 $L \leftarrow \langle \rangle$ \\
@@ -196,10 +220,67 @@ $\mu \leftarrow \varnothing$ \\
 }
 \nonl Iterate the list $L$ in its natural order \\
 \For{$v \in L$}{
-  \textsc{KosarajuAssign}$()$ \\
+  \textsc{KosarajuAssign}$(G, \mu, v, v)$ \\
+}
+$f = \varnothing$ \\
+\For{$(v, i) \in \mu$}{
+  \If{$i$ \KwNotMapped $f$}{
+    $f(i) \leftarrow \{ v \}$ \\
+  } 
+  \Else{
+    $f(i) \leftarrow f(i) \cup \{ v \}$ \\
+  }
+}
+\For{$(i \mapsto C) \in f$}{
+  \KwOutput $C$ \\
 }
 \caption{\textsc{KosarajuSCC}$(G)$}
 \label{alg:kosaraju}
+\end{algorithm}
+
+\subsubsection{Tarjan's algorithm}
+Tarjan's algorithm for strongly connected components achieves better running times than Kosaraju's algorithm despite the fact that the former was discovered prior to the latter. It does so by doing only one depth-first traversal over the graph, unlike the Kosaraju's algorithm that requires two.
+
+% ALGORITHM: TarjanStrongConnect
+\begin{algorithm}
+$i(u) \leftarrow j$ \\
+$l(u) \leftarrow j$ \\
+$j \leftarrow j + 1$ \\
+$\textsc{Push}(S, u)$ \\
+\For{$(u, v) \in G(A)$}{
+  \If{$v$ \KwNotMapped $i$}{
+    \textsc{TarjanStrongConnect}$(G, v, i, l, j, S)$ \\
+    $l(u) \leftarrow \min(l(u), l(v))$ \\
+  } 
+  \ElseIf{$v \in S$}{
+    $l(u) \leftarrow \min(l(u), i(v))$ \\
+  }
+}
+\If{$l(u) = i(u)$}{
+  $C = \varnothing$ \\
+  \Repeat{$w \neq u$}{
+    $w = \textsc{Pop}(S)$ \\
+  	$C \leftarrow C \cup \{ w \}$ \\
+  	}
+  \KwOutput $C$ \\
+}
+\caption{\textsc{TarjanStrongConnect}$(G, u, i, l, j, S)$}
+\label{alg:tarjan_strong_connect}
+\end{algorithm}
+
+% ALGORITHM: TarjanSCC
+\begin{algorithm}
+$S \leftarrow \varnothing$ \\
+$i \leftarrow \varnothing$ \\
+$l \leftarrow \varnothing$ \\
+$j \leftarrow 0$ \\
+\For{$u \in G(V)$}{
+  \If{$u$ \KwNotMapped $i$}{
+    \textsc{TarjanStrongConnect}$(G, u, i, l, j, S)$ \\
+  }
+}
+\caption{\textsc{TarjanSCC}$(G)$}
+\label{alg:tarjan}
 \end{algorithm}
 
 \bibliographystyle{babplain-lf}
