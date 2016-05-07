@@ -2,10 +2,10 @@ import java.util.Random;
 import net.coderodde.graph.DirectedGraph;
 import net.coderodde.graph.scc.SCCFinder;
 import net.coderodde.graph.scc.Util;
+import net.coderodde.graph.scc.support.IterativeKosarajuSCCFinder;
 import net.coderodde.graph.scc.support.KosarajuSCCFinder;
-import net.coderodde.graph.scc.support.RecursiveKosarajuSCCFinder;
-import net.coderodde.graph.scc.support.RecursivePathBasedSCCFinder;
-import net.coderodde.graph.scc.support.RecursiveTarjanSCCFinder;
+import net.coderodde.graph.scc.support.PathBasedSCCFinder;
+import net.coderodde.graph.scc.support.TarjanSCCFinder;
 
 public class RecursiveExperiment {
 
@@ -29,10 +29,10 @@ public class RecursiveExperiment {
         
         System.out.println("Seed = " + seed);
         
-        final SCCFinder kosaraju           = new KosarajuSCCFinder();
-        final SCCFinder recursiveKosaraju  = new RecursiveKosarajuSCCFinder();
-        final SCCFinder recursiveTarjan    = new RecursiveTarjanSCCFinder();
-        final SCCFinder recursivePathBased = new RecursivePathBasedSCCFinder();
+        final SCCFinder kosaraju           = new IterativeKosarajuSCCFinder();
+        final SCCFinder recursiveKosaraju  = new KosarajuSCCFinder();
+        final SCCFinder recursiveTarjan    = new TarjanSCCFinder();
+        final SCCFinder recursivePathBased = new PathBasedSCCFinder();
         
         long startTime = System.nanoTime();
         recursiveTarjan.findStronglyConnectedCmponents(digraph);

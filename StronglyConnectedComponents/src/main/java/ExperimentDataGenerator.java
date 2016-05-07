@@ -3,9 +3,9 @@ import java.util.Random;
 import net.coderodde.graph.DirectedGraph;
 import net.coderodde.graph.scc.SCCFinder;
 import net.coderodde.graph.scc.Util;
-import net.coderodde.graph.scc.support.RecursiveKosarajuSCCFinder;
-import net.coderodde.graph.scc.support.RecursivePathBasedSCCFinder;
-import net.coderodde.graph.scc.support.RecursiveTarjanSCCFinder;
+import net.coderodde.graph.scc.support.KosarajuSCCFinder;
+import net.coderodde.graph.scc.support.PathBasedSCCFinder;
+import net.coderodde.graph.scc.support.TarjanSCCFinder;
 
 public class ExperimentDataGenerator {
     
@@ -14,9 +14,9 @@ public class ExperimentDataGenerator {
     private static final int WARMUP_ARCS = 12_000;
     private static final String STATUS = "[STATUS] ";
     
-    private static final SCCFinder KOSARAJU = new RecursiveKosarajuSCCFinder();
-    private static final SCCFinder PATHBASED = new RecursivePathBasedSCCFinder();
-    private static final SCCFinder TARJAN = new RecursiveTarjanSCCFinder();
+    private static final SCCFinder KOSARAJU = new KosarajuSCCFinder();
+    private static final SCCFinder PATHBASED = new PathBasedSCCFinder();
+    private static final SCCFinder TARJAN = new TarjanSCCFinder();
     private static final int ITERATIONS = 10;
     
     /**

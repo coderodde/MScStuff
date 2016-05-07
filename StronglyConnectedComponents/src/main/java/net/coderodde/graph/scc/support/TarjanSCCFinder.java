@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -63,76 +62,43 @@ public final class TarjanSCCFinder implements SCCFinder {
     }
     
     private void strongConnect(final Integer node) {
-        final Deque<Integer> nodeStack = new ArrayDeque<>();
-        final Deque<Integer> childStack = new ArrayDeque<>();
-        final Deque<Iterator<Integer>> nodeChildIteratorStack = 
-                new ArrayDeque<>();
+//        System.out.println("strongConnect(" + node + ")");
+        indexMap.put(node, index);
+        lowLinkMap.put(node, index);
+        ++index;
+        stack.push(node);
+        onStackSet.add(node);
         
-        nodeStack.addLast(node);
-        nodeChildIteratorStack.add(digraph.getChildrenOf(node).iterator());
-        
-        outer:
-        while (!nodeStack.isEmpty()) {
-            final Integer current = nodeStack.getLast();
-            final Iterator<Integer> currentNodeChildIterator = 
-                    nodeChildIteratorStack.getLast();
-//            System.out.println("strongConnect(" + current + ")");
+        for (final Integer child : digraph.getChildrenOf(node)) {
+//            System.out.println("for child " + child);
             
-            indexMap.put(current, index);
-            lowLinkMap.put(current, index);
-            onStackSet.add(current);
-            stack.push(current);
-            ++index;
-            
-            childStack.addLast(0);
-            
-            while (currentNodeChildIterator.hasNext()) {
-                final Integer child = currentNodeChildIterator.next();
-//                System.out.println("for child " + child);
-                childStack.removeLast();
-                childStack.addLast(child);
-                
-                if (!indexMap.containsKey(child)) {
-//                    System.out.println("!indexMap.containsKey(" + child + ")");
-                    nodeStack.addLast(child);
-                    nodeChildIteratorStack.addLast(
-                            digraph.getChildrenOf(child).iterator());
-                    continue outer;
-                } else if (onStackSet.contains(child)) {
-//                    System.out.println("onStackSet.contains(" + child + ")");
-                    lowLinkMap.put(current, 
-                                   Math.min(lowLinkMap.get(current),
+            if (!indexMap.containsKey(child)) {
+//                System.out.println("!indexMap.containsKey(" + child + ")");
+                strongConnect(child);
+//                System.out.println("after recursive call for child " + child);
+                lowLinkMap.put(node, Math.min(lowLinkMap.get(node), 
+                                              lowLinkMap.get(child)));
+            } else if (onStackSet.contains(child)) {
+//                System.out.println("onStackSet.contains(" + child + ")");
+                lowLinkMap.put(node, Math.min(lowLinkMap.get(node), 
                                               indexMap.get(child)));
-                }
             }
-                       
-            if (lowLinkMap.get(current).equals(indexMap.get(current))) {
-//                System.out.println("lowLinkMap.get(" + current + ").equals(indexMap.get(" + current + "))");
-                final List<Integer> stronglyConnectedComponent = 
-                        new ArrayList<>();
-
-                Integer top;
-                
-                do {
-                    top = stack.pop();
-                    onStackSet.remove(top);
-                    stronglyConnectedComponent.add(top);
-                } while (!top.equals(current));
-                
-                this.solution.add(stronglyConnectedComponent);
-            }
+        }
+        
+        if (lowLinkMap.get(node).equals(indexMap.get(node))) {
+//            System.out.println("lowLinkMap.get(" + node + ").equals(indexMap.get(" + node + "))");
+            final List<Integer> newStronglyConnectedComponent = 
+                    new ArrayList<>();
             
-            while (!nodeChildIteratorStack.isEmpty()
-                    && !nodeChildIteratorStack.getLast().hasNext()) {
-                final Integer topNode = nodeStack.removeLast();
-                final Integer topNodeChild = childStack.removeLast();
-                nodeChildIteratorStack.removeLast();
-                
-//                System.out.println("after recursive call for child " + topNodeChild);
-                
-                lowLinkMap.put(topNode, Math.min(lowLinkMap.get(topNode),
-                                                 indexMap.get(topNodeChild)));
-            }
+            Integer top;
+            
+            do {
+                top = stack.pop();
+                onStackSet.remove(top);
+                newStronglyConnectedComponent.add(top);
+            } while (!top.equals(node));
+            
+            this.solution.add(newStronglyConnectedComponent);
         }
     }
     
@@ -179,7 +145,6 @@ public final class TarjanSCCFinder implements SCCFinder {
         
         digraph.addEdge(h, h);  
         
-        System.out.println("Fingers crossed: ");
         final SCCFinder finder = new TarjanSCCFinder();
 //        System.out.println(finder.findStronglyConnectedCmponents(digraph));
         

@@ -149,11 +149,10 @@
 %
 % instead.
 
-\chapter{Chapt}
 \section*{Dummy section}
 
 \subsection{Strongly connected components}
-Since our methods require the input graph to be strongly connected, we review here briefly how to algorithmically validate that the input graph exhibits the requirement. A strongly connected component is any subset of vertices $C$, such that any node $u \in C$ is reachable from any other node of $C$. A directed graph $G = (V, A)$ is called \textit{strongly connected} if and only if $V$ is a strongly connected component.
+Since our methods require the input graph to be strongly connected, we review here briefly how to algorithmically validate that the input graph exhibits the requirement. A strongly connected component is any (maximal) subset of vertices $C$, such that any node $u \in C$ is reachable from any other node of $C$. A directed graph $G = (V, A)$ is called \textit{strongly connected} if and only if $V$ is a strongly connected component.
 
 We say that $u$ and $v$ are \textit{mutually reachable} whenever they are reachable from each other. Let $u \overset{r}{\sim} v$ denote the aforementioned reachability relation. Now, it is easy to see that
 \begin{description}
@@ -169,7 +168,7 @@ Algorithms for finding all strongly connected components of a graph in linear ti
 
 % DEFINITION: Graph transpose
 \begin{mydef}
-Given a directed graph $G = (V, A)$, the transpose graph of $G$ is the graph $G^T = (V, A^T)$, where $A^T = \{ (v, u) \colon (u, v) \in A \}$.
+Given a directed graph $G = (V, A)$, the \textit{transpose} of $G$ is the graph $G^T = (V, A^T)$, where $A^T = \{ (v, u) \colon (u, v) \in A \}$.
 \end{mydef}
 
 % THEOREM: Graph and its transpose have same SCC
@@ -177,7 +176,11 @@ Given a directed graph $G = (V, A)$, the transpose graph of $G$ is the graph $G^
 Any directed graph $G = (V,A)$ has exactly the same strongly connected components as its transpose $G^T = (V, A^T)$.
 
 \begin{proof}
-Let $u, v \in V$ be two distinct nodes of the graph. We need to show that $u$ and $v$ are mutually reachable in $G$ if and only if they are mutually reachable in the transpose graph $G^T$. Suppose $u$ and $v$ are mutually reachable in $G$. Now, there are two distinct paths: $\pi_{uv}$ is an $u-v$ path, and $\pi_{vu}$ is a $v-u$ path. Taking the transpose of the graph (changing the direction of each arc), $\pi_{uv}$ becomes a $v-u$ path, and $\pi_{vu}$ becomes a $u-v$ path. Hence, the two nodes $u$ and $v$ are mutually reachable also in the transpose graph. Since we assumed the nodes $u$ and $v$ to be arbitrary, the result follows.
+Let $u, v \in V$ be two distinct nodes of the graph. We need to show that $u$ and $v$ are mutually reachable in $G$ if and only if they are mutually reachable in the transpose graph $G^T$. Suppose $u$ and $v$ are mutually reachable in $G$. Now, there are two distinct paths: $\pi_{uv}$ is an $u-v$ path, and $\pi_{vu}$ is a $v-u$ path. Taking the transpose of the graph (changing the direction of each arc), $\pi_{uv}$ becomes a $v-u$ path, and $\pi_{vu}$ becomes a $u-v$ path. Hence, the two nodes $u$ and $v$ are mutually reachable also in the transpose graph. 
+
+Suppose now that $u$ and $v$ are not mutually reachable. This implies that there may exist a $u-v$ path $\pi_{uv}$, or a $v-u$ path $\pi_{vu}$, but not both. Assume that only $\pi_{uv}$ exists. Now, in the transpose graph, there is a $v-u$ path, yet no $v-u$ path, and so $u$ and $v$ are not mutually reachable in the transpose. The case of $\pi_{vu}$ is symmetrical. 
+
+Since we assumed the nodes $u$ and $v$ to be arbitrary, the result follows.
 \end{proof}
 \end{mythm}
 
@@ -187,7 +190,7 @@ Kosaraju's algorithm sacrifices two depth-first search traversals over the input
 \begin{algorithm}
 \If{$v \not \in S$}{
   $S \leftarrow S \cup \{ v \}$ \\
-  \For{$(v, w) \in G(A)$}{
+  \ForEach{$(v, w) \in G(A)$}{
      \textsc{KosarajuVisit}$(G, S, L, w)$ \\
   }
   
@@ -202,7 +205,7 @@ Kosaraju's algorithm sacrifices two depth-first search traversals over the input
 \If{$u$ \KwNotMapped $\mu$}{
   $\mu(u) \leftarrow r$ \\
   \nonl For all parents of $u$ \\
-  \For{$(v, u) \in G(A)$}{
+  \ForEach{$(v, u) \in G(A)$}{
     \textsc{KosarajuAssign}$(G, \mu, v, r)$ \\
   }
 }
@@ -215,15 +218,15 @@ Kosaraju's algorithm sacrifices two depth-first search traversals over the input
 $S \leftarrow \varnothing$ \\
 $L \leftarrow \langle \rangle$ \\
 $\mu \leftarrow \varnothing$ \\
-\For{$v \in V(G)$}{
+\ForEach{$v \in V(G)$}{
   \textsc{KosarajuVisit}$(G, S, L, v)$ \\
 }
 \nonl Iterate the list $L$ in its natural order \\
-\For{$v \in L$}{
+\ForEach{$v \in L$}{
   \textsc{KosarajuAssign}$(G, \mu, v, v)$ \\
 }
 $f = \varnothing$ \\
-\For{$(v, i) \in \mu$}{
+\ForEach{$(v, i) \in \mu$}{
   \If{$i$ \KwNotMapped $f$}{
     $f(i) \leftarrow \{ v \}$ \\
   } 
@@ -231,7 +234,7 @@ $f = \varnothing$ \\
     $f(i) \leftarrow f(i) \cup \{ v \}$ \\
   }
 }
-\For{$(i \mapsto C) \in f$}{
+\ForEach{$(i \mapsto C) \in f$}{
   \KwOutput $C$ \\
 }
 \caption{\textsc{KosarajuSCC}$(G)$}
@@ -239,7 +242,7 @@ $f = \varnothing$ \\
 \end{algorithm}
 
 \subsubsection{Tarjan's algorithm}
-Tarjan's algorithm for strongly connected components achieves better running times than Kosaraju's algorithm despite the fact that the former was discovered prior to the latter. It does so by doing only one depth-first traversal over the graph, unlike the Kosaraju's algorithm that requires two.
+Tarjan's algorithm (\cite{Tarjan1971}) for strongly connected components achieves better running times than Kosaraju's algorithm despite the fact that the former was discovered prior to the latter. It does so by doing only one depth-first traversal over the graph, unlike the Kosaraju's algorithm that requires two.
 
 % ALGORITHM: TarjanStrongConnect
 \begin{algorithm}
@@ -247,7 +250,7 @@ $i(u) \leftarrow j$ \\
 $l(u) \leftarrow j$ \\
 $j \leftarrow j + 1$ \\
 $\textsc{Push}(S, u)$ \\
-\For{$(u, v) \in G(A)$}{
+\ForEach{$(u, v) \in G(A)$}{
   \If{$v$ \KwNotMapped $i$}{
     \textsc{TarjanStrongConnect}$(G, v, i, l, j, S)$ \\
     $l(u) \leftarrow \min(l(u), l(v))$ \\
@@ -274,13 +277,62 @@ $S \leftarrow \varnothing$ \\
 $i \leftarrow \varnothing$ \\
 $l \leftarrow \varnothing$ \\
 $j \leftarrow 0$ \\
-\For{$u \in G(V)$}{
+\ForEach{$u \in G(V)$}{
   \If{$u$ \KwNotMapped $i$}{
     \textsc{TarjanStrongConnect}$(G, u, i, l, j, S)$ \\
   }
 }
 \caption{\textsc{TarjanSCC}$(G)$}
 \label{alg:tarjan}
+\end{algorithm}
+
+\subsubsection{Path-based algorithm}
+What comes to path-based strongly connected component algorithms, there are several version of the algorithm, with some of them running in superlinear time. The following algorihtm is due to Gabow \cite{Gabow2000}:
+
+% ALGORITHM: GabowVisit
+\begin{algorithm}
+$\pi(u) \leftarrow c$ \\
+$c \leftarrow c + 1$ \\
+$S \leftarrow S \cup \{ u \}$ \\
+$P \leftarrow P \cup \{ u \}$ \\
+\ForEach{$(u, v) \in G(A)$}{
+  \If{$v$ \KwNotMapped $\pi$}{
+     \textsc{GabowVisit}$(G, v, c, \pi, S, P, A)$ \\
+  }
+  \ElseIf{$v \not \in A$}{
+    \While{$\pi(\textsc{Top}(P)) > \pi(v)$}{
+      \textsc{Pop}$(P)$ \\
+    }
+  }
+}
+\If{$u = \textsc{Top}(P)$}{
+  \textsc{Pop}$(P)$ \\
+  $C \leftarrow \varnothing$ \\
+  \Repeat{\textsc{Top}$(S) \neq u$}{
+    $w \leftarrow \textsc{Pop}(S)$ \\
+    $A \leftarrow A \cup \{ w \}$ \\
+    $C \leftarrow C \cup \{ c \}$ \\
+  }
+  \KwOutput $C$ \\
+}
+\caption{\textsc{GabowVisit}$(G, u, c, \pi, S, P, A)$}
+\label{alg:gabowvisit}
+\end{algorithm}
+
+% ALGORITHM: GabowSCC
+\begin{algorithm}
+$S \leftarrow \varnothing$ \\
+$P \leftarrow \varnothing$ \\
+$A \leftarrow \varnothing$ \\
+$\pi \leftarrow \varnothing$ \\
+$c \leftarrow 0$ \\
+\ForEach{$u \in V(G)$}{
+  \If{$u$ \KwNotMapped $\pi$}{
+    \textsc{GabowVisit}$(G, u, c, \pi, S, P, A)$ \\
+  }
+}
+\caption{\textsc{GabowSCC}$(G)$}
+\label{alg:gabow}
 \end{algorithm}
 
 \bibliographystyle{babplain-lf}

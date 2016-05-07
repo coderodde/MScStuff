@@ -39,18 +39,18 @@ public class SCCFinderTest {
                                                           numberOfArcs);
         
         final List<List<Integer>> scc1 = 
-                new RecursiveKosarajuSCCFinder()
+                new KosarajuSCCFinder()
                         .findStronglyConnectedCmponents(digraph);
         
         final List<List<Integer>> scc2 = 
-                new KosarajuSCCFinder().findStronglyConnectedCmponents(digraph);
+                new IterativeKosarajuSCCFinder().findStronglyConnectedCmponents(digraph);
         
         final List<List<Integer>> scc3 = 
-                new RecursiveTarjanSCCFinder()
+                new TarjanSCCFinder()
                 .findStronglyConnectedCmponents(digraph);
         
         final List<List<Integer>> scc4 = 
-                new RecursivePathBasedSCCFinder()
+                new PathBasedSCCFinder()
                 .findStronglyConnectedCmponents(digraph);
         
 //        final List<List<Integer>> scc4 = 

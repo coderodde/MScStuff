@@ -18,7 +18,7 @@ import net.coderodde.graph.scc.SCCFinder;
  * @author Rodion "rodde" Efremov
  * @version 1.6
  */
-public class RecursivePathBasedSCCFinder implements SCCFinder {
+public class PathBasedSCCFinder implements SCCFinder {
 
     private DirectedGraph digraph;
     private int counter;
@@ -28,9 +28,9 @@ public class RecursivePathBasedSCCFinder implements SCCFinder {
     private Deque<Integer> stackS;
     private List<List<Integer>> solution;
     
-    public RecursivePathBasedSCCFinder() {}
+    public PathBasedSCCFinder() {}
     
-    private RecursivePathBasedSCCFinder(final DirectedGraph digraph) {
+    private PathBasedSCCFinder(final DirectedGraph digraph) {
         Objects.requireNonNull(digraph, "The input directed graph is null.");
         this.digraph = digraph;
         this.assignedNodeSet = new HashSet<>();
@@ -43,7 +43,7 @@ public class RecursivePathBasedSCCFinder implements SCCFinder {
     @Override
     public List<List<Integer>> 
     findStronglyConnectedCmponents(DirectedGraph digraph) {
-        return new RecursivePathBasedSCCFinder(digraph).compute();
+        return new PathBasedSCCFinder(digraph).compute();
     }
     
     private List<List<Integer>> compute() {
@@ -132,7 +132,7 @@ public class RecursivePathBasedSCCFinder implements SCCFinder {
 
         digraph.addEdge(h, h);
 
-        final SCCFinder finder = new RecursivePathBasedSCCFinder();
+        final SCCFinder finder = new PathBasedSCCFinder();
         System.out.println(finder.findStronglyConnectedCmponents(digraph));
     }
 }

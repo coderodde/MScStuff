@@ -3,10 +3,10 @@ package net.coderodde.graph.scc;
 
 import java.util.Random;
 import net.coderodde.graph.DirectedGraph;
+import net.coderodde.graph.scc.support.IterativeKosarajuSCCFinder;
 import net.coderodde.graph.scc.support.KosarajuSCCFinder;
-import net.coderodde.graph.scc.support.RecursiveKosarajuSCCFinder;
-import net.coderodde.graph.scc.support.RecursiveTarjanSCCFinder;
 import net.coderodde.graph.scc.support.TarjanSCCFinder;
+import net.coderodde.graph.scc.support.IterativeTarjanSCCFinder;
 
 /**
  * This class contains various utility methods.
@@ -36,10 +36,10 @@ public class Util {
     
     public static void warmup(final DirectedGraph digraph, 
                               final int iterations) {
-        final SCCFinder scc1 = new KosarajuSCCFinder();
-        final SCCFinder scc2 = new RecursiveKosarajuSCCFinder();
-        final SCCFinder scc3 = new TarjanSCCFinder();
-        final SCCFinder scc4 = new RecursiveTarjanSCCFinder();
+        final SCCFinder scc1 = new IterativeKosarajuSCCFinder();
+        final SCCFinder scc2 = new KosarajuSCCFinder();
+        final SCCFinder scc3 = new IterativeTarjanSCCFinder();
+        final SCCFinder scc4 = new TarjanSCCFinder();
         
         for (int i = 0; i < iterations; ++i) {
             scc1.findStronglyConnectedCmponents(digraph);
