@@ -162,7 +162,7 @@ We say that $u$ and $v$ are \textit{mutually reachable} whenever they are reacha
 \end{description}
 The above three properties imply that $\overset{r}{\sim}$ is an equivalence relation, and as such, implies that the graph has a unique partition into strongly connected components. Note that any node is contained within exactly one strongly connected component.
 
-Algorithms for finding all strongly connected components of a graph in linear time are known. We review three of them below.
+Algorithms for finding all strongly connected components of a graph in linear time ($\mathcal{O}(V + E)$) are known. We review three of them below.
 
 \subsubsection{Kosaraju's algorithm}
 
@@ -187,7 +187,7 @@ Since we assumed the nodes $u$ and $v$ to be arbitrary, the result follows.
 Kosaraju's algorithm sacrifices two depth-first search traversals over the input graph: the first one in forward direction and the second one in backward direction (from a node to its parents). As such, it relies on the fact that any directed graph $G$ has exaclty the same strongly connected components than its transpose $G^T$, and uses that observation for detecting strongly connected components.
 
 % ALGORITHM: KosarajuVisit
-\begin{algorithm}
+\begin{algorithm}[H]
 \If{$v \not \in S$}{
   $S \leftarrow S \cup \{ v \}$ \\
   \ForEach{$(v, w) \in G(A)$}{
@@ -201,7 +201,7 @@ Kosaraju's algorithm sacrifices two depth-first search traversals over the input
 \end{algorithm}
 
 % ALGORITHM: KosarajuAssign
-\begin{algorithm}
+\begin{algorithm}[H]
 \If{$u$ \KwNotMapped $\mu$}{
   $\mu(u) \leftarrow r$ \\
   \nonl For all parents of $u$ \\
@@ -214,7 +214,7 @@ Kosaraju's algorithm sacrifices two depth-first search traversals over the input
 \end{algorithm}
 
 % ALGORITHM: KosarajuSCC
-\begin{algorithm}
+\begin{algorithm}[H]
 $S \leftarrow \varnothing$ \\
 $L \leftarrow \langle \rangle$ \\
 $\mu \leftarrow \varnothing$ \\
@@ -245,7 +245,7 @@ $f = \varnothing$ \\
 Tarjan's algorithm (\cite{Tarjan1971}) for strongly connected components achieves better running times than Kosaraju's algorithm despite the fact that the former was discovered prior to the latter. It does so by doing only one depth-first traversal over the graph, unlike the Kosaraju's algorithm that requires two.
 
 % ALGORITHM: TarjanStrongConnect
-\begin{algorithm}
+\begin{algorithm}[H]
 $i(u) \leftarrow j$ \\
 $l(u) \leftarrow j$ \\
 $j \leftarrow j + 1$ \\
@@ -272,7 +272,7 @@ $\textsc{Push}(S, u)$ \\
 \end{algorithm}
 
 % ALGORITHM: TarjanSCC
-\begin{algorithm}
+\begin{algorithm}[H]
 $S \leftarrow \varnothing$ \\
 $i \leftarrow \varnothing$ \\
 $l \leftarrow \varnothing$ \\
@@ -287,10 +287,10 @@ $j \leftarrow 0$ \\
 \end{algorithm}
 
 \subsubsection{Path-based algorithm}
-What comes to path-based strongly connected component algorithms, there are several version of the algorithm, with some of them running in superlinear time. The following algorihtm is due to Gabow \cite{Gabow2000}:
+What comes to path-based strongly connected component algorithms, there are several versions of the algorithm, with some of them running in superlinear time. The following algorihtm is due to Gabow (\cite{Gabow2000}) and runs in linear time:
 
 % ALGORITHM: GabowVisit
-\begin{algorithm}
+\begin{algorithm}[H]
 $\pi(u) \leftarrow c$ \\
 $c \leftarrow c + 1$ \\
 $S \leftarrow S \cup \{ u \}$ \\
@@ -320,7 +320,7 @@ $P \leftarrow P \cup \{ u \}$ \\
 \end{algorithm}
 
 % ALGORITHM: GabowSCC
-\begin{algorithm}
+\begin{algorithm}[H]
 $S \leftarrow \varnothing$ \\
 $P \leftarrow \varnothing$ \\
 $A \leftarrow \varnothing$ \\
@@ -336,10 +336,12 @@ $c \leftarrow 0$ \\
 \end{algorithm}
 
 \subsubsection{Comparing the algorithms}
-\begin{figure}
+We implemented the three algorithms on a 2.5 GHz computer using Java programming language. We included a warm-up for the Java Virtual Machine so that it had a chance for optimizing the machine code prior to the performance benchmarks. It became evident that Tarjan's and Gabow's path based algorithms are comparable to each other, both outperforming Kosarajus's algorithm, with path-based algorithm being slightly more efficient than the algorithm of Tarjan (see Figure \ref{fig:sccrunningtime}).
+\begin{figure}[H]
   \centering
   \includegraphics{SCCDataCropped}
   \caption{Running times of the strongly connected component algorithms}
+  \label{fig:sccrunningtime}
 \end{figure}
 
 \bibliographystyle{babplain-lf}
