@@ -1,5 +1,7 @@
 package net.coderodde.msc;
 
+import java.io.File;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -8,6 +10,39 @@ import java.util.List;
 public class Main {
 
     public static void main(final String... args) {
+        readFilesDemo(args);
+        
+    }
+    
+    private static void readFilesDemo(final String... args) {
+        final List<String> genomeList = new ArrayList<>();
+        final long startTimeTotal = System.currentTimeMillis();
+        
+        System.out.println("Args: " + args[0]);
+        
+        final File[] files = new File(args[0]).listFiles();
+        
+        for (final File file : files) {
+            System.out.println("---");
+            System.out.println("Reading \"" + file.getAbsolutePath() + "\"...");
+            
+            long startTime = System.currentTimeMillis();
+            final String genome = GenomeReader.readFile(file);
+            genomeList.add(genome);
+            long endTime = System.currentTimeMillis();
+            
+            final long duration = endTime - startTime;
+            
+            System.out.println("Read in " + duration + " millisecons.");
+            System.out.println("Length: " + genome.length());
+        }
+        
+        final long endTimeTotal = System.currentTimeMillis();
+        System.out.println("[RESULT] Done in " + (endTimeTotal - startTimeTotal)
+                                               + " milliseconds.");
+    }
+    
+    private static void smallDemo() {
         List<String> readList = Arrays.asList("ACCGCTA", 
                                               "TTACGG", 
                                               "GTTA", 
