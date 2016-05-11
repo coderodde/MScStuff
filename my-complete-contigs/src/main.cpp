@@ -1069,12 +1069,6 @@ int main(int argc, char **argv)
 	// cout << "----------------------" << endl;
 	// compute_statistics(omnitigs_2, seqLength);
 	// print_collection(omnitigs_2, inputFileName + ".k" + std::to_string(kmersize) + "." + genome_type, ".omnitigs_2");
-
-	cout << "[CODERODDE] Steps into the room..." << endl;
-	coderodde_project_algorithm(graph, length, seqStart, kmersize, sequence, inputFileName);
-	cout << "[CODERODDE] Exited the funky algorithm." << endl;
-	
-	
 	
 	if (! do_not_compute_omnitigs)
 	{
@@ -1110,6 +1104,10 @@ int main(int argc, char **argv)
 		/*stats*/ clock_gettime(CLOCK_MONOTONIC, &finish_clock);
 		/*stats*/ fileStats << "omnitigs," << countNodes(graph) << "," << countArcs(graph) << "," << (finish_clock.tv_sec - start_clock.tv_sec) + (finish_clock.tv_nsec - start_clock.tv_nsec) / 1000000000.0 << endl;
 	}
+	
+	cout << "[CODERODDE] Steps into the room..." << endl;
+	coderodde_project_algorithm(graph, length, seqStart, kmersize, sequence, inputFileName);
+	cout << "[CODERODDE] Exited the funky algorithm." << endl;
 	
 	fileStats.close();
 
