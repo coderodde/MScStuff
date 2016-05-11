@@ -27,7 +27,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	// node in G is replaced with two nodes (x_in, x_out), and put an arc
 	// x_in -> x_out for each x in G to G'.
 	StaticDigraph subdivided_graph;
-	subdivided_graph.build(2 * nodes, nullptr, nullptr);
+	subdivided_graph.build(2 * nodes, INVALID, INVALID);
 	
 	cout << "[CODERODDE] Exiting 'coderodde_project_algorithm'." << endl;
 	return ret;
