@@ -1,7 +1,6 @@
 package net.coderodde.msc;
 
 import java.io.File;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -9,9 +8,11 @@ import java.util.List;
 
 public class Main {
 
+    private static final int K_MER_SIZE = 31;
+    
     public static void main(final String... args) {
         readFilesDemo(args);
-        
+//        smallDemo();
     }
     
     private static void readFilesDemo(final String... args) {
@@ -40,6 +41,17 @@ public class Main {
         final long endTimeTotal = System.currentTimeMillis();
         System.out.println("[RESULT] Done in " + (endTimeTotal - startTimeTotal)
                                                + " milliseconds.");
+        
+        final long startTime = System.currentTimeMillis();
+        final NodeCentricDeBruijnGraph graph = 
+                new NodeCentricDeBruijnGraph(genomeList, K_MER_SIZE);
+        final long endTime = System.currentTimeMillis();
+        
+        System.out.println("Graph built in " + (endTime - startTime) 
+                                             + " milliseconds.");
+        
+        System.out.println("Nodes: " + graph.getAllNodes().size());
+        System.out.println("Arcs:  " + graph.getNumberOfArcs());
     }
     
     private static void smallDemo() {
@@ -64,21 +76,21 @@ public class Main {
     }
     
     private static String graphToString(AbstractDeBruijnGraph graph) {
-        List<String> nodeList = new ArrayList<>(graph.getAllNodes());
+        List<Kmer> nodeList = new ArrayList<>(graph.getAllNodes());
         String tmp = Integer.toString(nodeList.size());
         int fieldLength = tmp.length();
         int lineNumber = 1;
-        Collections.<String>sort(nodeList);
+        Collections.<Kmer>sort(nodeList);
         StringBuilder sb = new StringBuilder();
         String lineNumberFormatToken = "%" + fieldLength + "d: ";
         
-        for (String node : nodeList) {
+        for (Kmer node : nodeList) {
             sb.append(String.format(lineNumberFormatToken, lineNumber++));
             sb.append(node);
             sb.append(", children: [");
             
             if (!graph.getChildrenOf(node).isEmpty()) {
-                for (String child : graph.getChildrenOf(node)) {
+                for (Kmer child : graph.getChildrenOf(node)) {
                     sb.append(child);
                     sb.append(" ");
                 }
@@ -89,7 +101,7 @@ public class Main {
             sb.append("], parents[");
             
             if (!graph.getParentsOf(node).isEmpty()) {
-                for (String parent : graph.getParentsOf(node)) {
+                for (Kmer parent : graph.getParentsOf(node)) {
                     sb.append(parent);
                     sb.append(" ");
                 }
