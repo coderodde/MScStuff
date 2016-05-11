@@ -14,13 +14,20 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 {
 	cout << "[CODERODDE] Entered 'coderodde_project_algorithm'." << endl;
 	vector<contig> ret;
+	size_t nodes = graph.nodeNum();
 	
-	cout << "[CODERODDE] The size of the input graph is: " << graph.nodeNum() << endl;
+	cout << "[CODERODDE] The size of the input graph is: " << nodes << endl;
 	cout << "[CODERODDE] The number of arcs in the graph is: " << graph.arcNum() << endl;
 	
 	cout << "[CODERODDE] k-mer size: " << kmersize << endl;
 	cout << "[CODERODDE] Sequence length: " << sequence.length() << endl;
 	cout << "[CODERODDE] Input file name: " << inputFileName << endl;
+	
+	// Do the subdivision of the input graph: produce a graph G', where each
+	// node in G is replaced with two nodes (x_in, x_out), and put an arc
+	// x_in -> x_out for each x in G to G'.
+	StaticDigraph subdivided_graph;
+	subdivided_graph.build(2 * nodes, nullptr, nullptr);
 	
 	cout << "[CODERODDE] Exiting 'coderodde_project_algorithm'." << endl;
 	return ret;
