@@ -9,3 +9,4 @@ build*
 *.bbl
 *.blg
 data
+complete-contigs.zip
