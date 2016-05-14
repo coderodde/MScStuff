@@ -25,10 +25,10 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	unordered_map<StaticDigraph::Node, unordered_set<StaticDigraph::Node>> map_node_to_certificates;
 	
-	for (int id = 0; id < nodes; ++i)
+	for (int id = 0; id < nodes; ++id)
 	{
-	    Node node = graph.node(id);
-	    unordered_set<Node> initial_certificate_set = { node };
+	    StaticDigraph::Node node = graph.node(id);
+	    unordered_set<StaticDigraph::Node> initial_certificate_set = { node };
 	    map_node_to_certificates[node] = initial_certificate_set;
 	}
 	
