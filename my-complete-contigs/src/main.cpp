@@ -30,9 +30,9 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	    StaticDigraph::Node node = graph.node(id);
 	    unordered_set<StaticDigraph::Node> initial_certificate_set = { node };
 	    map_node_to_certificate_set[node] = initial_certificate_set;
+	    cout << "Size: " << initial_certificate_set.size() << ", " << id << endl;
 	}
 	
-	cout << "The size of the certificate set is " << map_node_to_certificate_set.size() << endl;
 	/*
 	for (auto& it : map_node_to_certificates)
 	{
