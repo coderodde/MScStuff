@@ -23,13 +23,13 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	cout << "[CODERODDE] Sequence length: " << sequence.length() << endl;
 	cout << "[CODERODDE] Input file name: " << inputFileName << endl;
 	
-	unordered_map<StaticDigraph::Node, unordered_set<StaticDigraph::Node>> map_node_to_certificates;
+	StaticDigraph::NodeMap<unordered_set<StaticDigraph::Node>> map_node_to_certificate_set(graph);
 	
 	for (int id = 0; id < nodes; ++id)
 	{
 	    StaticDigraph::Node node = graph.node(id);
 	    unordered_set<StaticDigraph::Node> initial_certificate_set = { node };
-	    map_node_to_certificates[node] = initial_certificate_set;
+	    map_node_to_certificate_set[node] = initial_certificate_set;
 	}
 	
 	cout << "The size of the certificate set is " << map_node_to_certificates.size() << endl;
