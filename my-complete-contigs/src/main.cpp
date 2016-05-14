@@ -23,6 +23,22 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	cout << "[CODERODDE] Sequence length: " << sequence.length() << endl;
 	cout << "[CODERODDE] Input file name: " << inputFileName << endl;
 	
+	unordered_map<Node, unordered_set<Node>> map_node_to_certificates;
+	
+	for (int id = 0; id < nodes; ++i)
+	{
+	    Node node = graph.node(id);
+	    unordered_set<Node> initial_certificate_set = { node };
+	    map_node_to_certificates[node] = initial_certificate_set;
+	}
+	
+	cout << "The size of the certificate set is " << map_node_to_certificates.size() << endl;
+	
+	for (auto& it : map_node_to_certificates)
+	{
+	    cout << "Size: " << it->second << endl;
+	}
+	
 	// Do the subdivision of the input graph: produce a graph G', where each
 	// node in G is replaced with two nodes (x_in, x_out), and put an arc
 	// x_in -> x_out for each x in G to G'.
