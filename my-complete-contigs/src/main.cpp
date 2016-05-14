@@ -23,7 +23,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	cout << "[CODERODDE] Sequence length: " << sequence.length() << endl;
 	cout << "[CODERODDE] Input file name: " << inputFileName << endl;
 	
-	unordered_map<Node, unordered_set<Node>> map_node_to_certificates;
+	unordered_map<StaticDigraph::Node, unordered_set<StaticDigraph::Node>> map_node_to_certificates;
 	
 	for (int id = 0; id < nodes; ++i)
 	{
@@ -42,8 +42,9 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	// Do the subdivision of the input graph: produce a graph G', where each
 	// node in G is replaced with two nodes (x_in, x_out), and put an arc
 	// x_in -> x_out for each x in G to G'.
+	/*
 	StaticDigraph subdivided_graph;
-	subdivided_graph.build(2 * nodes, INVALID, INVALID);
+	subdivided_graph.build(2 * nodes, INVALID, INVALID);*/
 	
 	cout << "[CODERODDE] Exiting 'coderodde_project_algorithm'." << endl;
 	return ret;
