@@ -33,11 +33,11 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	}
 	
 	cout << "The size of the certificate set is " << map_node_to_certificates.size() << endl;
-	
+	/*
 	for (auto& it : map_node_to_certificates)
 	{
 	    cout << "Size: " << it->second << endl;
-	}
+	}*/
 	
 	// Do the subdivision of the input graph: produce a graph G', where each
 	// node in G is replaced with two nodes (x_in, x_out), and put an arc
