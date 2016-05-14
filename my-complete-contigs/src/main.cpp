@@ -32,7 +32,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	    map_node_to_certificate_set[node] = initial_certificate_set;
 	}
 	
-	cout << "The size of the certificate set is " << map_node_to_certificates.size() << endl;
+	cout << "The size of the certificate set is " << map_node_to_certificate_set.size() << endl;
 	/*
 	for (auto& it : map_node_to_certificates)
 	{
