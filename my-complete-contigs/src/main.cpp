@@ -27,8 +27,9 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	for (int id = 0; id < nodes; ++id)
 	{
+	    StaticDigraph::Node node = graph.node(id);
 	    unordered_set<int> initial_certificate_set = { id };
-	    map_node_index_to_certificate_set[id] = initial_certificate_set;
+	    map_node_index_to_certificate_set[node] = initial_certificate_set;
 	    cout << "Size: " << initial_certificate_set.size() << ", " << id << endl;
 	}
 	
