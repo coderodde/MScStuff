@@ -91,7 +91,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		
 		
 		// Return (x_in, x_out) to the graph and start next iteration.
-		subdivided_graph.addArc(removed_arc);
+		subdivided_graph.addArc(x_in, x_out);
 	}
 	
 	// Do the subdivision of the input graph: produce a graph G', where each
