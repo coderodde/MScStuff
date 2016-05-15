@@ -64,8 +64,8 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		int tail_index = graph.index(tail) + nodes;
 		int head_index = graph.index(head);
 		
-		ListDigraph::Node new_arc_tail = graph.node(tail_index);
-		ListDigraph::Node new_arc_head = graph.node(head_index);
+		ListDigraph::Node new_arc_tail = subdivided_graph.node(tail_index);
+		ListDigraph::Node new_arc_head = subdivided_graph.node(head_index);
 		subdivided_graph.addArc(new_arc_tail, new_arc_head);
 	}
 	
