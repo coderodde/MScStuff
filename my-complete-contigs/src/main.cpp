@@ -90,7 +90,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		subdivided_graph.erase(removed_arc);
 		
 		// Here, compute the strongly connected components.
-		ListDigraph::NodeMap scc_map;
+		ListDigraph::NodeMap<int> scc_map;
 		int number_of_strongly_connected_components =
 				stronglyConnectedComponents(subdivided_graph, scc_map);
 				
