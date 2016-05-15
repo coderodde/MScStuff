@@ -80,8 +80,8 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	{
 		int head_node_id = node_id + nodes;
 		// Remove (x_in, x_out).
-		ListDigraph::Node x_in  = subdivided_graph.source(node_id);
-		ListDigraph::Node x_out = subdivided_graph.target(head_node_id);
+		ListDigraph::Node x_in  = subdivided_graph.nodeFromId(node_id);
+		ListDigraph::Node x_out = subdivided_graph.nodeFromId(head_node_id);
 		
 		
 		
