@@ -44,7 +44,9 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	cout << "[CODERODDE] The size of the subdivided graph is " << countNodes(subdivided_graph) << endl;
 	
-	// Create the subdivision arcs for the subdivided graph.
+	// Create the subdivision arcs for the subdivided graph. We split each
+	// node x into two nodes x_in and x_out, where x_in = x, and x_out is
+	// a newly added node.
 	for (int id = 0; id < nodes; ++id)
 	{
 		ListDigraph::Node tail = subdivided_graph.nodeFromId(id);
@@ -58,14 +60,14 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	// For each arc (y, z) in G, add an arc (y_out, z_in) to G'.
 	for (StaticDigraph::ArcIt arcit(graph); arcit != INVALID; ++arcit)
 	{
-		StaticDigraph::Node tail = graph.source(arcit);
-		StaticDigraph::Node head = graph.target(arcit);
+		StaticDigraph::Node y = graph.source(arcit);
+		StaticDigraph::Node z = graph.target(arcit);
 		
-		int tail_index = graph.index(tail) + nodes;
-		int head_index = graph.index(head);
+		int y_index = graph.index(y) + nodes;
+		int z_index = graph.index(z);
 		
-		ListDigraph::Node new_arc_tail = subdivided_graph.nodeFromId(tail_index);
-		ListDigraph::Node new_arc_head = subdivided_graph.nodeFromId(head_index);
+		ListDigraph::Node new_arc_tail = subdivided_graph.nodeFromId(y_index);
+		ListDigraph::Node new_arc_head = subdivided_graph.nodeFromId(z_index);
 		subdivided_graph.addArc(new_arc_tail, new_arc_head);
 	}
 	
