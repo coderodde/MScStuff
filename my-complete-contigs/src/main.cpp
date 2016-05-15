@@ -30,8 +30,18 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	    StaticDigraph::Node node = graph.node(id);
 	    unordered_set<int> initial_certificate_set = { id };
 	    map_node_index_to_certificate_set[node] = initial_certificate_set;
-	    cout << "Size: " << initial_certificate_set.size() << ", " << id << endl;
 	}
+	
+	// Now subdivide the graph.
+	ListDigraph subdivided_graph;
+	
+	for (int id = 0; id < nodes; ++id)
+	{
+	    subdivided_graph.addNode();
+	    subdivided_graph.addNode();
+	}
+	
+	cout << "[CODERODDE] The size of the subdivided graph is " << countNodes(subdivided_graph) << endl;
 	
 	/*
 	for (auto& it : map_node_to_certificates)
