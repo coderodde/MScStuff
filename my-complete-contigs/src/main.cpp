@@ -34,6 +34,8 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	//// Now subdivide the graph.
 	ListDigraph subdivided_graph;
+	subdivided_graph.reserveNode(2 * nodes);
+	subdivided_graph.reserveArc(nodes + countArcs(graph));
 	
 	// Create the nodes of the subdivided graph.
 	for (int id = 0; id < nodes; ++id)
@@ -72,6 +74,19 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	}
 	
 	cout << "[CODERODDE] The number of divided arcs after copying the arcs is " << countArcs(subdivided_graph) << endl;
+	
+	// Next, for each x in V(G) construct the graph G'_x.
+	for (int node_id = 0; node_id < nodes; ++node_id)
+	{
+		int head_node_id = node_id + nodes;
+		// Remove (x_in, x_out).
+		ListDigraph::Node x_in  = subdivided_graph.source(node_id);
+		ListDigraph::Node x_out = subdivided_graph.target(head_node_id);
+		
+		
+		
+		// Return (x_in, x_out) to the graph and start next iteration.
+	}
 	
 	// Do the subdivision of the input graph: produce a graph G', where each
 	// node in G is replaced with two nodes (x_in, x_out), and put an arc
