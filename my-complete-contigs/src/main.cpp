@@ -32,9 +32,10 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	    map_node_index_to_certificate_set[node] = initial_certificate_set;
 	}
 	
-	// Now subdivide the graph.
+	//// Now subdivide the graph.
 	ListDigraph subdivided_graph;
 	
+	// Create the nodes of the subdivided graph.
 	for (int id = 0; id < nodes; ++id)
 	{
 	    subdivided_graph.addNode();
@@ -43,11 +44,15 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	cout << "[CODERODDE] The size of the subdivided graph is " << countNodes(subdivided_graph) << endl;
 	
-	/*
-	for (auto& it : map_node_to_certificates)
+	// Create the subdivision arcs for the subdivided graph.
+	for (int id = 0; id < nodes; ++id)
 	{
-	    cout << "Size: " << it->second << endl;
-	}*/
+		ListDigraph::Node tail = subdivided_graph.nodeFromId(id);
+		ListDigraph::Node head = subdivided_graph.nodeFromId(id + nodes);
+		subdivided_graph.addArc(tail, head);
+	}
+	
+	cout << "[CODERODDE] The number of divided arcs is " << countArcs(subdivided_graph) << endl;
 	
 	// Do the subdivision of the input graph: produce a graph G', where each
 	// node in G is replaced with two nodes (x_in, x_out), and put an arc
