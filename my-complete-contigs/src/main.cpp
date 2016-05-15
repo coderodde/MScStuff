@@ -46,6 +46,8 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	cout << "[CODERODDE] The size of the subdivided graph is " << countNodes(subdivided_graph) << endl;
 	
+	unordered_map<ListDigraph::Node, unordered_map<ListDigraph::Node, ListDigraph::Arc>> arc_matrix;
+	
 	// Create the subdivision arcs for the subdivided graph. We split each
 	// node x into two nodes x_in and x_out, where x_in = x, and x_out is
 	// a newly added node.
@@ -53,7 +55,9 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	{
 		ListDigraph::Node tail = subdivided_graph.nodeFromId(id);
 		ListDigraph::Node head = subdivided_graph.nodeFromId(id + nodes);
-		subdivided_graph.addArc(tail, head);
+		ListDigraph::Arc arc   = subdivided_graph.addArc(tail, head);
+		// Save the arc for further management.
+		arc_matrix[tail][head] = arc;
 	}
 	
 	cout << "[CODERODDE] The number of divided arcs before copying the arcs is " << countArcs(subdivided_graph) << endl;
@@ -82,10 +86,12 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		// Remove (x_in, x_out).
 		ListDigraph::Node x_in  = subdivided_graph.nodeFromId(node_id);
 		ListDigraph::Node x_out = subdivided_graph.nodeFromId(head_node_id);
-		
+		ListDigraph::Arc removed_arc = arc_matrix[x_in][x_out];
+		subdivided_graph.erase(removed_arc);
 		
 		
 		// Return (x_in, x_out) to the graph and start next iteration.
+		subdivided_graph.addArc(removed_arc);
 	}
 	
 	// Do the subdivision of the input graph: produce a graph G', where each
