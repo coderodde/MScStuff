@@ -52,14 +52,24 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		subdivided_graph.addArc(tail, head);
 	}
 	
-	cout << "[CODERODDE] The number of divided arcs is " << countArcs(subdivided_graph) << endl;
+	cout << "[CODERODDE] The number of divided arcs before copying the arcs is " << countArcs(subdivided_graph) << endl;
 	
 	// Copy the original arcs to the subdivided graph.
+	// For each arc (y, z) in G, add an arc (y_out, z_in) to G'.
 	for (StaticDigraph::ArcIt arcit(graph); arcit != INVALID; ++arcit)
 	{
 		StaticDigraph::Node tail = graph.source(arcit);
 		StaticDigraph::Node head = graph.target(arcit);
+		
+		int tail_index = graph.index(tail) + nodes;
+		int head_index = graph.index(head);
+		
+		ListDigraph::Node new_arc_tail = graph.node(tail_index);
+		ListDigraph::Node new_arc_head = graph.node(head_index);
+		subdivided_graph.addArc(new_arc_tail, new_arc_head);
 	}
+	
+	cout << "[CODERODDE] The number of divided arcs after copying the arcs is " << countArcs(subdivided_graph) << endl;
 	
 	// Do the subdivision of the input graph: produce a graph G', where each
 	// node in G is replaced with two nodes (x_in, x_out), and put an arc
