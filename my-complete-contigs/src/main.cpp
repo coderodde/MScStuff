@@ -110,11 +110,13 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 			
 			if (scc[y_in] != scc[y_out])
 			{
-				ListDigraph::Node y = y_in;
-				ListDigraph::Node x = subdivided_graph.nodeFromId(node_id);
+				//StaticDigraph::Node static_y_node = graph.node(y_node_id);
+				StaticDigraph::Node static_x_node = graph.node(node_id);
+				
+				map_node_index_to_certificate_set[static_x_node].insert(y_node_id);
 				//map_node_index_to_certificate_set[x].insert(y_in_node_id);
 				
-				//cout << "map_node_index_to_certificate " << node_id << ": " << map_node_index_to_certificate_set[x].size() << endl;*/
+				cout << "map_node_index_to_certificate_set[" << node_id << "].size(): " << map_node_index_to_certificate_set[x].size() << endl;
 			}
 		}
 		
