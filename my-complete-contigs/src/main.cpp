@@ -93,8 +93,32 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		ListDigraph::NodeMap<int> scc(subdivided_graph);
 		int number_of_strongly_connected_components =
 				stronglyConnectedComponents(subdivided_graph, scc);
+		
+		for (int y_node_id = 0; y_node_id < nodes; ++y_node_id)
+		{
+			if (y_node_id == node_id)
+			{
+				// Here y is x, omit it.
+				continue;
+			}
+			
+			int y_in_node_id  = y_node_id;
+			int y_out_node_id = y_node_id + nodes;
+			
+			ListDigraph::Node y_in  = subdivided_graph.nodeFromId(y_in_node_id);
+			ListDigraph::Node y_out = subdivided_graph.nodeFromId(y_out_node_id);
+			
+			if (scc[y_in] != scc[y_out])
+			{
+				ListDigraph::Node y = y_in;
+				ListDigraph::Node x = subdivided_graph.nodeFromId(node_id);
+				map_node_index_to_certificate_set[x].insert(y);
 				
-		cout << "SCC count: "  << number_of_strongly_connected_components << endl;
+				cout << "map_node_index_to_certificate " << node_id << ": " << subdivided_graph.size() << endl;
+			}
+		}
+		
+		//cout << "SCC count: "  << number_of_strongly_connected_components << endl;
 		
 		// Return (x_in, x_out) to the graph and start next iteration.
 		subdivided_graph.addArc(x_in, x_out);
