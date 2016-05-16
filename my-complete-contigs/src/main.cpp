@@ -80,13 +80,13 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	cout << "[CODERODDE] The number of divided arcs after copying the arcs is " << countArcs(subdivided_graph) << endl;
 	
 	// Next, for each x in V(G) construct the graph G'_x.
-	for (int node_id = 0; node_id < nodes; ++node_id)
+	for (int x_node_id = 0; x_node_id < nodes; ++x_node_id)
 	{
-		int head_node_id = node_id + nodes;
+		int head_node_id = x_node_id + nodes;
 		// Remove (x_in, x_out).
-		ListDigraph::Node x_in  = subdivided_graph.nodeFromId(node_id);
+		ListDigraph::Node x_in  = subdivided_graph.nodeFromId(x_node_id);
 		ListDigraph::Node x_out = subdivided_graph.nodeFromId(head_node_id);
-		ListDigraph::Arc removed_arc = arc_matrix[node_id][head_node_id];
+		ListDigraph::Arc removed_arc = arc_matrix[x_node_id][head_node_id];
 		subdivided_graph.erase(removed_arc);
 		
 		// Here, compute the strongly connected components.
@@ -96,7 +96,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		
 		for (int y_node_id = 0; y_node_id < nodes; ++y_node_id)
 		{
-			if (y_node_id == node_id)
+			if (y_node_id == x_node_id)
 			{
 				// Here y is x, omit it.
 				continue;
@@ -111,7 +111,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 			if (scc[y_in] != scc[y_out])
 			{
 				//StaticDigraph::Node static_y_node = graph.node(y_node_id);
-				StaticDigraph::Node static_x_node = graph.node(node_id);
+				StaticDigraph::Node static_x_node = graph.node(x_node_id);
 				
 				map_node_index_to_certificate_set[static_x_node].insert(y_node_id);
 				//map_node_index_to_certificate_set[x].insert(y_in_node_id);
@@ -119,15 +119,15 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 			}
 		}
 		
-		// Return (x_in, x_out) to the graph and start next iteration.
+		// Return (x_in, x_out) to the graph and start the next iteration.
 		subdivided_graph.addArc(x_in, x_out);
 		
-		StaticDigraph::Node tmp_node = graph.node(node_id);
-		cout << "map_node_index_to_certificate_set["
-		     << node_id
-		     << "].size(): "
-		     << map_node_index_to_certificate_set[tmp_node].size()
-	             << endl;
+		//StaticDigraph::Node tmp_node = graph.node(node_id);
+		//cout << "map_node_index_to_certificate_set["
+		//     << node_id
+		//     << "].size(): "
+		     //<< map_node_index_to_certificate_set[tmp_node].size()
+	             //<< endl;
 	}
 	
 	// Do the subdivision of the input graph: produce a graph G', where each
