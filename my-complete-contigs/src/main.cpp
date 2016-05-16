@@ -112,9 +112,9 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 			{
 				ListDigraph::Node y = y_in;
 				ListDigraph::Node x = subdivided_graph.nodeFromId(node_id);
-				map_node_index_to_certificate_set[x].insert(y_in_node_id);
+				//map_node_index_to_certificate_set[x].insert(y_in_node_id);
 				
-				cout << "map_node_index_to_certificate " << node_id << ": " << map_node_index_to_certificate_set[x_in].size() << endl;
+				//cout << "map_node_index_to_certificate " << node_id << ": " << map_node_index_to_certificate_set[x].size() << endl;*/
 			}
 		}
 		
