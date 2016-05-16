@@ -122,10 +122,11 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		// Return (x_in, x_out) to the graph and start next iteration.
 		subdivided_graph.addArc(x_in, x_out);
 		
+		StaticDigraph::Node tmp_node = graph.node(node_id);
 		cout << "map_node_index_to_certificate_set["
 		     << node_id
 		     << "].size(): "
-		     << map_node_index_to_certificate_set[static_x_node].size()
+		     << map_node_index_to_certificate_set[tmp_node].size()
 	             << endl;
 	}
 	
