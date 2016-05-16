@@ -116,18 +116,17 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 				map_node_index_to_certificate_set[static_x_node].insert(y_node_id);
 				//map_node_index_to_certificate_set[x].insert(y_in_node_id);
 				
-				cout << "map_node_index_to_certificate_set["
-				     << node_id
-				     << "].size(): "
-				     << map_node_index_to_certificate_set[static_x_node].size()
-				     << endl;
 			}
 		}
 		
-		//cout << "SCC count: "  << number_of_strongly_connected_components << endl;
-		
 		// Return (x_in, x_out) to the graph and start next iteration.
 		subdivided_graph.addArc(x_in, x_out);
+		
+		cout << "map_node_index_to_certificate_set["
+		     << node_id
+		     << "].size(): "
+		     << map_node_index_to_certificate_set[static_x_node].size()
+	             << endl;
 	}
 	
 	// Do the subdivision of the input graph: produce a graph G', where each
