@@ -134,9 +134,15 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	  //// Compute the a-matrix. ////
 	///////////////////////////////
 	cout << "[CODERODDE] Computing the a-matrix!" << endl;
+	
 	ListDigraph a_graph;
-	DigraphCopy<StaticDigraph, ListDigraph> copy_graph(graph, a_graph);
-	copy_graph.run();
+	ListDigraph work_graph;
+	
+	DigraphCopy<StaticDigraph, ListDigraph> copy_graph1(graph, a_graph);
+	DigraphCopy<StaticDigraph, ListDigraph> copy_graph2(graph, work_graph);
+	
+	copy_graph1.run();
+	copy_graph2.run();
 	
 	cout << "[CODERODDE] Copy graph nodes: " << countNodes(a_graph) << endl;
 	cout << "[CODERODDE] Copy graph arcs:  " << countArcs(a_graph) << endl;
@@ -144,6 +150,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	//// This is a matrix mapping the pair of arc indices to a desired boolean value.
 	unordered_map<int, unordered_map<int, bool>> a_matrix;
 	
+	// Since we will tamper with the arcs, we need another graph for topology modifications.
 	for (ListDigraph::ArcIt a(a_graph); a != INVALID; ++a)
 	{
 		// Get the ID of the current arc. 
@@ -151,15 +158,15 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		cout << "Arc ID: " << arc_id << endl;
 		
 		// Remove the current arc.
-		ListDigraph::Arc removed_arc = a_graph.arcFromId(arc_id);
-		a_graph.erase(removed_arc);
+		ListDigraph::Arc removed_arc = work_graph.arcFromId(arc_id);
+		work_graph.erase(removed_arc);
 		
-		cout << "After removing an arc: " << countArcs(a_graph) << endl;
+		cout << "After removing an arc: " << countArcs(work_graph) << endl;
 		
 		// Return the current arc to the 'a_graph'.
-		a_graph.addArc(a_graph.source(removed_arc), a_graph.target(removed_arc));
+		work_graph.addArc(work_graph.source(removed_arc), work_graph.target(removed_arc));
 		
-		cout << "After returning an arc: " << countArcs(a_graph) << endl;
+		cout << "After returning an arc: " << countArcs(work_graph) << endl;
 	}
 	
 	cout << "[CODERODDE] Exiting 'coderodde_project_algorithm'." << endl;
