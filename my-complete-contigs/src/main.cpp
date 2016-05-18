@@ -141,6 +141,22 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	cout << "[CODERODDE] Copy graph nodes: " << countNodes(a_graph) << endl;
 	cout << "[CODERODDE] Copy graph arcs:  " << countArcs(a_graph) << endl;
 	
+	//// This is a matrix mapping the pair of arc indices to a desired boolean value.
+	unordered_map<int, unordered_map<int, bool>> a_matrix;
+	
+	for (ListDigraph::ArcIt a(a_graph); a != INVALID; ++a)
+	{
+		// Get the ID of the current arc. 
+		int arc_id = a_graph.id(a);
+		
+		// Remove the current arc.
+		ListDigraph::Arc removed_arc = a_graph.arcFromId(arc_id);
+		a_graph.erase(removed_arc);
+		
+		// Return the current arc to the 'a_graph'.
+		a_graph.addArc(graph.source(removed_arc), graph.target(removed_arc));
+	}
+	
 	cout << "[CODERODDE] Exiting 'coderodde_project_algorithm'." << endl;
 	return ret;
 }
