@@ -152,6 +152,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	{
 		// Get the ID of the current arc. 
 		int arc_id = graph.id(a);
+		cout << "Processing arc ID " << arc_id << endl;
 		
 		// Remove the current arc.
 		ListDigraph::Arc removed_arc = work_graph.arcFromId(arc_id);
@@ -179,7 +180,10 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 				}
 			}
 			
-			cout << "Node ID " << z_node_id << ": d_z = " << d_z << endl;
+			if (d_z > 0)
+			{
+				cout << "Node ID " << z_node_id << ": d_z = " << d_z << endl;	
+			}
 		}
 		
 		// Return the current arc to the 'a_graph'.
