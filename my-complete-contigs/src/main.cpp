@@ -148,13 +148,18 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	{
 		// Get the ID of the current arc. 
 		int arc_id = a_graph.id(a);
+		cout << "Arc ID: " << arc_id << endl;
 		
 		// Remove the current arc.
 		ListDigraph::Arc removed_arc = a_graph.arcFromId(arc_id);
 		a_graph.erase(removed_arc);
 		
+		cout << "After removing an arc: " << countArcs(a_graph) << endl;
+		
 		// Return the current arc to the 'a_graph'.
 		a_graph.addArc(a_graph.source(removed_arc), a_graph.target(removed_arc));
+		
+		cout << "After returning an arc: " << countArcs(a_graph) << endl;
 	}
 	
 	cout << "[CODERODDE] Exiting 'coderodde_project_algorithm'." << endl;
