@@ -135,14 +135,11 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	///////////////////////////////
 	cout << "[CODERODDE] Computing the a-matrix!" << endl;
 	
-	//ListDigraph a_graph;
+	// Create a ListDigraph for manipulating the topology.
 	ListDigraph work_graph;
-	
-	//DigraphCopy<StaticDigraph, ListDigraph> copy_graph1(graph, a_graph);
-	DigraphCopy<StaticDigraph, ListDigraph> copy_graph2(graph, work_graph);
-	
-	//copy_graph1.run();
-	copy_graph2.run();
+	// Copy the input graph to the ListDigraph created above.
+	DigraphCopy<StaticDigraph, ListDigraph> copy_graph(graph, work_graph);
+	copy_graph.run();
 	
 	cout << "[CODERODDE] Copy graph nodes: " << countNodes(work_graph) << endl;
 	cout << "[CODERODDE] Copy graph arcs:  " << countArcs(work_graph) << endl;
@@ -155,18 +152,18 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	{
 		// Get the ID of the current arc. 
 		int arc_id = graph.id(a);
-		cout << "Arc ID: " << arc_id << endl;
 		
 		// Remove the current arc.
 		ListDigraph::Arc removed_arc = work_graph.arcFromId(arc_id);
+		ListDigraph::Node source_node = work_graph.source(removed_arc);
 		work_graph.erase(removed_arc);
 		
-		cout << "After removing an arc: " << countArcs(work_graph) << endl;
+		// Compute which nodes are reachable from 'source_node'.
+		Dfs dfs(work_graph);
+		dfs.run(source_node);
 		
 		// Return the current arc to the 'a_graph'.
 		work_graph.addArc(work_graph.source(removed_arc), work_graph.target(removed_arc));
-		
-		cout << "After returning an arc: " << countArcs(work_graph) << endl;
 	}
 	
 	cout << "[CODERODDE] Exiting 'coderodde_project_algorithm'." << endl;
