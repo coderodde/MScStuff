@@ -135,26 +135,26 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	///////////////////////////////
 	cout << "[CODERODDE] Computing the a-matrix!" << endl;
 	
-	ListDigraph a_graph;
+	//ListDigraph a_graph;
 	ListDigraph work_graph;
 	
-	DigraphCopy<StaticDigraph, ListDigraph> copy_graph1(graph, a_graph);
+	//DigraphCopy<StaticDigraph, ListDigraph> copy_graph1(graph, a_graph);
 	DigraphCopy<StaticDigraph, ListDigraph> copy_graph2(graph, work_graph);
 	
-	copy_graph1.run();
+	//copy_graph1.run();
 	copy_graph2.run();
 	
-	cout << "[CODERODDE] Copy graph nodes: " << countNodes(a_graph) << endl;
-	cout << "[CODERODDE] Copy graph arcs:  " << countArcs(a_graph) << endl;
+	cout << "[CODERODDE] Copy graph nodes: " << countNodes(work_graph) << endl;
+	cout << "[CODERODDE] Copy graph arcs:  " << countArcs(work_graph) << endl;
 	
 	//// This is a matrix mapping the pair of arc indices to a desired boolean value.
 	unordered_map<int, unordered_map<int, bool>> a_matrix;
 	
 	// Since we will tamper with the arcs, we need another graph for topology modifications.
-	for (ListDigraph::ArcIt a(a_graph); a != INVALID; ++a)
+	for (StaticDigraph::ArcIt a(graph); a != INVALID; ++a)
 	{
 		// Get the ID of the current arc. 
-		int arc_id = a_graph.id(a);
+		int arc_id = graph.id(a);
 		cout << "Arc ID: " << arc_id << endl;
 		
 		// Remove the current arc.
