@@ -159,7 +159,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		work_graph.erase(removed_arc);
 		
 		// Compute which nodes are reachable from 'source_node'.
-		Dfs dfs(work_graph);
+		Dfs<> dfs(work_graph);
 		dfs.run(source_node);
 		
 		// Return the current arc to the 'a_graph'.
