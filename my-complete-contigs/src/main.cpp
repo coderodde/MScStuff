@@ -166,12 +166,20 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		for (int z_node_id = 0; z_node_id < nodes; ++z_node_id)
 		{
 			ListDigraph::Node z = work_graph.nodeFromId(z_node_id);
+			int d_z = 0;
 			
 			// Iterate over all in-neighbors of 'z'
 			for (ListDigraph::InArcIt in_arc(work_graph, z); in_arc != INVALID; ++in_arc)
 			{
+				ListDigraph::Node incoming_node = work_graph.source(in_arc);
 				
+				if (dfs.reached(incoming_node))
+				{
+					++d_z;
+				}
 			}
+			
+			cout << "Node ID " << z_node_id << ": d_z = " << d_z << endl;
 		}
 		
 		// Return the current arc to the 'a_graph'.
