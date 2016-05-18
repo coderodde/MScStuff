@@ -154,7 +154,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		a_graph.erase(removed_arc);
 		
 		// Return the current arc to the 'a_graph'.
-		a_graph.addArc(graph.source(removed_arc), graph.target(removed_arc));
+		a_graph.addArc(a_graph.source(removed_arc), a_graph.target(removed_arc));
 	}
 	
 	cout << "[CODERODDE] Exiting 'coderodde_project_algorithm'." << endl;
