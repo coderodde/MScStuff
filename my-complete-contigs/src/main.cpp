@@ -162,6 +162,18 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		Dfs<> dfs(work_graph);
 		dfs.run(source_node);
 		
+		// Now consider each node z in V(G).
+		for (int z_node_id = 0; z_node_id < nodes; ++z_node_id)
+		{
+			ListDigraph::Node z = work_graph.nodeFromId(z_node_id);
+			
+			// Iterate over all in-neighbors of 'z'
+			for (ListDigraph::InArcIt in_arc(work_graph, z); in_arc != INVALID; ++in_arc)
+			{
+				
+			}
+		}
+		
 		// Return the current arc to the 'a_graph'.
 		work_graph.addArc(work_graph.source(removed_arc), work_graph.target(removed_arc));
 	}
