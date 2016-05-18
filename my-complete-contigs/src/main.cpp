@@ -130,12 +130,16 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	             //<< endl;
 	}
 	
-	// Do the subdivision of the input graph: produce a graph G', where each
-	// node in G is replaced with two nodes (x_in, x_out), and put an arc
-	// x_in -> x_out for each x in G to G'.
-	/*
-	StaticDigraph subdivided_graph;
-	subdivided_graph.build(2 * nodes, INVALID, INVALID);*/
+	    ///////////////////////////////
+	  //// Compute the a-matrix. ////
+	///////////////////////////////
+	cout << "[CODERODDE] Computing the a-matrix!" << endl;
+	ListDigraph a_graph;
+	DigraphCopy<StaticDigraph, ListDigraph> copy_graph(graph, a_graph);
+	copy_graph.run();
+	
+	cout << "[CODERODDE] Copy graph nodes: " << countNodes(a_graph) << endl;
+	cout << "[CODERODDE] Copy graph arcs:  " << countArcs(a_graph) << endl;
 	
 	cout << "[CODERODDE] Exiting 'coderodde_project_algorithm'." << endl;
 	return ret;
