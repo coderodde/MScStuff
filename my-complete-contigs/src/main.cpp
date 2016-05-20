@@ -179,7 +179,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 				}
 			}
 			
-			ListDigraph::NodeMap<int> map_node_to_r_values;
+			ListDigraph::NodeMap<int> map_node_to_r_values(work_graph);
 			
 			// Iterate the second time over all in-neighbors of 'z'
 			for (ListDigraph::InArcIt in_arc(work_graph, z); in_arc != INVALID; ++in_arc)
