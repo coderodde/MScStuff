@@ -28,7 +28,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	    /////////////////////////////////////////////////////
 	  ///// Computing a node-covering circular walk C! ////
 	/////////////////////////////////////////////////////
-	vector<int> main_walk;
+	vector<StaticDigraph::Node> main_walk;
 	
 	for (int node_id = 0; node_id < nodes - 1; ++node_id)
 	{
@@ -38,7 +38,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		StaticDigraph::Node source_node = graph.nodeFromId(source_node_id);
 		StaticDigraph::Node target_node = graph.nodeFromId(target_node_id);
 
-		Bfs<StaticDigraph> bfs(graph);
+		Bfs<StaticDigraph> bfs(graph); 
 		
 		if (!bfs.run(source_node, target_node))
 		{
