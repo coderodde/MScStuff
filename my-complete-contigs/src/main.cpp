@@ -188,16 +188,8 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 			for (ListDigraph::InArcIt in_arc(work_graph, z); in_arc != INVALID; ++in_arc)
 			{
 				ListDigraph::Node w = work_graph.source(in_arc);
-				map_node_to_r_values[w] = dfs.reached(w) ? 1 : 0;
-				
-				if (d_z > map_node_to_r_values[w])
-				{
-					a_matrix[arc_id][work_graph.id(in_arc)] = true;
-				}
-				else
-				{
-					a_matrix[arc_id][work_graph.id(in_arc)] = false;
- 				}
+				a_matrix[arc_id]
+					[work_graph.id(in_arc)] = d_z > dfs.reached(w);
 			}
 		}
 		
