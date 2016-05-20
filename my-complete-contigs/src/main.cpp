@@ -28,6 +28,8 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	    /////////////////////////////////////////////////////
 	  ///// Computing a node-covering circular walk C! ////
 	/////////////////////////////////////////////////////
+	vector<int> main_walk;
+	vector<int> work_walk; // Used for reversing the sub-paths.
 	for (int node_id = 0; node_id < nodes - 1; ++node_id)
 	{
 		int source_node_id = node_id;
@@ -40,12 +42,24 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		
 		if (!bfs.run(source_node, target_node))
 		{
+			// We get here only if 'target_node' is not reachable from 'source_node'.
 			throw std::runtime_error("The input graph is not strongly connected!");
 		}
 		
-		Path<StaticDigraph> shortest_path = bfs.path(target_node);
+		work_walk.clear();
+		Node prev = bfs.prevNode(target_node);
 		
-		// Find a shortest path from source
+		while (prev != INVALID)
+		{
+			work_walk.push_back(prev);
+			prev = bfs.prevNode(prev);
+		}
+		
+		reverse(work_walk.begin(), work_walk.end());
+		
+		main_walk.insert(main_walk.end(),
+				 work_walk.begin(),
+				 work_walk.end());
 	}
 		    
 	    //////////////////////////////////////////
