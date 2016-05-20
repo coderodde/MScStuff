@@ -1,6 +1,5 @@
 #include "utils.h"
 #include <stdexcept>
-#include <typeinfo> // For asking the types of objects that are poorly documented in Lemon.
 
 using std::runtime_error;
 using namespace std;
@@ -30,7 +29,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	  ///// Computing a node-covering circular walk C! ////
 	/////////////////////////////////////////////////////
 	vector<int> main_walk;
-	vector<int> work_walk; // Used for reversing the sub-paths.
+	
 	for (int node_id = 0; node_id < nodes - 1; ++node_id)
 	{
 		int source_node_id = node_id;
@@ -47,24 +46,19 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 			throw std::runtime_error("The input graph is not strongly connected!");
 		}
 		
-		work_walk.clear();
+		// Append the nodes to the node-covering walk under construction.
 		Path<StaticDigraph> path = bfs.path(target_node);
-		cout << "Path type name: " << typeid(path).name() << endl;
 		
-		/*StaticDigraph::Node prev = bfs.prevNode(target_node);
-		
-		while (prev != INVALID)
+		for (int i = 0; i < path.length(); ++i)
 		{
-			work_walk.push_back(prev);
-			prev = bfs.prevNode(prev);
-		}*/
+			StaticDigraph::Arc arc = path.nth(i);
+			main_walk.push_back(graph.source(arc));
+		}
 		
-		reverse(work_walk.begin(), work_walk.end());
-		
-		main_walk.insert(main_walk.end(),
-				 work_walk.begin(),
-				 work_walk.end());
+		main_walk.push_back(graph.target(path.nth(path.length() - 1)));
 	}
+	
+	cout << "The length of the main walk is: " << main_walk.size() << endl;
 		    
 	    //////////////////////////////////////////
 	  //// Computing node certificate sets! ////
