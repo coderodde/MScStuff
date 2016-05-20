@@ -1,5 +1,6 @@
 #include "utils.h"
 #include <stdexcept>
+#include <typeinfo> // For asking the types of objects that are poorly documented in Lemon.
 
 using std::runtime_error;
 using namespace std;
@@ -48,7 +49,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		
 		work_walk.clear();
 		Path<StaticDigraph> path = bfs.path(target_node);
-		cout << "Path length: " << path.length() << endl;
+		cout << "Path type name: " << typeid(path).name() << endl;
 		
 		/*StaticDigraph::Node prev = bfs.prevNode(target_node);
 		
@@ -241,7 +242,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		// Return the current arc to the 'work_graph'.
 		work_graph.addArc(work_graph.source(removed_arc), work_graph.target(removed_arc));
 		
-		cout << "Start arc ID: " << arc_id << ", mappings: " << a_matrix[arc_id].size() << endl;
+		//cout << "Start arc ID: " << arc_id << ", mappings: " << a_matrix[arc_id].size() << endl;
 	}
 	
 	cout << "[CODERODDE] Exiting 'coderodde_project_algorithm'." << endl;
