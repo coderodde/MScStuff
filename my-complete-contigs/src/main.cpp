@@ -178,9 +178,18 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					++d_z;
 				}
 			}
+			
+			ListDigraph::NodeMap<int> map_node_to_r_values;
+			
+			// Iterate the second time over all in-neighbors of 'z'
+			for (ListDigraph::InArcIt in_arc(work_graph, z); in_arc != INVALID; ++in_arc)
+			{
+				ListDigraph::Node w = work_graph.source(in_arc);
+				map_node_to_r_values[w] = dfs.reached(w) ? 1 : 0;
+			}
 		}
 		
-		// Return the current arc to the 'a_graph'.
+		// Return the current arc to the 'work_graph'.
 		work_graph.addArc(work_graph.source(removed_arc), work_graph.target(removed_arc));
 	}
 	
