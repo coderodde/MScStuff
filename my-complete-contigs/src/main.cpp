@@ -30,10 +30,10 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	/////////////////////////////////////////////////////
 	vector<StaticDigraph::Node> main_walk;
 	
-	for (int node_id = 0; node_id < nodes - 1; ++node_id)
+	for (int node_id = 0; node_id < nodes; ++node_id)
 	{
 		int source_node_id = node_id;
-		int target_node_id = node_id + 1;
+		int target_node_id = (node_id + 1) % nodes;
 		
 		StaticDigraph::Node source_node = graph.nodeFromId(source_node_id);
 		StaticDigraph::Node target_node = graph.nodeFromId(target_node_id);
@@ -58,7 +58,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		main_walk.push_back(graph.target(path.nth(path.length() - 1)));
 	}
 	
-	cout << "The length of the main walk is: " << main_walk.size() << endl;
+	cout << "[CODERODDE] The length of the main walk is: " << main_walk.size() << endl;
 		    
 	    //////////////////////////////////////////
 	  //// Computing node certificate sets! ////
