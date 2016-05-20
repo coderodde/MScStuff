@@ -47,7 +47,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		}
 		
 		work_walk.clear();
-		Node prev = bfs.prevNode(target_node);
+		StaticDigraph::Node prev = bfs.prevNode(target_node);
 		
 		while (prev != INVALID)
 		{
