@@ -36,7 +36,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		StaticDigraph::Node source_node = graph.nodeFromId(source_node_id);
 		StaticDigraph::Node target_node = graph.nodeFromId(target_node_id);
 
-		Bfs<> bfs(graph);
+		Bfs<StaticDigraph> bfs(graph);
 		
 		if (!bfs.run(source_node, target_node))
 		{
