@@ -23,6 +23,32 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	cout << "[CODERODDE] Sequence length: " << sequence.length() << endl;
 	cout << "[CODERODDE] Input file name: " << inputFileName << endl;
 	
+	    /////////////////////////////////////////////////////
+	  ///// Computing a node-covering circular walk C! ////
+	/////////////////////////////////////////////////////
+	for (int node_id = 0; node_id < nodes - 1; ++node_id)
+	{
+		int source_node_id = node_id;
+		int target_node_id = node_id + 1;
+		
+		StaticDigraph::Node source_node = graph.nodeFromId(source_node_id);
+		StaticDigraph::Node target_node = graph.nodeFromId(target_node_id);
+
+		Bfs<> bfs;
+		
+		if (!bfs.run(source_node, target_node))
+		{
+			throw std::runtime_error("The input graph is not strongly connected!");
+		}
+		
+		Path shortest_path = bfs.path(target_node);
+		
+		// Find a shortest path from source
+	}
+		    
+	    //////////////////////////////////////////
+	  //// Computing node certificate sets! ////
+	//////////////////////////////////////////
 	StaticDigraph::NodeMap<unordered_set<int>> map_node_index_to_certificate_set(graph);
 	
 	for (int id = 0; id < nodes; ++id)
