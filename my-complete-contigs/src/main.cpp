@@ -167,6 +167,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		{
 			ListDigraph::Node z = work_graph.nodeFromId(z_node_id);
 			int d_z = 0;
+			ListDigraph::NodeMap<int> map_node_to_dz_values(work_graph);
 			
 			// Iterate over all in-neighbors of 'z'
 			for (ListDigraph::InArcIt in_arc(work_graph, z); in_arc != INVALID; ++in_arc)
@@ -179,6 +180,8 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 				}
 			}
 			
+			map_node_to_dz_values[z] = d_z;
+			
 			ListDigraph::NodeMap<int> map_node_to_r_values(work_graph);
 			
 			// Iterate the second time over all in-neighbors of 'z'
@@ -186,11 +189,22 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 			{
 				ListDigraph::Node w = work_graph.source(in_arc);
 				map_node_to_r_values[w] = dfs.reached(w) ? 1 : 0;
+				
+				if (d_z > map_node_t_r_values[w] > 0)
+				{
+					a_matrix[arc_id][work_graph.id(in_arc)] = true;
+				}
+				else
+				{
+					a_matrix[arc_id][work_graph.id(in_arc)] = false;
+ 				}
 			}
 		}
 		
 		// Return the current arc to the 'work_graph'.
 		work_graph.addArc(work_graph.source(removed_arc), work_graph.target(removed_arc));
+		
+		cout << "Start arc ID: " << arc_id << ", mappings: " << a_matrix[arc_id].size() << endl;
 	}
 	
 	cout << "[CODERODDE] Exiting 'coderodde_project_algorithm'." << endl;
