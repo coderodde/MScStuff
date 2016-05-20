@@ -47,7 +47,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		}
 		
 		work_walk.clear();
-		Path path = bfs.path(target_node);
+		Path<StaticDigraph> path = bfs.path(target_node);
 		cout << "Path length: " << path.size() << endl;
 		
 		/*StaticDigraph::Node prev = bfs.prevNode(target_node);
