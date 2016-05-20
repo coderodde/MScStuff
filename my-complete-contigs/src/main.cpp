@@ -190,7 +190,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 				ListDigraph::Node w = work_graph.source(in_arc);
 				map_node_to_r_values[w] = dfs.reached(w) ? 1 : 0;
 				
-				if (d_z > map_node_t_r_values[w] > 0)
+				if (d_z > map_node_to_r_values[w] > 0)
 				{
 					a_matrix[arc_id][work_graph.id(in_arc)] = true;
 				}
