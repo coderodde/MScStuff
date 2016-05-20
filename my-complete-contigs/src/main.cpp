@@ -43,7 +43,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 			throw std::runtime_error("The input graph is not strongly connected!");
 		}
 		
-		Path shortest_path = bfs.path(target_node);
+		Path<StaticDigraph> shortest_path = bfs.path(target_node);
 		
 		// Find a shortest path from source
 	}
