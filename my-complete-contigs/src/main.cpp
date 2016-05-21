@@ -7,6 +7,15 @@ using namespace lemon;
 
 int N_THREADS;
 
+unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
+{
+	unordered_set<int> ret;
+	StaticDigraph::Node s = graph.nodeFromId(0);
+	ReverseDigraph<StaticDigraph> reversed_graph = reverseDigraph(graph);
+	
+	return ret;
+}
+
 vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					   const StaticDigraph::NodeMap<size_t>& length,
 					   const StaticDigraph::NodeMap<size_t>& seqStart,
@@ -55,14 +64,14 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 			main_walk.push_back(graph.source(arc));
 		}
 		
-		main_walk.push_back(graph.target(path.nth(path.length() - 1)));
+		//main_walk.push_back(graph.target(path.nth(path.length() - 1)));
 	}
 	
 	cout << "[CODERODDE] The length of the main walk is: " << main_walk.size() << endl;
 		    
-	    //////////////////////////////////////////
-	  //// Computing node certificate sets! ////
-	//////////////////////////////////////////
+	    ////////////////////////////////////////////////////
+	  //// Computing node certificate sets! Lemma 5.1 ////
+	////////////////////////////////////////////////////
 	StaticDigraph::NodeMap<unordered_set<int>> map_node_index_to_certificate_set(graph);
 	
 	for (int id = 0; id < nodes; ++id)
@@ -170,9 +179,9 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	             //<< endl;
 	}
 	
-	    ///////////////////////////////
-	  //// Compute the a-matrix. ////
-	///////////////////////////////
+	    /////////////////////////////////////////
+	  //// Compute the a-matrix. Lemma 5.2 ////
+	/////////////////////////////////////////
 	cout << "[CODERODDE] Computing the a-matrix!" << endl;
 	
 	// Create a ListDigraph for manipulating the topology.
@@ -237,6 +246,34 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		work_graph.addArc(work_graph.source(removed_arc), work_graph.target(removed_arc));
 		
 		//cout << "Start arc ID: " << arc_id << ", mappings: " << a_matrix[arc_id].size() << endl;
+	}
+	
+	
+	    ///////////////////
+	  //// Lemma 5.3 ////
+	///////////////////
+	
+	    /////////////////////
+	  //// Algorithm 1 ////
+	/////////////////////
+	const int n = graph.nodeNum();
+	const int d = main_walk.size();
+	
+	vector<unordered_set<int>> S_k(n + 1);
+	
+	for (int k = 1; k <= n; ++k)
+	{
+		for (int i = 0; i < d; ++d)
+		{
+			if (k == 1)
+			{
+				
+			}
+			else
+			{
+				
+			}
+		}
 	}
 	
 	cout << "[CODERODDE] Exiting 'coderodde_project_algorithm'." << endl;
