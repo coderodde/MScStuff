@@ -11,7 +11,7 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 {
 	unordered_set<int> ret;
 	StaticDigraph::Node s = graph.nodeFromId(0);
-	ReverseDigraph<StaticDigraph> reversed_graph(graph);
+	ReverseDigraph<ListDigraph> reversed_graph(graph);
 	
 	return ret;
 }
