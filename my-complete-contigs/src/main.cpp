@@ -11,7 +11,8 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 {
 	unordered_set<int> ret;
 	StaticDigraph::Node s = graph.nodeFromId(0);
-	ReverseDigraph<ListDigraph> reversed_graph(graph);
+	Digraph reversed_digraph = reverseDigraph(graph);
+	//ReverseDigraph<ListDigraph> reversed_graph(graph);
 	
 	return ret;
 }
@@ -263,7 +264,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	for (int k = 1; k <= n; ++k)
 	{
-		for (int i = 0; i < d; ++d)
+		for (int i = 0; i < d; ++i)
 		{
 			if (k == 1)
 			{
