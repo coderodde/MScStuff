@@ -7,11 +7,21 @@ using namespace lemon;
 
 int N_THREADS;
 
-unordered_set<int> find_strong_bridges(const ListDigraph& graph)
+unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 {
 	unordered_set<int> ret;
-	ListDigraph::Node s = graph.nodeFromId(0);
-	ReverseDigraph<ListDigraph> reversed_graph(graph);
+	ListDigraph work_graph;
+	
+	// Copy the input graph to the ListDigraph created above.
+	DigraphCopy<StaticDigraph, ListDigraph> copy_graph(graph, work_graph);
+	copy_graph.run();
+	// Now reverse the arcs in 'work_graph':
+	
+	for (ListDigraph::ArcIt a(work_graph); a != INVALID; ++a)
+	{
+		work_graph.reverseArc(a);
+	}
+	
 	return ret;
 }
 
