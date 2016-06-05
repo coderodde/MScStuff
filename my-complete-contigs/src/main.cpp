@@ -197,8 +197,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		}
 		
 		// Return (x_in, x_out) to the graph and start the next iteration.
-		//subdivided_graph.addArc(x_in, x_out);
-		subdivided_graph.addArc(removed_arc);
+		subdivided_graph.addArc(x_in, x_out);
 		
 		//StaticDigraph::Node tmp_node = graph.node(node_id);
 		//cout << "map_node_index_to_certificate_set["
