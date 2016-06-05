@@ -7,6 +7,9 @@ using namespace lemon;
 
 int N_THREADS;
 
+// This function returns an unordered (hash) set of arc IDs that are strong
+// bridges, i.e., removing a bridge from the graph increases the number of
+// strongly connected components.
 unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 {
 	unordered_set<int> ret;
@@ -30,22 +33,30 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					   const StaticDigraph::NodeMap<size_t>& seqStart,
 					   const size_t kmersize,
 					   const string& sequence,
-					   const string inputFileName)
+					   const string inputFileName,
+					   const bool debug_print)
 {
-	cout << "[CODERODDE] Entered 'coderodde_project_algorithm'." << endl;
+	if (debug_print)
+	{
+		cout << "[CODERODDE] Entered 'coderodde_project_algorithm'." << endl;	
+	
+	}
 	vector<contig> ret;
 	size_t nodes = graph.nodeNum();
 	
-	cout << "[CODERODDE] The size of the input graph is: " << nodes << endl;
-	cout << "[CODERODDE] The number of arcs in the graph is: " << graph.arcNum() << endl;
+	if (debug_print)
+	{
+		cout << "[CODERODDE] The size of the input graph is: " << nodes << endl;
+		cout << "[CODERODDE] The number of arcs in the graph is: " << graph.arcNum() << endl;
 	
-	cout << "[CODERODDE] k-mer size: " << kmersize << endl;
-	cout << "[CODERODDE] Sequence length: " << sequence.length() << endl;
-	cout << "[CODERODDE] Input file name: " << inputFileName << endl;
+		cout << "[CODERODDE] k-mer size: " << kmersize << endl;
+		cout << "[CODERODDE] Sequence length: " << sequence.length() << endl;
+		cout << "[CODERODDE] Input file name: " << inputFileName << endl;	
+	}
 	
-	    /////////////////////////////////////////////////////
-	  ///// Computing a node-covering circular walk C! ////
-	/////////////////////////////////////////////////////
+	    ////////////////////////////////////////////////////
+	  //// Computing a node-covering circular walk C! ////
+	////////////////////////////////////////////////////
 	vector<StaticDigraph::Node> main_walk;
 	
 	for (int node_id = 0; node_id < nodes; ++node_id)
@@ -72,11 +83,12 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 			StaticDigraph::Arc arc = path.nth(i);
 			main_walk.push_back(graph.source(arc));
 		}
-		
-		//main_walk.push_back(graph.target(path.nth(path.length() - 1)));
 	}
 	
-	cout << "[CODERODDE] The length of the main walk is: " << main_walk.size() << endl;
+	if (debug_print)
+	{
+		cout << "[CODERODDE] The length of the main walk is: " << main_walk.size() << endl;	
+	}
 		    
 	    ////////////////////////////////////////////////////
 	  //// Computing node certificate sets! Lemma 5.1 ////
@@ -102,7 +114,11 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	    subdivided_graph.addNode();
 	}
 	
-	cout << "[CODERODDE] The size of the subdivided graph is " << countNodes(subdivided_graph) << endl;
+	if (debug_print)
+	{
+		cout << "[CODERODDE] The size of the subdivided graph is "
+		     << countNodes(subdivided_graph) << endl;	
+	}
 	
 	unordered_map<int, unordered_map<int, ListDigraph::Arc>> arc_matrix;
 	
@@ -118,7 +134,10 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		arc_matrix[id][id + nodes] = arc;
 	}
 	
-	cout << "[CODERODDE] The number of divided arcs before copying the arcs is " << countArcs(subdivided_graph) << endl;
+	if (debug_print)
+	{
+		cout << "[CODERODDE] The number of divided arcs before copying the arcs is " << countArcs(subdivided_graph) << endl;		
+	}
 	
 	// Copy the original arcs to the subdivided graph.
 	// For each arc (y, z) in G, add an arc (y_out, z_in) to G'.
@@ -135,7 +154,10 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		subdivided_graph.addArc(new_arc_tail, new_arc_head);
 	}
 	
-	cout << "[CODERODDE] The number of divided arcs after copying the arcs is " << countArcs(subdivided_graph) << endl;
+	if (debug_print)
+	{
+		cout << "[CODERODDE] The number of divided arcs after copying the arcs is " << countArcs(subdivided_graph) << endl;		
+	}
 	
 	// Next, for each x in V(G) construct the graph G'_x.
 	for (int x_node_id = 0; x_node_id < nodes; ++x_node_id)
@@ -191,7 +213,11 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	    /////////////////////////////////////////
 	  //// Compute the a-matrix. Lemma 5.2 ////
 	/////////////////////////////////////////
-	cout << "[CODERODDE] Computing the a-matrix!" << endl;
+	
+	if (debug_print)
+	{
+		cout << "[CODERODDE] Computing the a-matrix!" << endl;	
+	}
 	
 	// Create a ListDigraph for manipulating the topology.
 	ListDigraph work_graph;
@@ -199,8 +225,11 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	DigraphCopy<StaticDigraph, ListDigraph> copy_graph(graph, work_graph);
 	copy_graph.run();
 	
-	cout << "[CODERODDE] Copy graph nodes: " << countNodes(work_graph) << endl;
-	cout << "[CODERODDE] Copy graph arcs:  " << countArcs(work_graph) << endl;
+	if (debug_print)
+	{
+		cout << "[CODERODDE] Copy graph nodes: " << countNodes(work_graph) << endl;
+		cout << "[CODERODDE] Copy graph arcs:  " << countArcs(work_graph) << endl;		
+	}
 	
 	//// This is a matrix mapping the pair of arc indices to a desired boolean value.
 	unordered_map<int, unordered_map<int, bool>> a_matrix;
@@ -285,8 +314,28 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		}
 	}
 	
-	cout << "[CODERODDE] Exiting 'coderodde_project_algorithm'." << endl;
+	if (debug_print)
+	{
+		cout << "[CODERODDE] Exiting 'coderodde_project_algorithm'." << endl;	
+	}
+	
 	return ret;
+}
+
+vector<config> coderodde_project_algorithm(const StaticDigraph& graph,
+					   const StaticDigraph::NodeMap<size_t>& length,
+					   const StaticDigraph::NodeMap<size_t>& seqStart,
+					   const size_t kmersize,
+					   const string& sequence,
+					   const string inputFileName)
+{
+	return coderodde_project_algorithm(graph,
+					   length,
+					   seqStart,
+					   kmersize,
+					   sequence,
+					   inputFileName,
+					   false);
 }
 
 vector<contig> compute_unitigs(const StaticDigraph& graph, 
@@ -1369,7 +1418,7 @@ int main(int argc, char **argv)
 	}
 	
 	cout << "[CODERODDE] Steps into the room..." << endl;
-	coderodde_project_algorithm(graph, length, seqStart, kmersize, sequence, inputFileName);
+	coderodde_project_algorithm(graph, length, seqStart, kmersize, sequence, inputFileName, true);
 	cout << "[CODERODDE] Exited the funky algorithm." << endl;
 	
 	fileStats.close();
