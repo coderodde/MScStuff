@@ -199,12 +199,12 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		// Return (x_in, x_out) to the graph and start the next iteration.
 		subdivided_graph.addArc(x_in, x_out);
 		
-		StaticDigraph::Node tmp_node = graph.node(x_node_id);
+		/*StaticDigraph::Node tmp_node = graph.node(x_node_id);
 		cout << "map_node_to_certificate_set["
 		     << x_node_id
 		     << "].size(): "
 		     << map_node_to_certificate_set[tmp_node].size()
-	             << endl;
+	             << endl;*/
 	}
 	
 	    /////////////////////////////////////////
@@ -212,7 +212,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	/////////////////////////////////////////
 	if (debug_print)
 	{
-		cout << "[CODERODDE] Computing the a-matrix!" << endl;	
+		cout << "[CODERODDE] Computing the a-matrix in O(m^2)!" << endl;	
 	}
 	
 	// Create a ListDigraph for manipulating the topology.
@@ -250,7 +250,6 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		{
 			ListDigraph::Node z = work_graph.nodeFromId(z_node_id);
 			int d_z = 0;
-			ListDigraph::NodeMap<int> map_node_to_dz_values(work_graph);
 			
 			// Iterate over all in-neighbors of 'z'
 			for (ListDigraph::InArcIt in_arc(work_graph, z); in_arc != INVALID; ++in_arc)
@@ -263,8 +262,6 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 				}
 			}
 			
-			map_node_to_dz_values[z] = d_z;
-			
 			ListDigraph::NodeMap<int> map_node_to_r_values(work_graph);
 			
 			// Iterate the second time over all in-neighbors of 'z'
@@ -272,7 +269,9 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 			{
 				ListDigraph::Node w = work_graph.source(in_arc);
 				int r_w = dfs.reached(w) ? 1 : 0;
-				a_matrix[arc_id][work_graph.id(in_arc)] = d_z - r_w;
+				map_node_to_r_values[w] = r_w;
+				
+				a_matrix[arc_id][work_graph.id(in_arc)] = d_z - r_w > 0;
 				//a_matrix[arc_id]
 				//	[work_graph.id(in_arc)] = d_z > dfs.reached(w);
 			}
