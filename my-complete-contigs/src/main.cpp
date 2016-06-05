@@ -274,7 +274,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 			for (ListDigraph::InArcIt in_arc(work_graph, z); in_arc != INVALID; ++in_arc)
 			{
 				ListDigraph::Node w = work_graph.source(in_arc);
-				int r_w = dfs.reachable(w) ? 1 : 0;
+				int r_w = dfs.reached(w) ? 1 : 0;
 				a_matrix[arc_id][work_graph.id(in_arc)] = d_z - r_w;
 				//a_matrix[arc_id]
 				//	[work_graph.id(in_arc)] = d_z > dfs.reached(w);
