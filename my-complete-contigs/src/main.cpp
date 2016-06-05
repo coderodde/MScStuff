@@ -322,7 +322,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	return ret;
 }
 
-vector<config> coderodde_project_algorithm(const StaticDigraph& graph,
+vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					   const StaticDigraph::NodeMap<size_t>& length,
 					   const StaticDigraph::NodeMap<size_t>& seqStart,
 					   const size_t kmersize,
