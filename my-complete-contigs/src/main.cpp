@@ -55,7 +55,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	}
 	
 	    ////////////////////////////////////////////////////
-	  //// Computing a node-covering circular walk C! ////
+	  //// Computing a node-covering circular walk C. ////
 	////////////////////////////////////////////////////
 	vector<StaticDigraph::Node> main_walk;
 	
@@ -93,13 +93,13 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	    ////////////////////////////////////////////////////
 	  //// Computing node certificate sets! Lemma 5.1 ////
 	////////////////////////////////////////////////////
-	StaticDigraph::NodeMap<unordered_set<int>> map_node_index_to_certificate_set(graph);
+	StaticDigraph::NodeMap<unordered_set<int>> map_node_to_certificate_set(graph);
 	
 	for (int id = 0; id < nodes; ++id)
 	{
 	    StaticDigraph::Node node = graph.node(id);
 	    unordered_set<int> initial_certificate_set = { id };
-	    map_node_index_to_certificate_set[node] = initial_certificate_set;
+	    map_node_to_certificate_set[node] = initial_certificate_set;
 	}
 	
 	//// Now subdivide the graph.
@@ -163,6 +163,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	for (int x_node_id = 0; x_node_id < nodes; ++x_node_id)
 	{
 		int head_node_id = x_node_id + nodes;
+		
 		// Remove (x_in, x_out).
 		ListDigraph::Node x_in  = subdivided_graph.nodeFromId(x_node_id);
 		ListDigraph::Node x_out = subdivided_graph.nodeFromId(head_node_id);
@@ -190,17 +191,14 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 			
 			if (scc[y_in] != scc[y_out])
 			{
-				//StaticDigraph::Node static_y_node = graph.node(y_node_id);
-				StaticDigraph::Node static_x_node = graph.node(x_node_id);
-				
-				map_node_index_to_certificate_set[static_x_node].insert(y_node_id);
-				//map_node_index_to_certificate_set[x].insert(y_in_node_id);
-				
+				StaticDigraph::Node static_x_node = graph.node(x_node_id);	
+				map_node_to_certificate_set[static_x_node].insert(y_node_id);
 			}
 		}
 		
 		// Return (x_in, x_out) to the graph and start the next iteration.
-		subdivided_graph.addArc(x_in, x_out);
+		//subdivided_graph.addArc(x_in, x_out);
+		subdivided_graph.addArc(removed_arc);
 		
 		//StaticDigraph::Node tmp_node = graph.node(node_id);
 		//cout << "map_node_index_to_certificate_set["
