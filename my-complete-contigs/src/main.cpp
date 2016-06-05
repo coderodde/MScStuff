@@ -262,25 +262,20 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 				}
 			}
 			
-			ListDigraph::NodeMap<int> map_node_to_r_values(work_graph);
-			
 			// Iterate the second time over all in-neighbors of 'z'
 			for (ListDigraph::InArcIt in_arc(work_graph, z); in_arc != INVALID; ++in_arc)
 			{
 				ListDigraph::Node w = work_graph.source(in_arc);
 				int r_w = dfs.reached(w) ? 1 : 0;
-				map_node_to_r_values[w] = r_w;
 				
 				a_matrix[arc_id][work_graph.id(in_arc)] = d_z - r_w > 0;
-				//a_matrix[arc_id]
-				//	[work_graph.id(in_arc)] = d_z > dfs.reached(w);
 			}
 		}
 		
 		// Return the current arc to the 'work_graph'.
 		work_graph.addArc(work_graph.source(removed_arc), work_graph.target(removed_arc));
 		
-		//cout << "Start arc ID: " << arc_id << ", mappings: " << a_matrix[arc_id].size() << endl;
+		cout << "Start arc ID: " << arc_id << ", mappings: " << a_matrix[arc_id].size() << endl;
 	}
 	
 	
