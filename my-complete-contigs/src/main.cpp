@@ -275,7 +275,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		// Return the current arc to the 'work_graph'.
 		work_graph.addArc(work_graph.source(removed_arc), work_graph.target(removed_arc));
 		
-		cout << "Start arc ID: " << arc_id << ", mappings: " << a_matrix[arc_id].size() << endl;
+		//cout << "Start arc ID: " << arc_id << ", mappings: " << a_matrix[arc_id].size() << endl;
 	}
 	
 	
