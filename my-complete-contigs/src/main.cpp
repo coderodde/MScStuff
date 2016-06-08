@@ -12,6 +12,7 @@ int N_THREADS;
 // strongly connected components.
 unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 {
+	cout << "Bridge begin\n";
 	unordered_set<int> ret;
 	ListDigraph work_graph;
 	
@@ -38,6 +39,7 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 				  work_graph.target(a));
 	}
 	
+	cout << "Bridge end\n";
 	return ret;
 }
 
