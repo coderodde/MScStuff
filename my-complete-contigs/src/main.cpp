@@ -28,7 +28,7 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 	
 	for (ListDigraph::ArcIt a(work_graph); a != INVALID; ++a)
 	{
-		if (i % 1000 == 0)
+		if (i++ % 1000 == 0)
 		{
 			cout << "shit " << i++ << "\n";
 		}
