@@ -294,7 +294,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	    /////////////////////////////////////////////////////////
 	  //// Lemma 5.3 (Relaxation: O(m^2) instead of O(m).) ////
 	/////////////////////////////////////////////////////////
-	unorderes_set<int> strong_bridge_id_set = find_strong_bridges(graph);
+	unordered_set<int> strong_bridge_id_set = find_strong_bridges(graph);
 	
 	if (degub_print)
 	{
