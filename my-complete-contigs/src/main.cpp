@@ -1280,7 +1280,7 @@ int main(int argc, char **argv)
 	
 	ListDigraph::Node u1 = graph2.nodeFromId(0);
 	ListDigraph::Node u2 = graph2.nodeFromId(1);
-	ListDigraph::Node u3 = graph2.nodeFromId(2);
+	ListDigraph::Node u3 = graph2.nodeFromId(3);
 	
 	ListDigraph::Arc arc = graph2.arcFromId(0);
 	ListDigraph::Node arc_tail = graph2.source(arc);
