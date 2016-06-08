@@ -25,11 +25,16 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 		// Remove the current arc.
 		work_graph.erase(a);
 		
-		ListDigraph::NodeMap<int> scc(work_graph);
-		int number_of_strongly_connected_components =
-				stronglyConnectedComponents(work_graph);
+		ListDigraph scc_check_graph;
+		DigraphCopy<ListDigraph, ListDigraph> copy_graph2(work_graph, scc_check_graph);
+		copy_graph2.run();		
 		
-		if (number_of_strongly_connected_components == 1)
+		
+		ListDigraph::NodeMap<int> scc(scc_check_graph);
+		int number_of_strongly_connected_components =
+				stronglyConnectedComponents(scc_check_graph, scc);
+		
+		if (number_of_strongly_connected_components > 1)
 		{
 			ret.insert(work_graph.id(a));
 		}
