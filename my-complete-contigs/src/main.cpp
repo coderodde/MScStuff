@@ -16,6 +16,9 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 	ListDigraph scc_check_graph;
 	DigraphCopy<StaticDigraph, ListDigraph> cg(graph, scc_check_graph);
 	StaticDigraph::NodeMap<ListDigraph::Node> nr(graph);
+	ListDigraph::ArcMap<StaticDigraph::Arc> map_arcs_new_to_source;
+	
+	cg.arcCrossRef(map_arcs_new_to_source);
 	cg.nodeRef(nr);
 	cg.run();
 		
