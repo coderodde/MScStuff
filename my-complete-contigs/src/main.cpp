@@ -50,6 +50,9 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 		
 		const int removed_arc_tail_id = scc_check_graph.id(removed_arc_tail);
 		const int removed_arc_head_id = scc_check_graph.id(removed_arc_head);
+		const int removed_arc_id      = scc_check_graph.id(removed_arc);
+		
+		
 		
 		scc_check_graph.erase(removed_arc);
 		
@@ -69,7 +72,7 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 		
 		if (number_of_strongly_connected_components != 1)
 		{
-			ret.insert(work_graph.id(arcId));
+			ret.insert(removed_arc_id);
 		}
 		
 		// Return the current arc to the work graph, and go check for next arc.
