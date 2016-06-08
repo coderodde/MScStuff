@@ -41,8 +41,8 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 		copy_graph2.run();		
 		
 		const int arcId = work_graph.id(a);
-		const int tailNodeId = work_graph.source(a);
-		const int headNodeId = work_graph.target(a);
+		const int tailNodeId = work_graph.id(work_graph.source(a));
+		const int headNodeId = work_graph.id(work_graph.target(a));
 		
 		ListDigraph::Arc removed_arc = scc_check_graph.erase(ssc_check_graph.arcFromId(arcId));
 		
@@ -69,8 +69,8 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 		}
 		
 		// Return the current arc to the work graph, and go check for next arc.
-		work_graph.addArc(work_graph.source(a),
-				  work_graph.target(a));
+		//work_graph.addArc(work_graph.source(a),
+		//		  work_graph.target(a));
 	}
 	
 	cout << "Bridge end\n";
