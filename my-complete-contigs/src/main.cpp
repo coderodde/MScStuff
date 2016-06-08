@@ -27,7 +27,7 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 		
 		ListDigraph::NodeMap<int> scc(work_graph);
 		int number_of_strongly_connected_components =
-				stronglyConnectedComponents(work_graph, scc);
+				stronglyConnectedComponents(work_graph);
 		
 		if (number_of_strongly_connected_components == 1)
 		{
