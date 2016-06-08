@@ -25,7 +25,10 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 		StaticDigraph::Node source_tail_node = graph.source(arcit);
 		StaticDigraph::Node source_head_node = graph.target(arcit);
 		
-		// ListDigraph::Node target_tail_node = nr
+		ListDigraph::Node target_tail_node = nr[source_tail_node];
+		ListDigraph::Node target_head_node = nr[source_head_node];
+		
+		
 	}
 	
 	
