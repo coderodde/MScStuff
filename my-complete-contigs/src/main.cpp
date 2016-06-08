@@ -1274,7 +1274,8 @@ int main(int argc, char **argv)
 	graph1.addArc(node3, node1);
 	
 	DigraphCopy<ListDigraph, ListDigraph> cg(graph1, graph2);
-	ListDigraph::ArcMap<StaticDigraph::Arc> map_list_digraph_arcs_to_static_graph_arcs(scc_check_graph);
+	ListDigraph::ArcMap<ListDigraph::Arc> new_to_original_arc_map(graph2);
+	cg.arcCrossRef(new_to_original_arc_map);
 	cg.run();
 	
 	ListDigraph::Node u1 = graph2.nodeFromId(0);
