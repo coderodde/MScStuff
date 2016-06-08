@@ -44,26 +44,30 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 		const int tailNodeId = work_graph.id(work_graph.source(a));
 		const int headNodeId = work_graph.id(work_graph.target(a));
 		
-		ListDigraph::Arc removed_arc = scc_check_graph.erase(scc_check_graph.arcFromId(arcId));
+		ListDigraph::Arc removed_arc = scc_check_graph.arcFromId(arcId);
+		ListDigraph::Node removed_arc_tail = scc_check_graph.source(removed_arc);
+		ListDigraph::Node removed_arc_head = scc_check_graph.target(removed_arc);
 		
-		if (tailNodeId != scc_check_graph.id(scc_check_graph.source(removed_arc)))
+		const int removed_arc_tail_id = scc_check_graph.id(removed_arc_tail);
+		const int removed_arc_head_id = scc_check_graph.id(removed_arc_head);
+		
+		scc_check_graph.erase(removed_arc);
+		
+		if (tailNodeId != removed_arc_tail_id)
 		{
 			cout << "Fail 1" << endl;
 		}
 		
-		if (headNodeId != scc_check_graph.id(scc_check_graph.target(removed_arc)))
+		if (headNodeId != removed_arc_head_id)
 		{
 			cout << "Fail 2" << endl;
 		}
-		
-		
-		
 		
 		ListDigraph::NodeMap<int> scc(scc_check_graph);
 		int number_of_strongly_connected_components =
 				stronglyConnectedComponents(scc_check_graph, scc);
 		
-		if (number_of_strongly_connected_components > 1)
+		if (number_of_strongly_connected_components != 1)
 		{
 			ret.insert(work_graph.id(arcId));
 		}
