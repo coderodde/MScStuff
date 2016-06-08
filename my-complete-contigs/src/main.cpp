@@ -44,7 +44,7 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 		const int tailNodeId = work_graph.id(work_graph.source(a));
 		const int headNodeId = work_graph.id(work_graph.target(a));
 		
-		ListDigraph::Arc removed_arc = scc_check_graph.erase(ssc_check_graph.arcFromId(arcId));
+		ListDigraph::Arc removed_arc = scc_check_graph.erase(scc_check_graph.arcFromId(arcId));
 		
 		if (tailNodeId != scc_check_graph.id(scc_check_graph.source(removed_arc)))
 		{
