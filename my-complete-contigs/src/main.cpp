@@ -21,11 +21,18 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 	DigraphCopy<StaticDigraph, ListDigraph> copy_graph(graph, work_graph);
 	copy_graph.run();
 	
+	
+	cout << "Arcs: " << work_graph.arcNum() << "\n";
+	
 	int i = 1;
 	
 	for (ListDigraph::ArcIt a(work_graph); a != INVALID; ++a)
 	{
-		cout << "shit " << i++ << "\n";
+		if (i % 1000 == 0)
+		{
+			cout << "shit " << i++ << "\n";
+		}
+		
 		// Remove the current arc.
 		work_graph.erase(a);
 		
