@@ -13,19 +13,24 @@ int N_THREADS;
 unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 {
 	unordered_set<int> ret;
+	ListDigraph scc_check_graph;
+	DigraphCopy<StaticDigraph, ListDigraph> cg(graph, scc_check_graph);
+	ListDigraph::ArcMap<StaticDigraph::Arc> map_list_digraph_arcs_to_static_graph_arcs(scc_check_graph);
+	cg.run();
 	
-	for (StaticDigraph::ArcIt arcit(graph); arcit != INVALID; ++arcit)
+	int number_of_arcs = countArcs(graph);
+	
+	for (int arc_id = 0; arc_id < number_of_arcs; ++arc_id)
 	{
-		ListDigraph scc_check_graph;
-		DigraphCopy<StaticDigraph, ListDigraph> copy_graph(graph, scc_check_graph);
+		// Remove the current arc with ID 'arc_id':
+		ListDigraph::Arc removed_arc = scc_check_graph.arcFromId(arc_id);
+		ListDigraph::Node removed_arc_tail = scc_check_graph.source(removed_arc);
+		ListDigraph::Node removed_arc_head = scc_check_graph.target(removed_arc);
 		
-		// I need to be able to map the arcs from 'scc_check_graph' to
-		// 'graph':
-		ListDigraph::ArcMap<StaticDigraph::Arc> work_arcs_to_input_graph_arcs(scc_check_graph);
-		copy_graph.arcCrossRef(work_arcs_to_input_graph_arcs);
 		
-		// Peform the copy and shit
-		copy_graph.run();
+		
+		// Return the current arc with ID 'arc_id':
+		scc_check_graph.addArc(removed_arc_tail, removed_arc_head);
 	}
 	
 	
@@ -1259,6 +1264,32 @@ vector<contig> compute_omnitigs(StaticDigraph& graph,
 
 int main(int argc, char **argv)
 {
+	ListDigraph graph1;
+	ListDigraph graph2;
+	
+	ListDigraph::Node node1 = graph1.addNode();
+	ListDigraph::Node node2 = graph1.addNode();
+	ListDigraph::Node node3 = graph1.addNode();
+	
+	graph1.addArc(node3, node1);
+	
+	DigraphCopy<ListDigraph, ListDigraph> cg(graph1, graph2);
+	ListDigraph::ArcMap<StaticDigraph::Arc> map_list_digraph_arcs_to_static_graph_arcs(scc_check_graph);
+	cg.run();
+	
+	ListDigraph::Node u1 = graph2.nodeFromId(0);
+	ListDigraph::Node u2 = graph2.nodeFromId(1);
+	ListDigraph::Node u3 = graph2.nodeFromId(2);
+	
+	cout << "Done.\n";
+	
+	exit(0);
+	
+	////////////////////
+	////////////////////
+	////////////////////
+	////////////////////
+	
 	StaticDigraph graph;
 	StaticDigraph::NodeMap<size_t> length(graph);
 	StaticDigraph::NodeMap<size_t> seqStart(graph);
