@@ -13,6 +13,7 @@ int N_THREADS;
 unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 {
 	cout << "Bridge begin\n";
+	cout << "Arcs: " << graph.arcNum() << "\n";
 	unordered_set<int> ret;
 	ListDigraph work_graph;
 	
