@@ -12,26 +12,31 @@ int N_THREADS;
 // strongly connected components.
 unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 {
-	cout << "Bridge begin\n";
-	cout << "Arcs: " << graph.arcNum() << "\n";
 	unordered_set<int> ret;
-	ListDigraph work_graph;
+	
+	for (StaticDigraph::ArcIt arcit(graph); arcit != INVALID; ++arcit)
+	{
+		ListDigraph scc_check_graph;
+		DigraphCopy<StaticDigraph, ListDigraph> copy_graph(graph, scc_check_graph);
+		
+		// I need to be able to map the arcs from 'scc_check_graph' to
+		// 'graph':
+		ListDigraph::ArcMap<StaticDigraph::Arc> work_arcs_to_input_graph_arcs(scc_check_graph);
+		copy_graph.arcCrossRef(work_arcs_to_input_graph_arcs);
+		
+		// Peform the copy and shit
+		copy_graph.run();
+	}
+	
+	
+	/*ListDigraph work_graph;
 	
 	// Copy the input graph to the ListDigraph created above.
 	DigraphCopy<StaticDigraph, ListDigraph> copy_graph(graph, work_graph);
 	copy_graph.run();
 	
-	cout << "Arcs: " << countArcs(work_graph) << "\n";
-	
-	int i = 0;
-	
 	for (ListDigraph::ArcIt a(work_graph); a != INVALID; ++a)
 	{
-		if (i++ % 1000 == 0)
-		{
-			cout << "shit " << i++ << "\n";
-		}
-		
 		// Since we are iterating over the arcs of 'work_graph', we are
 		// not allowed to erase/return arcs from it, or otherwise we
 		// will enter an infinite loop. Create a copy and work on it
@@ -78,7 +83,7 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 		// Return the current arc to the work graph, and go check for next arc.
 		//work_graph.addArc(work_graph.source(a),
 		//		  work_graph.target(a));
-	}
+	}*/
 	
 	cout << "Bridge end\n";
 	return ret;
