@@ -38,8 +38,6 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 				  work_graph.target(a));
 	}
 	
-	cout << "Number of strong bridges is " << ret.size() << endl;
-	
 	return ret;
 }
 
@@ -293,10 +291,15 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		//cout << "Start arc ID: " << arc_id << ", mappings: " << a_matrix[arc_id].size() << endl;
 	}
 	
+	    /////////////////////////////////////////////////////////
+	  //// Lemma 5.3 (Relaxation: O(m^2) instead of O(m).) ////
+	/////////////////////////////////////////////////////////
+	unorderes_set<int> strong_bridge_id_set = find_strong_bridges(graph);
 	
-	    ///////////////////
-	  //// Lemma 5.3 ////
-	///////////////////
+	if (degub_print)
+	{
+		cout << "Number of strong bridges is " << ret.size() << endl;
+	}
 	
 	    /////////////////////
 	  //// Algorithm 1 ////
