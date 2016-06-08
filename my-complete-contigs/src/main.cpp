@@ -8,7 +8,7 @@ using namespace lemon;
 int N_THREADS;
 
 // This function returns an unordered (hash) set of arc IDs that are strong
-// bridges, i.e., removing a bridge from the graph increases the number of
+// bridges. Removing a strong bridge from the graph increases the number of
 // strongly connected components.
 unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 {
@@ -18,12 +18,27 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 	// Copy the input graph to the ListDigraph created above.
 	DigraphCopy<StaticDigraph, ListDigraph> copy_graph(graph, work_graph);
 	copy_graph.run();
-	// Now reverse the arcs in 'work_graph':
 	
-	for (ListDigraph::ArcIt a(work_graph); a != INVALID; ++a)
+	for (ListDigraph::Arc a(work_graph); a != INVALID; ++a)
 	{
-		work_graph.reverseArc(a);
+		// Remove the current arc.
+		work_graph.erase(a);
+		
+		ListDigraph::NodeMap<int> scc(work_graph);
+		int number_of_strongly_connected_components =
+				stronglyConnectedComponents(work_graph, scc);
+		
+		if (number_of_strongly_connected_components != 1)
+		{
+			ret.insert(work_graph.id(a));
+		}
+		
+		// Return the current arc to the work graph, and go check for next arc.
+		work_graph.addArc(work_graph.source(a),
+				  work_graph.target(a));
 	}
+	
+	cout << "Number of strong bridges is " << ret.size() << endl;
 	
 	return ret;
 }
