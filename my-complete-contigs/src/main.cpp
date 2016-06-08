@@ -21,10 +21,9 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 	DigraphCopy<StaticDigraph, ListDigraph> copy_graph(graph, work_graph);
 	copy_graph.run();
 	
-	
 	cout << "Arcs: " << countArcs(work_graph) << "\n";
 	
-	int i = 1;
+	int i = 0;
 	
 	for (ListDigraph::ArcIt a(work_graph); a != INVALID; ++a)
 	{
@@ -33,12 +32,31 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 			cout << "shit " << i++ << "\n";
 		}
 		
-		// Remove the current arc.
-		work_graph.erase(a);
-		
+		// Since we are iterating over the arcs of 'work_graph', we are
+		// not allowed to erase/return arcs from it, or otherwise we
+		// will enter an infinite loop. Create a copy and work on it
+		// instead.
 		ListDigraph scc_check_graph;
 		DigraphCopy<ListDigraph, ListDigraph> copy_graph2(work_graph, scc_check_graph);
 		copy_graph2.run();		
+		
+		const int arcId = work_graph.id(a);
+		const int tailNodeId = work_graph.source(a);
+		const int headNodeId = work_graph.target(a);
+		
+		ListDigraph::Arc removed_arc = scc_check_graph.erase(ssc_check_graph.arcFromId(arcId));
+		
+		if (tailNodeId != scc_check_graph.id(scc_check_graph.source(removed_arc)))
+		{
+			cout << "Fail 1" << endl;
+		}
+		
+		if (headNodeId != scc_check_graph.id(scc_check_graph.target(removed_arc)))
+		{
+			cout << "Fail 2" << endl;
+		}
+		
+		
 		
 		
 		ListDigraph::NodeMap<int> scc(scc_check_graph);
@@ -47,7 +65,7 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 		
 		if (number_of_strongly_connected_components > 1)
 		{
-			ret.insert(work_graph.id(a));
+			ret.insert(work_graph.id(arcId));
 		}
 		
 		// Return the current arc to the work graph, and go check for next arc.
