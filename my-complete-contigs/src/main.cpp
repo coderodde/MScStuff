@@ -1282,6 +1282,12 @@ int main(int argc, char **argv)
 	ListDigraph::Node u2 = graph2.nodeFromId(1);
 	ListDigraph::Node u3 = graph2.nodeFromId(2);
 	
+	ListDigraph::Arc arc = graph2.arcFromId(0);
+	ListDigraph::Node arc_tail = graph2.source(arc);
+	ListDigraph::Node arc_head = graph2.target(arc);
+	
+	cout << "Test: " << (arc_tail == u3 && arc_head == u1) << "\n";
+	
 	cout << "Done.\n";
 	
 	exit(0);
