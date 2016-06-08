@@ -22,7 +22,7 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 	copy_graph.run();
 	
 	
-	cout << "Arcs: " << work_graph.arcNum() << "\n";
+	cout << "Arcs: " << countArcs(work_graph) << "\n";
 	
 	int i = 1;
 	
