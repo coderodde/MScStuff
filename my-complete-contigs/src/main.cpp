@@ -19,7 +19,7 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 	DigraphCopy<StaticDigraph, ListDigraph> copy_graph(graph, work_graph);
 	copy_graph.run();
 	
-	for (ListDigraph::Arc a(work_graph); a != INVALID; ++a)
+	for (ListDigraph::ArcIt a(work_graph); a != INVALID; ++a)
 	{
 		// Remove the current arc.
 		work_graph.erase(a);
@@ -296,7 +296,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	/////////////////////////////////////////////////////////
 	unordered_set<int> strong_bridge_id_set = find_strong_bridges(graph);
 	
-	if (degub_print)
+	if (debug_print)
 	{
 		cout << "Number of strong bridges is " << ret.size() << endl;
 	}
