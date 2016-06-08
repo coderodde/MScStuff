@@ -29,7 +29,7 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 		int number_of_strongly_connected_components =
 				stronglyConnectedComponents(work_graph, scc);
 		
-		if (number_of_strongly_connected_components != 1)
+		if (number_of_strongly_connected_components == 1)
 		{
 			ret.insert(work_graph.id(a));
 		}
