@@ -38,6 +38,16 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 	for (StaticDigraph::ArcIt arcit(graph); arcit != INVALID; ++arcit)
 	{
 		// Here I need to find an arc in the ListDigraph to which 'arcit' maps:
+		ListDigraph::Arc current_arc = map_input_graph_arcs_to_work_graph_arcs[arcit];
+		
+		work_graph.erase(current_arc);
+		
+		
+		
+		work_graph.addArc(work_graph.source(current_arc),
+			          work_graph.target(current_arc));
+		
+		cout << "Work graph size: " << work_graph.nodeNum() << "\n";
 	}
 	
 	return ret;
