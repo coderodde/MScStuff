@@ -47,7 +47,7 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 		work_graph.addArc(work_graph.source(current_arc),
 			          work_graph.target(current_arc));
 		
-		cout << "Work graph size: " << work_graph.nodeNum() << "\n";
+		cout << "Work graph size: " << countNodes(work_graph) << "\n";
 	}
 	
 	return ret;
