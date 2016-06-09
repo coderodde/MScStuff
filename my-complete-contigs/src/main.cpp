@@ -14,13 +14,25 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 {
 	unordered_set<int> ret;
 
-	int count = 0;
+	// Create a graph copy that we will manipulate:
+	ListDigraph work_graph;
+	DigraphCopy<StaticDigraph, ListDigraph> digraph_copy(graph, work_graph);
+	
+	// Create a map mapping the nodes from StaticDigraph to ListDigraph:
+	StaticDigraph::NodeMap<ListDigraph::Node> input_to_work_graph_node_map(graph);
+	digraph_copy.nodeRef(input_to_work_graph_node_map);
+	
+	// Create a map mapping the arcs of ListDigraph to the arcs of StaticDigraph:
+	ListDigraph::ArcMap<StaticDigraph::Arc> work_graph_to_input_arc_map(work_graph);
+	digraph_copy.arcCrossRef(work_graph_to_input_arc_map);
+	
+	digraph_copy.run();
+
 	for (StaticDigraph::ArcIt arcit(graph); arcit != INVALID; ++arcit)
 	{
-		count++;
+		// Here I need to find an arc in the ListDigraph to which 'arcit' maps:
 	}
 	
-	cout << "Arcs in find_strong_bridges " << count << "\n";
 	return ret;
 
 	//ListDigraph scc_check_graph;
