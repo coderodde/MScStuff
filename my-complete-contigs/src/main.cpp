@@ -1331,8 +1331,8 @@ int main(int argc, char **argv)
 	ListDigraph::Node c = graph.addNode();
 	ListDigraph::Node d = graph.addNode();
 	
-	ListDigraph::NodeMap<StaticDigraph::Node> graph_nodes_to_static_graph_nodes;
-	ListDigraph::ArcMap<StaticDigraph::Arc>   graph_arcs_to_static_graph_arcs;
+	ListDigraph::NodeMap<StaticDigraph::Node> graph_nodes_to_static_graph_nodes(graph);
+	ListDigraph::ArcMap<StaticDigraph::Arc>   graph_arcs_to_static_graph_arcs(graph);
 	
 	StaticDigraph static_graph;
 	static_graph.build(graph, graph_nodes_to_static_graph_nodes, graph_arcs_to_static_graph_arcs);
