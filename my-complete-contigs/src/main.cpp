@@ -1347,12 +1347,30 @@ int main(int argc, char **argv)
 	StaticDigraph static_graph;
 	static_graph.build(my_graph, graph_nodes_to_static_graph_nodes, graph_arcs_to_static_graph_arcs);
 	
+	StaticDigraph::Arc bridge_ab = graph_arcs_to_static_graph_arcs[ab];
+	StaticDigraph::Arc bridge_bd = graph_arcs_to_static_graph_arcs[bd];
+	StaticDigraph::Arc bridge_dc = graph_arcs_to_static_graph_arcs[dc];
+	StaticDigraph::Arc bridge_ca = graph_arcs_to_static_graph_arcs[ca];
+	
 	cout << "Static graph nodes: " << countNodes(static_graph) << "\n";
 	cout << "Static graph arcs:  " << countArcs(static_graph) << "\n";
+	
+	cout << "a -> b: " << static_graph.id(bridge_ab) << "\n";
+	cout << "b -> d: " << static_graph.id(bridge_bd) << "\n";
+	cout << "d -> c: " << static_graph.id(bridge_dc) << "\n";
+	cout << "c -> a: " << static_graph.id(bridge_ca) << "\n";
 	
 	unordered_set<int> strong_bridge_id_set = find_strong_bridges(static_graph);
 	
 	cout << "Strong bridges: " << strong_bridge_id_set.size() << "\n";
+	cout << "Contents: ";
+	
+	for (const auto id : strong_bridge_id_set)
+	{
+		cout << id << " ";
+	}
+	
+	cout << "\n";
 	
 	exit(0);
 	
