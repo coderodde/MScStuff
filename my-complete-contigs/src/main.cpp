@@ -1352,7 +1352,7 @@ int main(int argc, char **argv)
 	
 	unordered_set<int> strong_bridge_id_set = find_strong_bridges(static_graph);
 	
-	cout << "Strong bridges: " << strong_bridge_is_set.size() << "\n";
+	cout << "Strong bridges: " << strong_bridge_id_set.size() << "\n";
 	
 	exit(0);
 	
