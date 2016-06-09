@@ -1331,6 +1331,16 @@ int main(int argc, char **argv)
 	ListDigraph::Node c = my_graph.addNode();
 	ListDigraph::Node d = my_graph.addNode();
 	
+	// Strong bridges:
+	ListDigraph::Arc ab = my_graph.addArc(a, b);
+	ListDigraph::Arc bd = my_graph.addArc(b, d);
+	ListDigraph::Arc dc = my_graph.addArc(d, c);
+	ListDigraph::Arc ca = my_graph.addArc(c, a);
+	
+	// Other arcs:
+	ListDigraph::Arc db = my_graph.addArc(d, b);
+	ListDigraph::Arc ac = my_graph.addArc(a, c);
+	
 	ListDigraph::NodeMap<StaticDigraph::Node> graph_nodes_to_static_graph_nodes(my_graph);
 	ListDigraph::ArcMap<StaticDigraph::Arc>   graph_arcs_to_static_graph_arcs(my_graph);
 	
@@ -1339,6 +1349,10 @@ int main(int argc, char **argv)
 	
 	cout << "Static graph nodes: " << countNodes(static_graph) << "\n";
 	cout << "Static graph arcs:  " << countArcs(static_graph) << "\n";
+	
+	unordered_set<int> strong_bridge_id_set = find_strong_bridges(static_graph);
+	
+	cout << "Strong bridges: " << strong_bridge_is_set.size() << "\n";
 	
 	exit(0);
 	
