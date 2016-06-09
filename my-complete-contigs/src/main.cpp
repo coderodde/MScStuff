@@ -10,7 +10,7 @@ int N_THREADS;
 // This function returns an unordered (hash) set of arc IDs that are strong
 // bridges. Removing a strong bridge from the graph increases the number of
 // strongly connected components.
-unordered_set<int> find_strong_bridges(const Digraph& graph)
+unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 {
 	unordered_set<int> ret;
 
