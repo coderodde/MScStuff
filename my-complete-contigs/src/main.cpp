@@ -15,7 +15,7 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 	unordered_set<int> ret;
 
 	int count = 0;
-	for (Digraph::ArcIt arcit(graph); arcit != INVALID; ++arcit)
+	for (StaticDigraph::ArcIt arcit(graph); arcit != INVALID; ++arcit)
 	{
 		count++;
 	}
