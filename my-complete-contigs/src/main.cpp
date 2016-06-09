@@ -1290,40 +1290,7 @@ vector<contig> compute_omnitigs(StaticDigraph& graph,
 
 
 int main(int argc, char **argv)
-{
-	ListDigraph graph1;
-	ListDigraph graph2;
-	
-	ListDigraph::Node node1 = graph1.addNode();
-	ListDigraph::Node node2 = graph1.addNode();
-	ListDigraph::Node node3 = graph1.addNode();
-	
-	graph1.addArc(node3, node1);
-	
-	DigraphCopy<ListDigraph, ListDigraph> cg(graph1, graph2);
-	ListDigraph::ArcMap<ListDigraph::Arc> new_to_original_arc_map(graph2);
-	cg.arcCrossRef(new_to_original_arc_map);
-	cg.run();
-	
-	ListDigraph::Node u1 = graph2.nodeFromId(0);
-	ListDigraph::Node u2 = graph2.nodeFromId(1);
-	ListDigraph::Node u3 = graph2.nodeFromId(3);
-	
-	ListDigraph::Arc arc = graph2.arcFromId(0);
-	ListDigraph::Node arc_tail = graph2.source(arc);
-	ListDigraph::Node arc_head = graph2.target(arc);
-	
-	cout << "Test: " << (arc_tail == u3 && arc_head == u1) << "\n";
-	
-	cout << "Done.\n";
-	
-	exit(0);
-	
-	////////////////////
-	////////////////////
-	////////////////////
-	////////////////////
-	
+{	
 	StaticDigraph graph;
 	StaticDigraph::NodeMap<size_t> length(graph);
 	StaticDigraph::NodeMap<size_t> seqStart(graph);
