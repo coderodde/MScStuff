@@ -1324,20 +1324,21 @@ vector<contig> compute_omnitigs(StaticDigraph& graph,
 
 int main(int argc, char **argv)
 {
-	ListDigraph graph;
+	ListDigraph my_graph;
 	
-	ListDigraph::Node a = graph.addNode();
-	ListDigraph::Node b = graph.addNode();
-	ListDigraph::Node c = graph.addNode();
-	ListDigraph::Node d = graph.addNode();
+	ListDigraph::Node a = my_graph.addNode();
+	ListDigraph::Node b = my_graph.addNode();
+	ListDigraph::Node c = my_graph.addNode();
+	ListDigraph::Node d = my_graph.addNode();
 	
-	ListDigraph::NodeMap<StaticDigraph::Node> graph_nodes_to_static_graph_nodes(graph);
-	ListDigraph::ArcMap<StaticDigraph::Arc>   graph_arcs_to_static_graph_arcs(graph);
+	ListDigraph::NodeMap<StaticDigraph::Node> graph_nodes_to_static_graph_nodes(my_graph);
+	ListDigraph::ArcMap<StaticDigraph::Arc>   graph_arcs_to_static_graph_arcs(my_graph);
 	
 	StaticDigraph static_graph;
-	static_graph.build(graph, graph_nodes_to_static_graph_nodes, graph_arcs_to_static_graph_arcs);
+	static_graph.build(my_graph, graph_nodes_to_static_graph_nodes, graph_arcs_to_static_graph_arcs);
 	
 	cout << "Static graph nodes: " << countNodes(static_graph) << "\n";
+	cout << "Static graph arcs:  " << countArcs(static_graph) << "\n";
 	
 	exit(0);
 	
