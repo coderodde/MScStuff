@@ -27,6 +27,13 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 	digraph_copy.arcCrossRef(work_graph_to_input_arc_map);
 	
 	digraph_copy.run();
+	
+	StaticDigraph::ArcMap<ListDigraph::Arc> map_input_graph_arcs_to_work_graph_arcs(graph);
+	
+	for (ListDigraph::ArcIt arcit(work_graph); arcit != INVALID; ++arcit)
+	{
+		map_input_graph_arcs_to_work_graph_arcs[work_graph_to_input_arc_map[arcit]] = arcit;
+	}
 
 	for (StaticDigraph::ArcIt arcit(graph); arcit != INVALID; ++arcit)
 	{
