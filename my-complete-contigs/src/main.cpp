@@ -56,11 +56,6 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 		cout << "Work graph size: " << countArcs(work_graph) << "\n";
 	}
 	
-	if (debug_print)
-	{
-		cout << "[CODERODDE] Number of strong bridges: " << ret.size() << "\n";
-	}
-	
 	return ret;
 
 	//ListDigraph scc_check_graph;
@@ -418,7 +413,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	if (debug_print)
 	{
-		cout << "Number of strong bridges is " << ret.size() << endl;
+		cout << "[CODERODDE] Number of strong bridges is " << ret.size() << endl;
 	}
 	
 	    /////////////////////
