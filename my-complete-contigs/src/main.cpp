@@ -41,7 +41,6 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 		ListDigraph::Arc current_arc = map_input_graph_arcs_to_work_graph_arcs[arcit];
 		
 		work_graph.erase(current_arc);	
-		cout << "Work graph size: " << countArcs(work_graph) << "\n";
 		
 		ListDigraph::NodeMap<int> scc(work_graph);
 		int number_of_strongly_connected_components = stronglyConnectedComponents(work_graph, scc);
@@ -53,7 +52,6 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 		
 		work_graph.addArc(work_graph.source(current_arc),
 			          work_graph.target(current_arc));
-		cout << "Work graph size: " << countArcs(work_graph) << "\n";
 	}
 	
 	return ret;
@@ -1325,7 +1323,29 @@ vector<contig> compute_omnitigs(StaticDigraph& graph,
 
 
 int main(int argc, char **argv)
-{	
+{
+	ListDigraph graph;
+	
+	ListDigraph::Node a = graph.addNode();
+	ListDigraph::Node b = graph.addNode();
+	ListDigraph::Node c = graph.addNode();
+	ListDigraph::Node d = graph.addNode();
+	
+	ListDigraph::NodeMap<StaticDigraph::Node> graph_nodes_to_static_graph_nodes;
+	ListDigraph::ArcMap<StaticDigraph::Arc>   graph_arcs_to_static_graph_arcs;
+	
+	StaticDigraph static_graph;
+	static_graph.build(graph, graph_nodes_to_static_graph_nodes, graph_arcs_to_static_graph_arcs);
+	
+	cout << "Static graph nodes: " << countNodes(static_graph) << "\n";
+	
+	exit(0);
+	
+	//////////////////////////////////////////
+	//////////////////////////////////////////
+	//////////////////////////////////////////
+	//////////////////////////////////////////
+	
 	StaticDigraph graph;
 	StaticDigraph::NodeMap<size_t> length(graph);
 	StaticDigraph::NodeMap<size_t> seqStart(graph);
