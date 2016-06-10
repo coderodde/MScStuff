@@ -55,9 +55,11 @@ static vector<StaticDigraph::Node> get_circular_walk(const StaticDigraph& graph,
 
 // This function computes a map. The map in question maps each node in the main input graph to
 // an unordered (hash) set containing the IDs of the nodes that are the certificates of each mapped node.
-static StaticDigraph::NodeMap<unordered_set<int>> find_certificate_sets(StaticDigraph& graph, bool debug_print)
+static void find_certificate_sets(StaticDigraph& graph,
+				  StaticDigraph::NodeMap<unordered_set<int>>& map_node_to_certificate_set,
+			  	  bool debug_print)
 {
-	StaticDigraph::NodeMap<unordered_set<int>> map_node_to_certificate_set(graph);
+	//StaticDigraph::NodeMap<unordered_set<int>> map_node_to_certificate_set(graph);
 	int nodes = graph.nodeNum();
 	
 	if (debug_print)
@@ -179,14 +181,13 @@ static StaticDigraph::NodeMap<unordered_set<int>> find_certificate_sets(StaticDi
 		     << map_node_to_certificate_set[tmp_node].size()
 	             << endl;*/
 	}
-	
-	return map_node_to_certificate_set;
 }
 
 
 // Computes the m x m matrix of bools. For arcs (x -> y) and (z -> w), the matrix[x -> y][z -> w] tells
 // whether there is a path x ---> w, with the first arc different from x -> y and the last arc different from z -> w.
-static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const StaticDigraph& graph, bool debug_print)
+static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const StaticDigraph& graph,
+								     bool debug_print)
 {
 	if (debug_print)
 	{
@@ -341,7 +342,8 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	    ////////////////////////////////////////////////////
 	  //// Computing node certificate sets! Lemma 5.1 ////
 	////////////////////////////////////////////////////
-	StaticDigraph::NodeMap<unordered_set<int>> map_node_to_certificate_set = find_certificate_sets(graph, debug_print);
+	StaticDigraph::NodeMap<unordered_set<int>> map_node_to_certificate_set;
+	find_certificate_sets(graph, map_node_to_certificate_set, debug_print);
 	
 	    /////////////////////////////////////////
 	  //// Compute the a-matrix. Lemma 5.2 ////
