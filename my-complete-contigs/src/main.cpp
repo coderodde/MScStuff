@@ -1321,8 +1321,7 @@ vector<contig> compute_omnitigs(StaticDigraph& graph,
 	return ret;
 }
 
-
-int main(int argc, char **argv)
+static void test_strong_bridges()
 {
 	ListDigraph my_graph;
 	
@@ -1353,7 +1352,7 @@ int main(int argc, char **argv)
 	StaticDigraph::Arc bridge_ca = graph_arcs_to_static_graph_arcs[ca];
 	
 	cout << "Static graph nodes: " << countNodes(static_graph) << "\n";
-	cout << "Static graph arcs:  " << countArcs(static_graph) << "\n";
+	cout << "Static graph arcs:  " << countArcs(static_graph)  << "\n";
 	
 	cout << "a -> b: " << static_graph.id(bridge_ab) << "\n";
 	cout << "b -> d: " << static_graph.id(bridge_bd) << "\n";
@@ -1371,6 +1370,11 @@ int main(int argc, char **argv)
 	}
 	
 	cout << "\n";
+}
+
+int main(int argc, char **argv)
+{
+	test_strong_bridges();
 	
 	exit(0);
 	
