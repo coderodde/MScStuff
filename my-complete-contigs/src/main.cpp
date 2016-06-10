@@ -195,6 +195,12 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 	
 	unordered_map<int, unordered_map<int, bool>> a_matrix;
 	
+	// Create a ListDigraph for manipulating the topology.
+	ListDigraph work_graph;
+	// Copy the input graph to the ListDigraph created above.
+	DigraphCopy<StaticDigraph, ListDigraph> copy_graph(graph, work_graph);
+	copy_graph.run();
+	
 	// Since we will tamper with the arcs, we need another graph for topology modifications.
 	for (StaticDigraph::ArcIt a(graph); a != INVALID; ++a)
 	{
@@ -345,12 +351,6 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	  //// Computing the strong bridges. Lemma 5.3 with a relaxation O(m) -> O(m^2). ////
 	///////////////////////////////////////////////////////////////////////////////////
 	unordered_set<int> strong_bridge_id_set = find_strong_bridges(graph, debug_print);
-	
-	// Create a ListDigraph for manipulating the topology.
-	ListDigraph work_graph;
-	// Copy the input graph to the ListDigraph created above.
-	DigraphCopy<StaticDigraph, ListDigraph> copy_graph(graph, work_graph);
-	copy_graph.run();
 	
 	if (debug_print)
 	{
