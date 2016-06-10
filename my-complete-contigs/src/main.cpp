@@ -1312,7 +1312,7 @@ static void test_strong_bridges()
 	cout << "d -> c: " << static_graph.id(bridge_dc) << "\n";
 	cout << "c -> a: " << static_graph.id(bridge_ca) << "\n";
 	
-	unordered_set<int> strong_bridge_id_set = find_strong_bridges(const_cast<const StaticDigraph>(static_graph), false);
+	unordered_set<int> strong_bridge_id_set = find_strong_bridges(const_cast<const StaticDigraph&>(static_graph), false);
 	
 	cout << "Strong bridges: " << strong_bridge_id_set.size() << "\n";
 	cout << "Contents: ";
