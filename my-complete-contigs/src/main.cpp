@@ -17,6 +17,7 @@ static vector<StaticDigraph::Node> get_circular_walk(const StaticDigraph& graph,
 	}
 	
 	vector<StaticDigraph::Node> main_walk;
+	int nodes = graph.nodeNum();
 	
 	for (int node_id = 0; node_id < nodes; ++node_id)
 	{
@@ -107,7 +108,7 @@ static StaticDigraph::NodeMap<unordered_set<int>>& find_certificate_sets(StaticD
 	{
 		cout << "[CODERODDE](find_certificate_sets) The number of divided arcs before copying the arcs is "
 		     << countArcs(subdivided_graph)
-		     << "\n;		
+		     << "\n";		
 	}
 	
 	// Copy the original arcs to the subdivided graph.
