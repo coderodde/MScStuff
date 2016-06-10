@@ -55,103 +55,6 @@ unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
 	}
 	
 	return ret;
-
-	//ListDigraph scc_check_graph;
-	//DigraphCopy<StaticDigraph, ListDigraph> cg(graph, scc_check_graph);
-	//StaticDigraph::NodeMap<ListDigraph::Node> nr(graph);
-	//ListDigraph::ArcMap<StaticDigraph::Arc> map_arcs_new_to_source;
-	//
-	//cg.arcCrossRef(map_arcs_new_to_source);
-	//cg.nodeRef(nr);
-	//cg.run();
-	//	
-	//for (StaticDigraph::ArcIt arcit(graph); arcit != INVALID; ++arcit)
-	//{
-	//	// Find the arc in the 'scc_check_graph' that is mapped to 'arcit':
-	//	StaticDigraph::Node source_tail_node = graph.source(arcit);
-	//	StaticDigraph::Node source_head_node = graph.target(arcit);
-	//	
-	//	ListDigraph::Node target_tail_node = nr[source_tail_node];
-	//	ListDigraph::Node target_head_node = nr[source_head_node];
-	//	
-	//	
-	//}
-	//
-	//
-	//int number_of_arcs = countArcs(graph);
-	//
-	//for (int arc_id = 0; arc_id < number_of_arcs; ++arc_id)
-	//{
-	//	// Remove the current arc with ID 'arc_id':
-	//	ListDigraph::Arc removed_arc = scc_check_graph.arcFromId(arc_id);
-	//	ListDigraph::Node removed_arc_tail = scc_check_graph.source(removed_arc);
-	//	ListDigraph::Node removed_arc_head = scc_check_graph.target(removed_arc);
-	//	
-	//	
-	//	
-	//	// Return the current arc with ID 'arc_id':
-	//	scc_check_graph.addArc(removed_arc_tail, removed_arc_head);
-	//}
-	//
-	//
-	///*ListDigraph work_graph;
-	//
-	//// Copy the input graph to the ListDigraph created above.
-	//DigraphCopy<StaticDigraph, ListDigraph> copy_graph(graph, work_graph);
-	//copy_graph.run();
-	//
-	//for (ListDigraph::ArcIt a(work_graph); a != INVALID; ++a)
-	//{
-	//	// Since we are iterating over the arcs of 'work_graph', we are
-	//	// not allowed to erase/return arcs from it, or otherwise we
-	//	// will enter an infinite loop. Create a copy and work on it
-	//	// instead.
-	//	ListDigraph scc_check_graph;
-	//	DigraphCopy<ListDigraph, ListDigraph> copy_graph2(work_graph, scc_check_graph);
-	//	copy_graph2.run();		
-	//	
-	//	const int arcId = work_graph.id(a);
-	//	const int tailNodeId = work_graph.id(work_graph.source(a));
-	//	const int headNodeId = work_graph.id(work_graph.target(a));
-	//	
-	//	ListDigraph::Arc removed_arc = scc_check_graph.arcFromId(arcId);
-	//	ListDigraph::Node removed_arc_tail = scc_check_graph.source(removed_arc);
-	//	ListDigraph::Node removed_arc_head = scc_check_graph.target(removed_arc);
-	//	
-	//	const int removed_arc_tail_id = scc_check_graph.id(removed_arc_tail);
-	//	const int removed_arc_head_id = scc_check_graph.id(removed_arc_head);
-	//	const int removed_arc_id      = scc_check_graph.id(removed_arc);
-	//	
-	//	
-	//	
-	//	scc_check_graph.erase(removed_arc);
-	//	
-	//	if (tailNodeId != removed_arc_tail_id)
-	//	{
-	//		cout << "Fail 1" << endl;
-	//	}
-	//	
-	//	if (headNodeId != removed_arc_head_id)
-	//	{
-	//		cout << "Fail 2" << endl;
-	//	}
-	//	
-	//	ListDigraph::NodeMap<int> scc(scc_check_graph);
-	//	int number_of_strongly_connected_components =
-	//			stronglyConnectedComponents(scc_check_graph, scc);
-	//	
-	//	if (number_of_strongly_connected_components != 1)
-	//	{
-	//		ret.insert(removed_arc_id);
-	//	}
-	//	
-	//	// Return the current arc to the work graph, and go check for next arc.
-	//	//work_graph.addArc(work_graph.source(a),
-	//	//		  work_graph.target(a));
-	//}*/
-	//
-	//cout << "Bridge end\n";
-	//return ret;
 }
 
 vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
@@ -1374,10 +1277,8 @@ static void test_strong_bridges()
 
 int main(int argc, char **argv)
 {
-	test_strong_bridges();
-	
-	exit(0);
-	
+	ListDigraph shit;
+	ListDigraph::Node node = shit.nodeFromId(1000);
 	//////////////////////////////////////////
 	//////////////////////////////////////////
 	//////////////////////////////////////////
