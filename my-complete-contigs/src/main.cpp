@@ -322,6 +322,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					   const string inputFileName,
 					   const bool debug_print)
 {
+	vector<contig> ret;
 	size_t nodes = graph.nodeNum();
 	
 	if (debug_print)
@@ -363,7 +364,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	if (debug_print)
 	{
-		cout << "[CODERODDE] Number of strong bridges is " << ret.size() << endl;
+		cout << "[CODERODDE] Number of strong bridges is " << strong_bridge_id_set.size() << endl;
 	}
 	
 	    /////////////////////
