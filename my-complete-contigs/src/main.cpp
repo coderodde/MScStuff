@@ -350,21 +350,16 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	/////////////////////////////////////////
 	unordered_map<int, unordered_map<int, bool>> a_matrix = compute_a_matrix(graph, debug_print);
 	
-	    ///////////////////////////////////////////////////////////////////////////////////
-	  //// Computing the strong bridges. Lemma 5.3 with a relaxation O(m) -> O(m^2). ////
-	///////////////////////////////////////////////////////////////////////////////////
-	unordered_set<int> strong_bridge_id_set = find_strong_bridges(graph, debug_print);
-	
 	//if (debug_print)
 	//{
 	//	cout << "[CODERODDE] Copy graph nodes: " << countNodes(work_graph) << endl;
 	//	cout << "[CODERODDE] Copy graph arcs:  " << countArcs(work_graph) << endl;		
 	//}
 	
-	    /////////////////////////////////////////////////////////
-	  //// Lemma 5.3 (Relaxation: O(m^2) instead of O(m).) ////
-	/////////////////////////////////////////////////////////
-	unordered_set<int> strong_bridge_id_set = find_strong_bridges(graph);
+	    ///////////////////////////////////////////////////////////////////////////////////
+	  //// Computing the strong bridges. Lemma 5.3 with a relaxation O(m) -> O(m^2). ////
+	///////////////////////////////////////////////////////////////////////////////////
+	unordered_set<int> strong_bridge_id_set = find_strong_bridges(graph, debug_print);
 	
 	if (debug_print)
 	{
