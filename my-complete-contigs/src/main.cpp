@@ -57,7 +57,7 @@ static vector<StaticDigraph::Node> get_circular_walk(const StaticDigraph& graph,
 // an unordered (hash) set containing the IDs of the nodes that are the certificates of each mapped node.
 static StaticDigraph::NodeMap<unordered_set<int>>& find_certificate_sets(StaticDigraph& graph, bool debug_print)
 {
-	StaticDigraph::NodeMap<unordered_set<int>> map_node_to_certificate_set;
+	StaticDigraph::NodeMap<unordered_set<int>> map_node_to_certificate_set(graph);
 	int nodes = graph.nodeNum();
 	
 	if (debug_print)
