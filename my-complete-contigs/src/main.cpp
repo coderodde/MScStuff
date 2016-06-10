@@ -355,14 +355,11 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	///////////////////////////////////////////////////////////////////////////////////
 	unordered_set<int> strong_bridge_id_set = find_strong_bridges(graph, debug_print);
 	
-	if (debug_print)
-	{
-		cout << "[CODERODDE] Copy graph nodes: " << countNodes(work_graph) << endl;
-		cout << "[CODERODDE] Copy graph arcs:  " << countArcs(work_graph) << endl;		
-	}
-	
-	//// This is a matrix mapping the pair of arc indices to a desired boolean value.
-	unordered_map<int, unordered_map<int, bool>> a_matrix;
+	//if (debug_print)
+	//{
+	//	cout << "[CODERODDE] Copy graph nodes: " << countNodes(work_graph) << endl;
+	//	cout << "[CODERODDE] Copy graph arcs:  " << countArcs(work_graph) << endl;		
+	//}
 	
 	    /////////////////////////////////////////////////////////
 	  //// Lemma 5.3 (Relaxation: O(m^2) instead of O(m).) ////
