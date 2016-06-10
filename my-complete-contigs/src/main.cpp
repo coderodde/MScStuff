@@ -139,8 +139,8 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	// Create the nodes of the subdivided graph.
 	for (int id = 0; id < nodes; ++id)
 	{
-	    subdivided_graph.addNode();
-	    subdivided_graph.addNode();
+		subdivided_graph.addNode();
+		subdivided_graph.addNode();
 	}
 	
 	if (debug_print)
@@ -1275,10 +1275,24 @@ static void test_strong_bridges()
 	cout << "\n";
 }
 
+static void test_list_digraph_node_ids()
+{
+	ListDigraph graph;
+	graph.addNode();
+	graph.addNode();
+	graph.addNode();
+	graph.addNode();
+	
+	for (ListDigraph::NodeIt node(graph); node != INVALID; ++node)
+	{
+		cout << graph.id(node) << " ";
+	}
+	
+	cout << "\n";
+}
+
 int main(int argc, char **argv)
 {
-	ListDigraph shit;
-	ListDigraph::Node node = shit.nodeFromId(1000);
 	//////////////////////////////////////////
 	//////////////////////////////////////////
 	//////////////////////////////////////////
