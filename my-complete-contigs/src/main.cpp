@@ -7,85 +7,15 @@ using namespace lemon;
 
 int N_THREADS;
 
-// This function returns an unordered (hash) set of arc IDs that are strong
-// bridges. Removing a strong bridge from the graph increases the number of
-// strongly connected components.
-unordered_set<int> find_strong_bridges(const StaticDigraph& graph)
-{
-	unordered_set<int> ret;
-
-	// Create a graph copy that we will manipulate:
-	ListDigraph work_graph;
-	DigraphCopy<StaticDigraph, ListDigraph> digraph_copy(graph, work_graph);
-	
-	// Create a map mapping the nodes from StaticDigraph to ListDigraph:
-	StaticDigraph::NodeMap<ListDigraph::Node> input_to_work_graph_node_map(graph);
-	digraph_copy.nodeRef(input_to_work_graph_node_map);
-	
-	// Create a map mapping the arcs of ListDigraph to the arcs of StaticDigraph:
-	ListDigraph::ArcMap<StaticDigraph::Arc> work_graph_to_input_arc_map(work_graph);
-	digraph_copy.arcCrossRef(work_graph_to_input_arc_map);
-	
-	digraph_copy.run();
-	
-	StaticDigraph::ArcMap<ListDigraph::Arc> map_input_graph_arcs_to_work_graph_arcs(graph);
-	
-	for (ListDigraph::ArcIt arcit(work_graph); arcit != INVALID; ++arcit)
-	{
-		map_input_graph_arcs_to_work_graph_arcs[work_graph_to_input_arc_map[arcit]] = arcit;
-	}
-
-	for (StaticDigraph::ArcIt arcit(graph); arcit != INVALID; ++arcit)
-	{
-		// Here I need to find an arc in the ListDigraph to which 'arcit' maps:
-		ListDigraph::Arc current_arc = map_input_graph_arcs_to_work_graph_arcs[arcit];
-		
-		work_graph.erase(current_arc);	
-		
-		ListDigraph::NodeMap<int> scc(work_graph);
-		int number_of_strongly_connected_components = stronglyConnectedComponents(work_graph, scc);
-	
-		if (number_of_strongly_connected_components != 1)
-		{
-			ret.insert(graph.id(arcit));
-		}
-		
-		work_graph.addArc(work_graph.source(current_arc),
-			          work_graph.target(current_arc));
-	}
-	
-	return ret;
-}
-
-vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
-					   const StaticDigraph::NodeMap<size_t>& length,
-					   const StaticDigraph::NodeMap<size_t>& seqStart,
-					   const size_t kmersize,
-					   const string& sequence,
-					   const string inputFileName,
-					   const bool debug_print)
+// This function returns a circular node-covering walk in the input graph.
+// A node-covering walk is a walk that visits each node at least once.
+static vector<StaticDigraph::Node> get_circular_walk(const StaticDigraph& graph, bool debug_print)
 {
 	if (debug_print)
 	{
-		cout << "[CODERODDE] Entered 'coderodde_project_algorithm'." << endl;	
-	
-	}
-	vector<contig> ret;
-	size_t nodes = graph.nodeNum();
-	
-	if (debug_print)
-	{
-		cout << "[CODERODDE] The size of the input graph is: " << nodes << endl;
-		cout << "[CODERODDE] The number of arcs in the graph is: " << graph.arcNum() << endl;
-	
-		cout << "[CODERODDE] k-mer size: " << kmersize << endl;
-		cout << "[CODERODDE] Sequence length: " << sequence.length() << endl;
-		cout << "[CODERODDE] Input file name: " << inputFileName << endl;	
+		cout << "[CODERODDE](get_circular_walk) Computing the main circular walk...\n";	
 	}
 	
-	    ////////////////////////////////////////////////////
-	  //// Computing a node-covering circular walk C. ////
-	////////////////////////////////////////////////////
 	vector<StaticDigraph::Node> main_walk;
 	
 	for (int node_id = 0; node_id < nodes; ++node_id)
@@ -116,19 +46,28 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	if (debug_print)
 	{
-		cout << "[CODERODDE] The length of the main walk is: " << main_walk.size() << endl;	
+		cout << "[CODERODDE](get_circular_walk) The length of the main circular walk is: " << main_walk.size() << "\n";	
 	}
-		    
-	    ////////////////////////////////////////////////////
-	  //// Computing node certificate sets! Lemma 5.1 ////
-	////////////////////////////////////////////////////
-	StaticDigraph::NodeMap<unordered_set<int>> map_node_to_certificate_set(graph);
+	
+	return main_walk;
+}
+
+// This function computes a map. The map in question maps each node in the main input graph to
+// an unordered (hash) set containing the IDs of the nodes that are the certificates of each mapped node.
+static StaticDigraph::NodeMap<unordered_set<int>>& find_certificate_sets(StaticDigraph& graph, bool debug_print)
+{
+	StaticDigraph::NodeMap<unordered_set<int> map_node_to_certificate_set;
+	
+	if (debug_print)
+	{
+		cout << "[CODERODDE](find_certificate_sets) Computing the certificate sets!\n";	
+	}
 	
 	for (int id = 0; id < nodes; ++id)
 	{
-	    StaticDigraph::Node node = graph.node(id);
-	    unordered_set<int> initial_certificate_set = { id };
-	    map_node_to_certificate_set[node] = initial_certificate_set;
+		StaticDigraph::Node node = graph.node(id);
+		unordered_set<int> initial_certificate_set = { id };
+		map_node_to_certificate_set[node] = initial_certificate_set;
 	}
 	
 	//// Now subdivide the graph.
@@ -145,10 +84,11 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	if (debug_print)
 	{
-		cout << "[CODERODDE] The size of the subdivided graph is "
+		cout << "[CODERODDE](find_certificate_sets) The size of the subdivided graph is "
 		     << countNodes(subdivided_graph) << endl;	
 	}
 	
+	// Maps the indices of the tail and head nodes to the actual arc between them:
 	unordered_map<int, unordered_map<int, ListDigraph::Arc>> arc_matrix;
 	
 	// Create the subdivision arcs for the subdivided graph. We split each
@@ -165,7 +105,9 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	if (debug_print)
 	{
-		cout << "[CODERODDE] The number of divided arcs before copying the arcs is " << countArcs(subdivided_graph) << endl;		
+		cout << "[CODERODDE](find_certificate_sets) The number of divided arcs before copying the arcs is "
+		     << countArcs(subdivided_graph)
+		     << "\n;		
 	}
 	
 	// Copy the original arcs to the subdivided graph.
@@ -236,27 +178,19 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	             << endl;*/
 	}
 	
-	    /////////////////////////////////////////
-	  //// Compute the a-matrix. Lemma 5.2 ////
-	/////////////////////////////////////////
+	return map_node_to_certificate_set;
+}
+
+
+// Computes the m x m matrix of bools. For arcs (x -> y) and (z -> w), the matrix[x -> y][z -> w] tells
+// whether there is a path x ---> w, with the first arc different from x -> y and the last arc different from z -> w.
+static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const StaticDigraph& graph, bool debug_print)
+{
 	if (debug_print)
 	{
-		cout << "[CODERODDE] Computing the a-matrix in O(m^2)!" << endl;	
+		cout << "[CODERODDE](compute_a_matrix) Computing the a-matrix in O(m^2)...\n";
 	}
 	
-	// Create a ListDigraph for manipulating the topology.
-	ListDigraph work_graph;
-	// Copy the input graph to the ListDigraph created above.
-	DigraphCopy<StaticDigraph, ListDigraph> copy_graph(graph, work_graph);
-	copy_graph.run();
-	
-	if (debug_print)
-	{
-		cout << "[CODERODDE] Copy graph nodes: " << countNodes(work_graph) << endl;
-		cout << "[CODERODDE] Copy graph arcs:  " << countArcs(work_graph) << endl;		
-	}
-	
-	//// This is a matrix mapping the pair of arc indices to a desired boolean value.
 	unordered_map<int, unordered_map<int, bool>> a_matrix;
 	
 	// Since we will tamper with the arcs, we need another graph for topology modifications.
@@ -306,6 +240,124 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		
 		//cout << "Start arc ID: " << arc_id << ", mappings: " << a_matrix[arc_id].size() << endl;
 	}
+	
+	return a_matrix;
+}
+
+// This function returns an unordered (hash) set of arc IDs that are strong
+// bridges. Removing a strong bridge from the graph increases the number of
+// strongly connected components.
+static unordered_set<int> find_strong_bridges(const StaticDigraph& graph, bool debug_print)
+{
+	if (debug_print)
+	{
+		cout << "[CODERODDE](find_strong_bridges) Computing strong bridges...\n";
+	}
+	
+	unordered_set<int> ret;
+
+	// Create a graph copy that we will manipulate:
+	ListDigraph work_graph;
+	DigraphCopy<StaticDigraph, ListDigraph> digraph_copy(graph, work_graph);
+	
+	// Create a map mapping the nodes from StaticDigraph to ListDigraph:
+	StaticDigraph::NodeMap<ListDigraph::Node> input_to_work_graph_node_map(graph);
+	digraph_copy.nodeRef(input_to_work_graph_node_map);
+	
+	// Create a map mapping the arcs of ListDigraph to the arcs of StaticDigraph:
+	ListDigraph::ArcMap<StaticDigraph::Arc> work_graph_to_input_arc_map(work_graph);
+	digraph_copy.arcCrossRef(work_graph_to_input_arc_map);
+	
+	digraph_copy.run();
+	
+	StaticDigraph::ArcMap<ListDigraph::Arc> map_input_graph_arcs_to_work_graph_arcs(graph);
+	
+	for (ListDigraph::ArcIt arcit(work_graph); arcit != INVALID; ++arcit)
+	{
+		map_input_graph_arcs_to_work_graph_arcs[work_graph_to_input_arc_map[arcit]] = arcit;
+	}
+
+	for (StaticDigraph::ArcIt arcit(graph); arcit != INVALID; ++arcit)
+	{
+		// Here I need to find an arc in the ListDigraph to which 'arcit' maps:
+		ListDigraph::Arc current_arc = map_input_graph_arcs_to_work_graph_arcs[arcit];
+		
+		work_graph.erase(current_arc);	
+		
+		ListDigraph::NodeMap<int> scc(work_graph);
+		int number_of_strongly_connected_components = stronglyConnectedComponents(work_graph, scc);
+	
+		if (number_of_strongly_connected_components != 1)
+		{
+			ret.insert(graph.id(arcit));
+		}
+		
+		work_graph.addArc(work_graph.source(current_arc),
+			          work_graph.target(current_arc));
+	}
+	
+	if (debug_print)
+	{
+		cout << "[CODERODDE](find_strong_bridges) Number of strong bridges: " << ret.size() << "\n";
+	}
+	
+	return ret;
+}
+
+vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
+					   const StaticDigraph::NodeMap<size_t>& length,
+					   const StaticDigraph::NodeMap<size_t>& seqStart,
+					   const size_t kmersize,
+					   const string& sequence,
+					   const string inputFileName,
+					   const bool debug_print)
+{
+	size_t nodes = graph.nodeNum();
+	
+	if (debug_print)
+	{
+		cout << "[CODERODDE] Entered 'coderodde_project_algorithm'." << endl;	
+		cout << "[CODERODDE] The size of the input graph is: " << nodes << endl;
+		cout << "[CODERODDE] The number of arcs in the graph is: " << graph.arcNum() << endl;
+	
+		cout << "[CODERODDE] k-mer size: " << kmersize << endl;
+		cout << "[CODERODDE] Sequence length: " << sequence.length() << endl;
+		cout << "[CODERODDE] Input file name: " << inputFileName << endl;
+	}
+	    ////////////////////////////////////////////////////
+	  //// Computing a node-covering circular walk C. ////
+	////////////////////////////////////////////////////
+	vector<StaticDigraph::Node> main_walk = get_circular_walk(graph, debug_print);
+		    
+	    ////////////////////////////////////////////////////
+	  //// Computing node certificate sets! Lemma 5.1 ////
+	////////////////////////////////////////////////////
+	StaticDigraph::NodeMap<unordered_set<int>> map_node_to_certificate_set = find_certificate_sets(graph, debug_print);
+	
+	    /////////////////////////////////////////
+	  //// Compute the a-matrix. Lemma 5.2 ////
+	/////////////////////////////////////////
+	unordered_map<int, unordered_map<int, bool>> a_matrix = compute_a_matrix(graph, debug_print);
+	
+	    ///////////////////////////////////////////////////////////////////////////////////
+	  //// Computing the strong bridges. Lemma 5.3 with a relaxation O(m) -> O(m^2). ////
+	///////////////////////////////////////////////////////////////////////////////////
+	unordered_set<int> strong_bridge_id_set = find_strong_bridges(graph, debug_print);
+	
+	// Create a ListDigraph for manipulating the topology.
+	ListDigraph work_graph;
+	// Copy the input graph to the ListDigraph created above.
+	DigraphCopy<StaticDigraph, ListDigraph> copy_graph(graph, work_graph);
+	copy_graph.run();
+	
+	if (debug_print)
+	{
+		cout << "[CODERODDE] Copy graph nodes: " << countNodes(work_graph) << endl;
+		cout << "[CODERODDE] Copy graph arcs:  " << countArcs(work_graph) << endl;		
+	}
+	
+	//// This is a matrix mapping the pair of arc indices to a desired boolean value.
+	unordered_map<int, unordered_map<int, bool>> a_matrix;
 	
 	    /////////////////////////////////////////////////////////
 	  //// Lemma 5.3 (Relaxation: O(m^2) instead of O(m).) ////
