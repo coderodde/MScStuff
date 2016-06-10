@@ -1296,7 +1296,7 @@ static void test_strong_bridges()
 	ListDigraph::NodeMap<StaticDigraph::Node> graph_nodes_to_static_graph_nodes(my_graph);
 	ListDigraph::ArcMap<StaticDigraph::Arc>   graph_arcs_to_static_graph_arcs(my_graph);
 	
-	StaticDigraph static_graph;
+	const StaticDigraph static_graph;
 	static_graph.build(my_graph, graph_nodes_to_static_graph_nodes, graph_arcs_to_static_graph_arcs);
 	
 	StaticDigraph::Arc bridge_ab = graph_arcs_to_static_graph_arcs[ab];
@@ -1312,7 +1312,7 @@ static void test_strong_bridges()
 	cout << "d -> c: " << static_graph.id(bridge_dc) << "\n";
 	cout << "c -> a: " << static_graph.id(bridge_ca) << "\n";
 	
-	unordered_set<int> strong_bridge_id_set = find_strong_bridges(static_graph);
+	unordered_set<int> strong_bridge_id_set = find_strong_bridges(static_graph, false);
 	
 	cout << "Strong bridges: " << strong_bridge_id_set.size() << "\n";
 	cout << "Contents: ";
