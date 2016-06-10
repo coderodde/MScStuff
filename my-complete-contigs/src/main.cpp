@@ -342,7 +342,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	    ////////////////////////////////////////////////////
 	  //// Computing node certificate sets! Lemma 5.1 ////
 	////////////////////////////////////////////////////
-	StaticDigraph::NodeMap<unordered_set<int>> map_node_to_certificate_set;
+	StaticDigraph::NodeMap<unordered_set<int>> map_node_to_certificate_set(graph);
 	find_certificate_sets(graph, map_node_to_certificate_set, debug_print);
 	
 	    /////////////////////////////////////////
