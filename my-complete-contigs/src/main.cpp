@@ -194,6 +194,7 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 	}
 	
 	unordered_map<int, unordered_map<int, bool>> a_matrix;
+	int nodes = graph.nodeNum();
 	
 	// Create a ListDigraph for manipulating the topology.
 	ListDigraph work_graph;
