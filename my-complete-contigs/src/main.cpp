@@ -217,29 +217,62 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 	// Since we will tamper with the arcs, we need another graph for topology modifications.
 	for (StaticDigraph::ArcIt a(graph); a != INVALID; ++a)
 	{
+		// Remove the "current" arc (x_1, y_1):
+		ListDigraph::Arc removed_arc = map_static_digraph_arcs_to_list_digraph_arcs[a];
+		ListDigraph::Node removed_arc_tail = work_graph.source(removed_arc);
+		ListDigraph::Node removed_arc_head = work_graph.target(removed_arc);
+		int removed_arc_id = work_graph.id(removed_arc);
+		work_graph.erase(removed_arc);
+		
 		// (x_1, y_1) is the arc we want to remove in this loop iteration.
-		StaticDigraph::Node x_1 = graph.source(a);
+		/*StaticDigraph::Node x_1 = graph.source(a);
 		StaticDigraph::Node y_1 = graph.target(a);
 		
 		ListDigraph::Node list_digraph_x_1 = map_static_digraph_nodes_to_list_digraph_nodes[x_1];
-		ListDigraph::Node list_digraph_y_1 = map_static_digraph_nodes_to_list_digraph_nodes[y_1];
+		ListDigraph::Node list_digraph_y_1 = map_static_digraph_nodes_to_list_digraph_nodes[y_1];*/
 		
 		// Get the ID of the current arc. 
-		int arc_id = graph.id(a);
+		//int arc_id = graph.id(a);
 		
 		// Remove the current arc.
-		ListDigraph::Arc removed_arc = work_graph.arcFromId(arc_id);
-		ListDigraph::Node source_node = work_graph.source(removed_arc);
-		work_graph.erase(removed_arc);
+		//ListDigraph::Arc removed_arc = work_graph.arcFromId(arc_id);
+		//ListDigraph::Node source_node = work_graph.source(removed_arc);
+		//work_graph.erase(removed_arc);
 		
-		// Compute which nodes are reachable from 'source_node'.
+		// Compute which nodes are reachable from 'x_1'.
 		Dfs<> dfs(work_graph);
-		dfs.run(source_node);
+		dfs.run(removed_arc_tail);
 		
-		// Now consider each node z in V(G).
-		for (int z_node_id = 0; z_node_id < nodes; ++z_node_id)
+		for (StaticDigraph::NodeIt nodeit(graph); nodeit != INVALID; ++nodeit)
+		{
+			ListDigraph::Node z = map_static_digraph_nodes_to_list_digraph_nodes[nodeit];
+			int d_z = 0;
+			
+			// Iterate over all in-neighbors of 'z':
+			for (ListDigraph::InArcIt in_arc(work_graph, z); in_arc != INVALID; ++in_arc)
+			{
+				ListDigraph::Node incoming_node = work_graph.source(in_arc);
+				
+				if (dfs.reached(incoming_node))
+				{
+					++d_z;
+				}
+			}
+			
+			//Iterate the second time over all in-neighbors of 'z':
+			for (ListDigraph::InArcIt in_arc(work_graph, z); in_arc != INVALID; ++in_arc)
+			{
+				ListDigraph::Node w = work_graph.source(in_arc);
+				int r_w = dfs.reached(w) ? 1 : 0;
+				a_matrix[removed_arc_id][work_graph.id(in_arc)] = d_z - r_w > 0;
+			}
+		}
+		
+		// Now consider each node z in V(G):
+		/*for (int z_node_id = 0; z_node_id < nodes; ++z_node_id)
 		{
 			ListDigraph::Node z = work_graph.nodeFromId(z_node_id);
+			
 			int d_z = 0;
 			
 			// Iterate over all in-neighbors of 'z'
@@ -261,10 +294,11 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 				
 				a_matrix[arc_id][work_graph.id(in_arc)] = d_z - r_w > 0;
 			}
-		}
+		}*/
 		
-		// Return the current arc to the 'work_graph'.
-		work_graph.addArc(work_graph.source(removed_arc), work_graph.target(removed_arc));
+		// Return the current arc to the 'work_graph':
+		work_graph.addArc(removed_arc_tail, removed_arc_head);
+		//work_graph.addArc(work_graph.source(removed_arc), work_graph.target(removed_arc));
 		
 		//cout << "Start arc ID: " << arc_id << ", mappings: " << a_matrix[arc_id].size() << endl;
 	}
