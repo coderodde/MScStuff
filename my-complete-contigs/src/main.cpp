@@ -221,8 +221,8 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 		StaticDigraph::Node x_1 = graph.source(a);
 		StaticDigraph::Node y_1 = graph.target(a);
 		
-		ListDigraph::Node list_digraph_x_1 = map_static_node_to_list_node[x_1];
-		ListDigraph::Node list_digraph_y_1 = map_static_node_to_list_node[y_1];
+		ListDigraph::Node list_digraph_x_1 = map_static_digraph_nodes_to_list_digraph_nodes[x_1];
+		ListDigraph::Node list_digraph_y_1 = map_static_digraph_nodes_to_list_digraph_nodes[y_1];
 		
 		// Get the ID of the current arc. 
 		int arc_id = graph.id(a);
