@@ -197,22 +197,33 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 	
 	// Create a ListDigraph for manipulating the topology.
 	ListDigraph work_graph;
+	
 	// Copy the input graph to the ListDigraph created above.
 	DigraphCopy<StaticDigraph, ListDigraph> copy_graph(graph, work_graph);
-	StaticDigraph::NodeMap<ListDigraph::Node> map_static_node_to_list_node(graph);
+	ListDigraph::ArcMap<StaticDigraph::Arc>   map_list_digraph_arcs_to_static_digraph_arcs   (work_graph);
+	StaticDigraph::ArcMap<ListDigraph::Arc>   map_static_digraph_arcs_to_list_digraph_arcs   (graph);
+	StaticDigraph::NodeMap<ListDigraph::Node> map_static_digraph_nodes_to_list_digraph_nodes (graph);
+	
+	copy_graph.arcCrossRef(map_list_digraph_arcs_to_static_digraph_arcs);
 	copy_graph.nodeRef(map_static_node_to_list_node);
 	copy_graph.run();
 	
-	cout << "[WARNING] Trying the node ID test...\n";
-	
-	for (StaticDigraph::NodeIt nodeit(graph); nodeit != INVALID; ++nodeit)
+	//// We need a hashtable mapping StaticDigraph::Arc to ListDigraph::Arc:
+	for (ListDigraph::ArcIt arcit(work_graph); arcit != INVALID; ++arcit)
 	{
-		cout << "Static node ID: " << graph.id(nodeit) << ", list node ID: " << work_graph.id(map_static_node_to_list_node[nodeit]) << "\n";
+		map_static_digraph_arcs_to_list_digraph_arcs[map_list_digraph_arcs_to_static_digraph_arcs] = arcit;
 	}
 	
 	// Since we will tamper with the arcs, we need another graph for topology modifications.
 	for (StaticDigraph::ArcIt a(graph); a != INVALID; ++a)
 	{
+		// (x_1, y_1) is the arc we want to remove in this loop iteration.
+		StaticDigraph::Node x_1 = graph.source(a);
+		StaticDigraph::Node y_1 = graph.target(a);
+		
+		ListDigraph::Node list_digraph_x_1 = map_static_node_to_list_node[x_1];
+		ListDigraph::Node list_digraph_y_1 = map_static_node_to_list_node[y_1];
+		
 		// Get the ID of the current arc. 
 		int arc_id = graph.id(a);
 		
