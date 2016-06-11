@@ -59,7 +59,6 @@ static void find_certificate_sets(const StaticDigraph& graph,
 				  StaticDigraph::NodeMap<unordered_set<int>>& map_node_to_certificate_set,
 			  	  bool debug_print)
 {
-	//StaticDigraph::NodeMap<unordered_set<int>> map_node_to_certificate_set(graph);
 	int nodes = graph.nodeNum();
 	
 	if (debug_print)
@@ -121,8 +120,8 @@ static void find_certificate_sets(const StaticDigraph& graph,
 		StaticDigraph::Node y = graph.source(arcit);
 		StaticDigraph::Node z = graph.target(arcit);
 		
-		int y_index = graph.index(y) + nodes;
-		int z_index = graph.index(z);
+		int y_index = graph.index(y) + nodes; // The index of y_out.
+		int z_index = graph.index(z);         // The index of z_in.
 		
 		ListDigraph::Node new_arc_tail = subdivided_graph.nodeFromId(y_index);
 		ListDigraph::Node new_arc_head = subdivided_graph.nodeFromId(z_index);
@@ -147,8 +146,7 @@ static void find_certificate_sets(const StaticDigraph& graph,
 		
 		// Here, compute the strongly connected components.
 		ListDigraph::NodeMap<int> scc(subdivided_graph);
-		int number_of_strongly_connected_components =
-				stronglyConnectedComponents(subdivided_graph, scc);
+		stronglyConnectedComponents(subdivided_graph, scc);
 		
 		for (int y_node_id = 0; y_node_id < nodes; ++y_node_id)
 		{
@@ -201,7 +199,16 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 	ListDigraph work_graph;
 	// Copy the input graph to the ListDigraph created above.
 	DigraphCopy<StaticDigraph, ListDigraph> copy_graph(graph, work_graph);
+	StaticDigraph::NodeMap<ListDigraph::Node> map_static_node_to_list_node(graph);
+	copy_graph.nodeRef(map_static_node_to_list_node);
 	copy_graph.run();
+	
+	cout << "[WARNING] Trying the node ID test...\n";
+	
+	for (StaticDigraph::NodeIt nodeit(graph); nodeit != INVALID; ++nodeit)
+	{
+		cout << "Static node ID: " << graph.id(nodeit) << ", list node ID: " << work_graph.id(map_static_node_to_list_node[nodeit]) << "\n";
+	}
 	
 	// Since we will tamper with the arcs, we need another graph for topology modifications.
 	for (StaticDigraph::ArcIt a(graph); a != INVALID; ++a)
@@ -1344,7 +1351,8 @@ static void test_list_digraph_node_ids()
 int main(int argc, char **argv)
 {
 	test_list_digraph_node_ids();
-	test_strong_bridges();
+	//test_strong_bridges();
+	exit(0);
 	
 	//////////////////////////////////////////
 	//////////////////////////////////////////
