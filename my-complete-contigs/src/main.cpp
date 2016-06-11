@@ -205,7 +205,7 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 	StaticDigraph::NodeMap<ListDigraph::Node> map_static_digraph_nodes_to_list_digraph_nodes (graph);
 	
 	copy_graph.arcCrossRef(map_list_digraph_arcs_to_static_digraph_arcs);
-	copy_graph.nodeRef(map_static_node_to_list_node);
+	copy_graph.nodeRef(map_static_digraph_nodes_to_list_digraph_nodes);
 	copy_graph.run();
 	
 	//// We need a hashtable mapping StaticDigraph::Arc to ListDigraph::Arc:
