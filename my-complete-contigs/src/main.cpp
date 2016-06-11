@@ -1368,10 +1368,10 @@ static void test_a_matrix_algo()
 	static_graph.build(list_graph, graph_nodes_to_static_graph_nodes, graph_arcs_to_static_graph_arcs);
 	unordered_map<int, unordered_map<int, bool>> a_matrix = compute_a_matrix(static_graph, false);
 	
-	StaticDigraph::Arc sa = graph_nodes_to_static_graph_nodes[a];
-	StaticDigraph::Arc sb = graph_nodes_to_static_graph_nodes[b];
-	StaticDigraph::Arc sc = graph_nodes_to_static_graph_nodes[c];
-	StaticDigraph::Arc sd = graph_nodes_to_static_graph_nodes[d];
+	StaticDigraph::Arc sa = graph_arcs_to_static_graph_arcs[a];
+	StaticDigraph::Arc sb = graph_arcs_to_static_graph_arcs[b];
+	StaticDigraph::Arc sc = graph_arcs_to_static_graph_arcs[c];
+	StaticDigraph::Arc sd = graph_arcs_to_static_graph_arcs[d];
 	
 	int isa = static_graph.id(sa);
 	int isb = static_graph.id(sb);
