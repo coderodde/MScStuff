@@ -1365,7 +1365,7 @@ static void test_a_matrix_algo()
 	ListDigraph::ArcMap<StaticDigraph::Arc>   graph_arcs_to_static_graph_arcs(list_graph);
 	
 	StaticDigraph static_graph;
-	static_graph.build(my_graph, graph_nodes_to_static_graph_nodes, graph_arcs_to_static_graph_arcs);
+	static_graph.build(list_graph, graph_nodes_to_static_graph_nodes, graph_arcs_to_static_graph_arcs);
 	unordered_map<int, unordered_map<int, bool>> a_matrix = compute_a_matrix(static_graph, false);
 	
 	StaticDigraph::Arc sa = graph_nodes_to_static_graph_nodes[a];
