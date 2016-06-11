@@ -254,7 +254,7 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 		
 		// Return the current arc to the 'work_graph':
 		work_graph.addArc(removed_arc_tail, removed_arc_head);
-		cout << "Start arc ID: " << removed_arc_id << ", mappings: " << a_matrix[removed_arc_id].size() << endl;
+		//cout << "Start arc ID: " << removed_arc_id << ", mappings: " << a_matrix[removed_arc_id].size() << endl;
 	}
 	
 	return a_matrix;
@@ -1347,11 +1347,44 @@ static void test_list_digraph_node_ids()
 	cout << "\n";
 }
 
+static void test_a_matrix_algo()
+{
+	ListDigraph list_graph;
+	
+	ListDigraph::Node x = list_graph.addNode();
+	ListDigraph::Node y = list_graph.addNode();
+	ListDigraph::Node z = list_graph.addNode();
+	ListDigraph::Node w = list_graph.addNode();
+	
+	ListDigraph::Arc a = list_graph.addArc(x, y);
+	ListDigraph::Arc b = list_graph.addArc(y, z);
+	ListDigraph::Arc c = list_graph.addArc(x, w);
+	ListDigraph::Arc d = list_graph.addArc(w, z);
+	
+	ListDigraph::NodeMap<StaticDigraph::Node> graph_nodes_to_static_graph_nodes(my_graph);
+	ListDigraph::ArcMap<StaticDigraph::Arc>   graph_arcs_to_static_graph_arcs(my_graph);
+	
+	StaticDigraph static_graph;
+	static_graph.build(my_graph, graph_nodes_to_static_graph_nodes, graph_arcs_to_static_graph_arcs);
+	unordered_map<int, unordered_map<int, bool>> a_matrix = compute_a_matrix(static_graph, false);
+	
+	StaticDigraph::Arc sa = graph_nodes_to_static_graph_nodes[a];
+	StaticDigraph::Arc sb = graph_nodes_to_static_graph_nodes[b];
+	StaticDigraph::Arc sc = graph_nodes_to_static_graph_nodes[c];
+	StaticDigraph::Arc sd = graph_nodes_to_static_graph_nodes[d];
+	
+	cout << "x " << a_matrix[sa][sb] << " " << a_matrix[sa][sc] << " " << a_matrix[sa][sd] << "\n";
+	cout << a_matrix[sb][sa] << " x " << a_matrix[sb][sc] << " " << a_matrix[sb][sd] << "\n";
+	cout << a_matrix[sc][sa] << " " << a_matrix[sc][sb] << " x " << a_matrix[sc][sd] << "\n";
+	cout << a_matrix[sd][sa] << " " << a_matrix[sd][sb] << " " << a_matrix[sd][sc] << " x\n";
+}
+
 int main(int argc, char **argv)
 {
 	//test_list_digraph_node_ids();
 	//test_strong_bridges();
-	//exit(0);
+	test_a_matrix_algo();
+	exit(0);
 	
 	//////////////////////////////////////////
 	//////////////////////////////////////////
