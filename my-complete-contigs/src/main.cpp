@@ -1350,9 +1350,9 @@ static void test_list_digraph_node_ids()
 
 int main(int argc, char **argv)
 {
-	test_list_digraph_node_ids();
+	//test_list_digraph_node_ids();
 	//test_strong_bridges();
-	exit(0);
+	//exit(0);
 	
 	//////////////////////////////////////////
 	//////////////////////////////////////////
