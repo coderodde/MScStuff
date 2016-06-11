@@ -211,7 +211,7 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 	//// We need a hashtable mapping StaticDigraph::Arc to ListDigraph::Arc:
 	for (ListDigraph::ArcIt arcit(work_graph); arcit != INVALID; ++arcit)
 	{
-		map_static_digraph_arcs_to_list_digraph_arcs[map_list_digraph_arcs_to_static_digraph_arcs] = arcit;
+		map_static_digraph_arcs_to_list_digraph_arcs[map_list_digraph_arcs_to_static_digraph_arcs[arcit]] = arcit;
 	}
 	
 	// Since we will tamper with the arcs, we need another graph for topology modifications.
