@@ -1373,10 +1373,15 @@ static void test_a_matrix_algo()
 	StaticDigraph::Arc sc = graph_nodes_to_static_graph_nodes[c];
 	StaticDigraph::Arc sd = graph_nodes_to_static_graph_nodes[d];
 	
-	cout << "x " << a_matrix[sa][sb] << " " << a_matrix[sa][sc] << " " << a_matrix[sa][sd] << "\n";
-	cout << a_matrix[sb][sa] << " x " << a_matrix[sb][sc] << " " << a_matrix[sb][sd] << "\n";
-	cout << a_matrix[sc][sa] << " " << a_matrix[sc][sb] << " x " << a_matrix[sc][sd] << "\n";
-	cout << a_matrix[sd][sa] << " " << a_matrix[sd][sb] << " " << a_matrix[sd][sc] << " x\n";
+	int isa = static_graph.id(sa);
+	int isb = static_graph.id(sb);
+	int isc = static_graph.id(sc);
+	int isd = static_graph.id(sd);
+	
+	cout << "x " << a_matrix[isa][isb] << " " << a_matrix[isa][isc] << " " << a_matrix[isa][isd] << "\n";
+	cout << a_matrix[isb][isa] << " x " << a_matrix[isb][isc] << " " << a_matrix[isb][isd] << "\n";
+	cout << a_matrix[isc][isa] << " " << a_matrix[isc][isb] << " x " << a_matrix[isc][isd] << "\n";
+	cout << a_matrix[isd][isa] << " " << a_matrix[isd][isb] << " " << a_matrix[isd][isc] << " x\n";
 }
 
 int main(int argc, char **argv)
