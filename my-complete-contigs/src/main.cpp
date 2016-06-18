@@ -79,11 +79,10 @@ static void find_certificate_sets(const StaticDigraph& graph,
 	subdivided_graph.reserveArc(nodes + countArcs(graph));
 	
 	// Create the nodes of the subdivided graph.
-	for (int id = 0; id < 2 * nodes; ++id)
+	for (int id = 0; id < nodes; ++id)
 	{
-		//subdivided_graph.addNode();
-		ListDigraph::Node newnode = subdivided_graph.addNode();
-		cout << "id: " << subdivided_graph.id(newnode) << "\n";
+		subdivided_graph.addNode();
+		subdivided_graph.addNode();
 	}
 	
 	if (debug_print)
@@ -112,6 +111,11 @@ static void find_certificate_sets(const StaticDigraph& graph,
 		cout << "[CODERODDE](find_certificate_sets) The number of divided arcs before copying the arcs is "
 		     << countArcs(subdivided_graph)
 		     << "\n";		
+	}
+	
+	for (StaticDigraph::ArcIt arcit(graph); arcit != INVALID; ++arcit)
+	{
+		cout << "Yeah: " << graph.id(arcit) << "\n";
 	}
 	
 	// Copy the original arcs to the subdivided graph.
