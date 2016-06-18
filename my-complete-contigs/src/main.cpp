@@ -1394,8 +1394,8 @@ int main(int argc, char **argv)
 {
 	//test_list_digraph_node_ids();
 	//test_strong_bridges();
-	test_a_matrix_algo();
-	exit(0);
+	//test_a_matrix_algo();
+	//exit(0);
 	
 	//////////////////////////////////////////
 	//////////////////////////////////////////
