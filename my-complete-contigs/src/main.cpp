@@ -79,10 +79,11 @@ static void find_certificate_sets(const StaticDigraph& graph,
 	subdivided_graph.reserveArc(nodes + countArcs(graph));
 	
 	// Create the nodes of the subdivided graph.
-	for (int id = 0; id < nodes; ++id)
+	for (int id = 0; id < 2 * nodes; ++id)
 	{
-		subdivided_graph.addNode();
-		subdivided_graph.addNode();
+		//subdivided_graph.addNode();
+		ListDigraph::Node newnode = subdivided_graph.addNode();
+		cout << "id: " << subdivided_graph.id(newnode) << "\n";
 	}
 	
 	if (debug_print)
@@ -372,6 +373,11 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	{
 		cout << "[CODERODDE] Number of strong bridges is " << strong_bridge_id_set.size() << endl;
 	}
+	
+	    /////////////////////////////////////
+	  //// Last preprocessing: O(n^3). ////
+	/////////////////////////////////////
+	//unordered_map<int, unordered_map<int, bool>> certificate_filter = preprocess_certificate_filter(main_walk,);
 	
 	    /////////////////////
 	  //// Algorithm 1 ////
