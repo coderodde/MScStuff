@@ -113,11 +113,6 @@ static void find_certificate_sets(const StaticDigraph& graph,
 		     << "\n";		
 	}
 	
-	for (StaticDigraph::ArcIt arcit(graph); arcit != INVALID; ++arcit)
-	{
-		cout << "Yeah: " << graph.id(arcit) << "\n";
-	}
-	
 	// Copy the original arcs to the subdivided graph.
 	// For each arc (y, z) in G, add an arc (y_out, z_in) to G'.
 	for (StaticDigraph::ArcIt arcit(graph); arcit != INVALID; ++arcit)
@@ -390,9 +385,12 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	const int d = main_walk.size();
 	
 	vector<unordered_set<int>> S_k(n + 1);
+	unordered_map<int, unordered_set<int>> S;
 	
 	for (int k = 1; k <= n; ++k)
 	{
+		unordered_set<int> S_k;
+		
 		for (int i = 0; i < d; ++i)
 		{
 			if (k == 1)
@@ -403,6 +401,17 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 			{
 				
 			}
+		}
+	}
+	
+	for (auto it = S.begin(); it != S.end(); ++it)
+	{
+		int k = it->first;
+		
+		for (auto i = it->second.begin(); i != it->second.end(); ++i)
+		{
+			// Make the contig C(i, k):
+			
 		}
 	}
 	
