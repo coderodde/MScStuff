@@ -54,7 +54,7 @@ static pair<vector<StaticDigraph::Node>, vector<StaticDigraph::Arc>>
 		cout << "[CODERODDE](get_circular_walk) The length of the main circular walk is: " << main_walk.size() << "\n";	
 	}
 	
-	return main_walk;
+	return pair<vector<StaticDigraph::Node>, vector<StaticDigraph::Arc>>(main_walk, main_walk_arcs);
 }
 
 // This function computes a map. The map in question maps each node in the main input graph to
