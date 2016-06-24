@@ -347,7 +347,7 @@ unordered_map<int, int> compute_funky_ell_indices(const StaticDigraph& graph,
 	
 	while (index < main_walk.size())
 	{
-		loop1:
+		my_loop1:
 		while (index < main_walk.size())
 		{
 			ell_map[index++] = ell;
@@ -370,7 +370,7 @@ unordered_map<int, int> compute_funky_ell_indices(const StaticDigraph& graph,
 			}
 		}
 		
-		loop2:
+		my_loop2:
 		while (index < main_walk.size() && ell < index)
 		{
 			StaticDigraph::Node node = main_walk[ell++];
