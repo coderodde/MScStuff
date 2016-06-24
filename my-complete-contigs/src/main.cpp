@@ -370,7 +370,7 @@ unordered_map<int, int> compute_funky_ell_indices(const StaticDigraph& graph,
 		}
 		
 		my_loop2:
-		while (index < main_walk.size() && ell < index)
+		for (; index < main_walk.size() && ell < index; )
 		{
 			StaticDigraph::Node node = main_walk[ell++];
 			unordered_set<int> node_certificate_set =
