@@ -9,7 +9,8 @@ int N_THREADS;
 
 // This function returns a circular node-covering walk in the input graph.
 // A node-covering walk is a walk that visits each node at least once.
-static vector<StaticDigraph::Node> get_circular_walk(const StaticDigraph& graph, bool debug_print)
+static pair<vector<StaticDigraph::Node>, vector<StaticDigraph::Arc>>
+/*static vector<StaticDigraph::Node>*/ get_circular_walk(const StaticDigraph& graph, bool debug_print)
 {
 	if (debug_print)
 	{
@@ -17,6 +18,8 @@ static vector<StaticDigraph::Node> get_circular_walk(const StaticDigraph& graph,
 	}
 	
 	vector<StaticDigraph::Node> main_walk;
+	vector<StaticDigraph::Arc> main_walk_arcs;
+	
 	int nodes = graph.nodeNum();
 	
 	for (int node_id = 0; node_id < nodes; ++node_id)
@@ -42,6 +45,7 @@ static vector<StaticDigraph::Node> get_circular_walk(const StaticDigraph& graph,
 		{
 			StaticDigraph::Arc arc = path.nth(i);
 			main_walk.push_back(graph.source(arc));
+			main_walk_arcs.push_back(arc);
 		}
 	}
 	
@@ -420,8 +424,12 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	    ////////////////////////////////////////////////////
 	  //// Computing a node-covering circular walk C. ////
 	////////////////////////////////////////////////////
-	vector<StaticDigraph::Node> main_walk = get_circular_walk(graph, debug_print);
-		    
+	pair<vector<StaticDigraph::Node>,
+	     vector<StaticDigraph::Arc>> walk_data = get_circular_walk(graph, debug_print);
+		
+	vector<StaticDigraph::Node> main_walk = walk_data.first;
+	vector<StaticDigraph::Arc>  main_walk_arcs = walk_data.second;
+	
 	    ////////////////////////////////////////////////////
 	  //// Computing node certificate sets! Lemma 5.1 ////
 	////////////////////////////////////////////////////
@@ -432,12 +440,6 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	  //// Compute the a-matrix. Lemma 5.2 ////
 	/////////////////////////////////////////
 	unordered_map<int, unordered_map<int, bool>> a_matrix = compute_a_matrix(graph, debug_print);
-	
-	//if (debug_print)
-	//{
-	//	cout << "[CODERODDE] Copy graph nodes: " << countNodes(work_graph) << endl;
-	//	cout << "[CODERODDE] Copy graph arcs:  " << countArcs(work_graph) << endl;		
-	//}
 	
 	    ///////////////////////////////////////////////////////////////////////////////////
 	  //// Computing the strong bridges. Lemma 5.3 with a relaxation O(m) -> O(m^2). ////
@@ -477,7 +479,17 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		{
 			if (k == 1)
 			{
+				StaticDigraph::Arc e_i = main_walk_arcs[i];
+				unordered_set<int>::const_iterator iter = strong_bridge_id_set.find(e_i);
 				
+				if (iter != strong_bridge_id_set.end())
+				{
+					
+					if (false)
+					{
+						S_k.insert(i);
+					}
+				}
 			}
 			else
 			{
