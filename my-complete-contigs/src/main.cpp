@@ -365,7 +365,7 @@ unordered_map<int, int> compute_funky_ell_indices(const StaticDigraph& graph,
 			{
 				if (entry.second >= minimum_required_count)
 				{
-					continue loop1;
+					continue my_loop1;
 				}
 			}
 		}
@@ -388,7 +388,7 @@ unordered_map<int, int> compute_funky_ell_indices(const StaticDigraph& graph,
 			{
 				if (entry.second >= minimum_required_count)
 				{
-					break loop2;
+					break my_loop2;
 				}
 			}
 		}
