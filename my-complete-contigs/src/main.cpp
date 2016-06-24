@@ -480,7 +480,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 			if (k == 1)
 			{
 				StaticDigraph::Arc e_i = main_walk_arcs[i];
-				unordered_set<int>::const_iterator iter = strong_bridge_id_set.find(e_i);
+				unordered_set<int>::const_iterator iter = strong_bridge_id_set.find(graph.id(e_i));
 				
 				if (iter != strong_bridge_id_set.end())
 				{
