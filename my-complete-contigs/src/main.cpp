@@ -320,6 +320,83 @@ static unordered_set<int> find_strong_bridges(const StaticDigraph& graph, bool d
 	return ret;
 }
 
+unordered_map<int, int> compute_funky_ell_indices(const StaticDigraph& graph,
+						  vector<StaticDigraph::Node> main_walk,
+						  StaticDigraph::NodeMap<unordered_set<int>>& map_node_to_certificate_set)
+{
+	// The 'main_walk' consists of d nodes and d arcs, where n <= d <= n^2.
+	// Iterate over all nodes of the walk:
+	unordered_map<int, int> ell_map;
+	
+	// This map maps each StaticDigraph::Node ID to the number of times the
+	// node appear in the certificate set intersection:
+	unordered_map<int, int> counter_map;
+	
+	// Load the counts of the first certificate set:
+	StaticDigraph::Node first_node = main_walk[0];
+	unordered_set<int> first_node_certificate_set =
+		map_node_to_certificate_set[first_node];
+		
+	for (const int& id: first_node_certificate_set)
+	{
+		counter_map[id] = 1;
+	}
+	
+	int ell = 0;
+	int index = 0;
+	
+	while (index < main_walk.size())
+	{
+		loop1:
+		while (index < main_walk.size())
+		{
+			ell_map[index++] = ell;
+			StaticDigraph::Node node = main_walk[index];
+			unordered_set<int> node_certificate_set = map_node_to_certificate_set[node];
+			
+			for (const int id : node_certificate_set)
+			{
+				counter_map[id]++;
+			}
+			
+			const int minimum_required_count = index - ell + 1;
+			
+			for (const auto& entry : counter_map)
+			{
+				if (entry.second >= minimum_required_count)
+				{
+					continue loop1;
+				}
+			}
+		}
+		
+		loop2:
+		while (index < main_walk.size() && ell < index)
+		{
+			StaticDigraph::Node node = main_walk[ell++];
+			unordered_set<int> node_certificate_set =
+				map_node_to_certificate_set[node];
+				
+			for (const int id : node_certificate_set)
+			{
+				counter_map[id]--;
+			}
+			
+			const int minimum_required_count = index - ell + 1;
+		
+			for (const auto& entry : counter_map)
+			{
+				if (entry.second >= minimum_required_count)
+				{
+					break loop2;
+				}
+			}
+		}
+	}
+	
+	return ell_map;
+}
+
 vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					   const StaticDigraph::NodeMap<size_t>& length,
 					   const StaticDigraph::NodeMap<size_t>& seqStart,
@@ -377,7 +454,13 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	  //// Last preprocessing: O(n^3). ////
 	/////////////////////////////////////
 	//unordered_map<int, unordered_map<int, bool>> certificate_filter = preprocess_certificate_filter(main_walk,);
-	
+	unordered_map<int, int> ell_map = compute_funky_ell_indices(graph,
+								    main_walk,
+								    map_node_to_certificate_set);
+	if (debug_print)
+	{
+		cout << "[CODERODDE] ell_map size: " << ell_map.size() << "\n";	
+	}
 	    /////////////////////
 	  //// Algorithm 1 ////
 	/////////////////////
