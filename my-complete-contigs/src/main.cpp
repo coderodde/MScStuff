@@ -478,8 +478,6 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	for (int k = 1; k <= n; ++k)
 	{
-		unordered_set<int> S_k;
-		
 		for (int i = 0; i < d; ++i)
 		{
 			if (k == 1)
@@ -495,25 +493,59 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					
 					if (ell_map[end_index] <= start_index)
 					{
-						cout << "Fuck yeah\n";
-						return ret;
+						S_k[1].insert(i);
 					}
 				}
 			}
-			else
+			else /* (k > 1) */
 			{
+				// Checks that i \in S_{k - 1} and i + 1 \mod d \in S_{k - 1}:
+				unordered_set<int>::const_iterator iter1 = S_k[k - 1].find(i);
+				unordered_set<int>::const_iterator iter2 = S_k[k - 1].find((i + 1) % d);
 				
+				if (iter1 == S_k[k - 1].end() || iter2 == S_k[k - 1].end())
+				{
+					continue;
+				}
+				
+				//// Check there is no v_{i + k - 1 mode d} - v_{i + 1 mod d} path with
+				//// first edge different than e_{i + k - 1 mod d} and
+				//// last edge different than e_{i}:
+				
+				// Get the edge e_{i + k - 1 mod d}:
+				StaticDigraph::Arc first_arc  = main_walk_arcs[(i + k - 1) % d];
+				
+				// Get the edge e_i
+				StaticDigraph::Arc second_arc = main_walk_arcs[i];
+				
+				if (a_matrix[graph.id(first_arc)][graph.id(second_arc)])
+				{
+					continue;
+				}
+				
+				// Last check: Cert(v_i) \cap .. \cap Cert(v_{i + k mod d} not empty:
+				const int end_index = i + 1;
+				const int start_index = i;
+				
+				if (ell_map[end_index] <= start_index)
+				{
+					S_k[k].insert(i);
+				}
 			}
 		}
 	}
 	
+	cout << "RESULT SHIT\n";
+	
 	for (auto it = S.begin(); it != S.end(); ++it)
 	{
 		int k = it->first;
+		cout << "k = " << k << "; size: " << it->second.size() << "\n";
 		
 		for (auto i = it->second.begin(); i != it->second.end(); ++i)
 		{
 			// Make the contig C(i, k):
+			
 			
 		}
 	}
