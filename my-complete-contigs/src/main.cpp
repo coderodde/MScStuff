@@ -356,7 +356,9 @@ unordered_map<int, int> compute_funky_ell_indices(const StaticDigraph& graph,
 		loop:
 		while (index < stop_index)
 		{
-			ell_map[index++] = ell;
+			ell_map[index] = ell;
+			index = (index + 1) % main_walk.size();
+			
 			StaticDigraph::Node node = main_walk[index];
 			unordered_set<int> node_certificate_set = map_node_to_certificate_set[node];
 			
@@ -374,11 +376,15 @@ unordered_map<int, int> compute_funky_ell_indices(const StaticDigraph& graph,
 					goto loop;
 				}
 			}
+			
+			break;
 		}
 		
 		while (index < stop_index && ell < index)
 		{
-			StaticDigraph::Node node = main_walk[ell++];
+			StaticDigraph::Node node = main_walk[ell];
+			ell = (ell + 1) % main_walk.size();
+			
 			unordered_set<int> node_certificate_set =
 				map_node_to_certificate_set[node];
 				
