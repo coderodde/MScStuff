@@ -534,12 +534,27 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		}
 	}
 	
+	for (int k = 0; k < S_k.size(); ++k)
+	{
+		for (const auto i : S_k[k])
+		{
+			contig current_contig;
+			
+			for (int j = i; j <= k; ++j)
+			{
+				current_contig.nodes.push_back(graph.id(main_walk[j]));
+				
+			}
+		}
+	}
+	
+	/*
 	cout << "RESULT SHIT\n";
 	
 	for (int k = 0; k < S_k.size(); ++k)
 	{
 		cout << "k = " << k << ", size = " << S_k[k].size() << "\n";
-	}
+	}*/
 	
 	if (debug_print)
 	{
