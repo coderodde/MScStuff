@@ -491,7 +491,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					
 					int index = (i + 1) % d;
 					/*
-					if (1 /*fds*/)
+					if (1fds)
 					{
 						S_k.insert(i);
 					}*/
