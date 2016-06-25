@@ -474,7 +474,6 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	const int d = main_walk.size();
 	
 	vector<unordered_set<int>> S_k(n + 1);
-	unordered_map<int, unordered_set<int>> S;
 	
 	for (int k = 1; k <= n; ++k)
 	{
@@ -537,17 +536,9 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	cout << "RESULT SHIT\n";
 	
-	for (auto it = S.begin(); it != S.end(); ++it)
+	for (int k = 0; k < S_k.size(); ++k)
 	{
-		int k = it->first;
-		cout << "k = " << k << "; size: " << it->second.size() << "\n";
-		
-		for (auto i = it->second.begin(); i != it->second.end(); ++i)
-		{
-			// Make the contig C(i, k):
-			
-			
-		}
+		cout << "k = " << k << ", size = " << S_k[k].size() << "\n";
 	}
 	
 	if (debug_print)
