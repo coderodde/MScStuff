@@ -10,8 +10,9 @@ public class Main {
 
     private static final int K_MER_SIZE = 31;
     
+    
     public static void main(final String... args) {
-        readFilesDemo(args);
+//        readFilesDemo(args);
 //        smallDemo();
     }
     

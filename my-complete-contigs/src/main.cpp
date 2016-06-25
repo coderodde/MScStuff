@@ -349,10 +349,12 @@ unordered_map<int, int> compute_funky_ell_indices(const StaticDigraph& graph,
 	int ell = 0;
 	int index = 0;
 	
-	while (index < main_walk.size())
+	const int stop_index = main_walk.size() + countNodes(graph);
+	
+	while (index < stop_index)
 	{
 		loop:
-		while (index < main_walk.size())
+		while (index < stop_index)
 		{
 			ell_map[index++] = ell;
 			StaticDigraph::Node node = main_walk[index];
@@ -374,7 +376,7 @@ unordered_map<int, int> compute_funky_ell_indices(const StaticDigraph& graph,
 			}
 		}
 		
-		while (index < main_walk.size() && ell < index)
+		while (index < stop_index && ell < index)
 		{
 			StaticDigraph::Node node = main_walk[ell++];
 			unordered_set<int> node_certificate_set =
@@ -454,7 +456,6 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	    /////////////////////////////////////
 	  //// Last preprocessing: O(n^3). ////
 	/////////////////////////////////////
-	//unordered_map<int, unordered_map<int, bool>> certificate_filter = preprocess_certificate_filter(main_walk,);
 	unordered_map<int, int> ell_map = compute_funky_ell_indices(graph,
 								    main_walk,
 								    map_node_to_certificate_set);
@@ -484,11 +485,16 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 				
 				if (iter != strong_bridge_id_set.end())
 				{
+					unordered_set<int> v_i_certificate_set =
+						map_node_to_certificate_set[main_walk[i]];
+					//unordered_set<int> v_i_next_certificate_set
 					
-					if (false)
+					int index = (i + 1) % d;
+					/*
+					if (1 /*fds*/)
 					{
 						S_k.insert(i);
-					}
+					}*/
 				}
 			}
 			else
