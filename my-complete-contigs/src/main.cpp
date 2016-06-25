@@ -540,7 +540,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		{
 			contig current_contig;
 			
-			for (int j = i; j <= k; ++j)
+			for (int j = i; j <= i + k; ++j)
 			{
 				current_contig.nodes.push_back(graph.id(main_walk[j]));
 				
