@@ -485,20 +485,19 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 			if (k == 1)
 			{
 				StaticDigraph::Arc e_i = main_walk_arcs[i];
-				unordered_set<int>::const_iterator iter = strong_bridge_id_set.find(graph.id(e_i));
+				unordered_set<int>::const_iterator iter =
+					strong_bridge_id_set.find(graph.id(e_i));
 				
 				if (iter != strong_bridge_id_set.end())
 				{
-					unordered_set<int> v_i_certificate_set =
-						map_node_to_certificate_set[main_walk[i]];
-					//unordered_set<int> v_i_next_certificate_set
+					int end_index = i + 1;
+					int start_index = i;
 					
-					int index = (i + 1) % d;
-					/*
-					if (1fds)
+					if (ell[end_index] <= start_index)
 					{
-						S_k.insert(i);
-					}*/
+						cout << "Fuck yeah\n";
+						return ret;
+					}
 				}
 			}
 			else
