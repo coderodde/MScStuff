@@ -493,7 +493,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					int end_index = i + 1;
 					int start_index = i;
 					
-					if (ell[end_index] <= start_index)
+					if (ell_map[end_index] <= start_index)
 					{
 						cout << "Fuck yeah\n";
 						return ret;
