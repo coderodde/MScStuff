@@ -557,7 +557,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		cout << "k = " << k << ", size = " << S_k[k].size() << "\n";
 	}*/
 	
-	populate_with_strings_from_node_labels(sequence, kmersize, graph, nodeLabel, omnitigs);
+	populate_with_strings_from_node_labels(sequence, kmersize, graph, nodeLabel, ret);
 			
 	if (debug_print)
 	{
