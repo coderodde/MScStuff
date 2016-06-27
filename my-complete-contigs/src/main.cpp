@@ -410,7 +410,6 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					   const StaticDigraph::NodeMap<string>& nodeLabel,
 					   const size_t kmersize,
 					   const string& sequence,
-					   /*const string inputFileName,*/
 					   const bool debug_print)
 {
 	vector<contig> ret;
@@ -548,13 +547,12 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		}
 	}
 	
-	/*
 	cout << "RESULT SHIT\n";
 	
 	for (int k = 0; k < S_k.size(); ++k)
 	{
 		cout << "k = " << k << ", size = " << S_k[k].size() << "\n";
-	}*/
+	}
 	
 	populate_with_strings_from_node_labels(sequence, kmersize, graph, nodeLabel, ret);
 			
@@ -570,8 +568,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					   const StaticDigraph::NodeMap<string>& nodeLabel,
 					   const size_t kmersize,
-					   const string& sequence
-					   /*const string inputFileName*/)
+					   const string& sequence)
 {
 	return coderodde_project_algorithm(graph,
 					   nodeLabel,
