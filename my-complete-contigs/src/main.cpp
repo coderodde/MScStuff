@@ -570,7 +570,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 }
 
 vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
-					   const StaticDigraph::NodeMap<string
+					   const StaticDigraph::NodeMap<string>& nodeLabel,
 					   /*const StaticDigraph::NodeMap<size_t>& length,*/
 					   /*const StaticDigraph::NodeMap<size_t>& seqStart,*/
 					   const size_t kmersize,
@@ -578,6 +578,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					   const string inputFileName)
 {
 	return coderodde_project_algorithm(graph,
+					   nodeLabel,
 					   //length,
 					   //seqStart,
 					   kmersize,
