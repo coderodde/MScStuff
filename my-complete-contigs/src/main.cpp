@@ -10,7 +10,7 @@ int N_THREADS;
 // This function returns a circular node-covering walk in the input graph.
 // A node-covering walk is a walk that visits each node at least once.
 static pair<vector<StaticDigraph::Node>, vector<StaticDigraph::Arc>>
-/*static vector<StaticDigraph::Node>*/ get_circular_walk(const StaticDigraph& graph, bool debug_print)
+get_circular_walk(const StaticDigraph& graph, bool debug_print)
 {
 	if (debug_print)
 	{
@@ -408,11 +408,9 @@ unordered_map<int, int> compute_funky_ell_indices(const StaticDigraph& graph,
 
 vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					   const StaticDigraph::NodeMap<string>& nodeLabel,
-					   /*const StaticDigraph::NodeMap<size_t>& length,*/
-					   /*const StaticDigraph::NodeMap<size_t>& seqStart,*/
-					   const size_t kmersize,
-					   const string& sequence,
-					   const string inputFileName,
+					   /*const size_t kmersize,*/
+					   /*const string& sequence,*/
+					   /*const string inputFileName,*/
 					   const bool debug_print)
 {
 	vector<contig> ret;
@@ -570,20 +568,13 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 }
 
 vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
-					   const StaticDigraph::NodeMap<string>& nodeLabel,
-					   /*const StaticDigraph::NodeMap<size_t>& length,*/
-					   /*const StaticDigraph::NodeMap<size_t>& seqStart,*/
-					   const size_t kmersize,
-					   const string& sequence,
-					   const string inputFileName)
+					   const StaticDigraph::NodeMap<string>& nodeLabel
+					   /*const size_t kmersize,*/
+					   /*const string& sequence,*/
+					   /*const string inputFileName*/)
 {
 	return coderodde_project_algorithm(graph,
 					   nodeLabel,
-					   //length,
-					   //seqStart,
-					   kmersize,
-					   sequence,
-					   inputFileName,
 					   false);
 }
 
