@@ -1774,7 +1774,7 @@ int main(int argc, char **argv)
 	
 	cout << "[CODERODDE] Steps into the room..." << endl;
 	//coderodde_project_algorithm(graph, length, seqStart, kmersize, sequence, inputFileName, true);
-	coderodde_project_algorithm(graph, nodeLabel, kmersize, sequence, inputFileName, true);
+	coderodde_project_algorithm(graph, nodeLabel, kmersize, sequence, true);
 	cout << "[CODERODDE] Exited the funky algorithm." << endl;
 	
 	fileStats.close();
