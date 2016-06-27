@@ -544,6 +544,8 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 			{
 				current_contig.nodes.push_back(graph.id(main_walk[(i + j) % main_walk.size()]));
 			}
+			
+			ret.push_back(current_contig);
 		}
 	}
 	
@@ -555,9 +557,12 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		cout << "k = " << k << ", size = " << S_k[k].size() << "\n";
 	}*/
 	
+	populate_with_strings_from_node_labels(sequence, kmersize, graph, nodeLabel, omnitigs);
+			
 	if (debug_print)
 	{
-		cout << "[CODERODDE] Exiting 'coderodde_project_algorithm'." << endl;	
+		cout << "[CODERODDE] Exiting 'coderodde_project_algorithm'. "
+		     << "Found " << ret.size() << " omnitigs.\n";
 	}
 	
 	return ret;
