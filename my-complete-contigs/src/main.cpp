@@ -576,8 +576,8 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					   const string inputFileName)
 {
 	return coderodde_project_algorithm(graph,
-					   length,
-					   seqStart,
+					   //length,
+					   //seqStart,
 					   kmersize,
 					   sequence,
 					   inputFileName,
