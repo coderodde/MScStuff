@@ -422,9 +422,9 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		cout << "[CODERODDE] The size of the input graph is: " << nodes << endl;
 		cout << "[CODERODDE] The number of arcs in the graph is: " << graph.arcNum() << endl;
 	
-		cout << "[CODERODDE] k-mer size: " << kmersize << endl;
+		//cout << "[CODERODDE] k-mer size: " << kmersize << endl;
 		//cout << "[CODERODDE] Sequence length: " << sequence.length() << endl;
-		cout << "[CODERODDE] Input file name: " << inputFileName << endl;
+		//cout << "[CODERODDE] Input file name: " << inputFileName << endl;
 	}
 	    ////////////////////////////////////////////////////
 	  //// Computing a node-covering circular walk C. ////
