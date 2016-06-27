@@ -407,8 +407,8 @@ unordered_map<int, int> compute_funky_ell_indices(const StaticDigraph& graph,
 }
 
 vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
-					   const StaticDigraph::NodeMap<size_t>& length,
-					   const StaticDigraph::NodeMap<size_t>& seqStart,
+					   /*const StaticDigraph::NodeMap<size_t>& length,*/
+					   /*const StaticDigraph::NodeMap<size_t>& seqStart,*/
 					   const size_t kmersize,
 					   const string& sequence,
 					   const string inputFileName,
@@ -424,7 +424,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		cout << "[CODERODDE] The number of arcs in the graph is: " << graph.arcNum() << endl;
 	
 		cout << "[CODERODDE] k-mer size: " << kmersize << endl;
-		cout << "[CODERODDE] Sequence length: " << sequence.length() << endl;
+		//cout << "[CODERODDE] Sequence length: " << sequence.length() << endl;
 		cout << "[CODERODDE] Input file name: " << inputFileName << endl;
 	}
 	    ////////////////////////////////////////////////////
@@ -569,8 +569,8 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 }
 
 vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
-					   const StaticDigraph::NodeMap<size_t>& length,
-					   const StaticDigraph::NodeMap<size_t>& seqStart,
+					   /*const StaticDigraph::NodeMap<size_t>& length,*/
+					   /*const StaticDigraph::NodeMap<size_t>& seqStart,*/
 					   const size_t kmersize,
 					   const string& sequence,
 					   const string inputFileName)
@@ -1777,7 +1777,8 @@ int main(int argc, char **argv)
 	}
 	
 	cout << "[CODERODDE] Steps into the room..." << endl;
-	coderodde_project_algorithm(graph, length, seqStart, kmersize, sequence, inputFileName, true);
+	//coderodde_project_algorithm(graph, length, seqStart, kmersize, sequence, inputFileName, true);
+	coderodde_project_algorithm(graph, kmersize, sequence, inputFileName, true);
 	cout << "[CODERODDE] Exited the funky algorithm." << endl;
 	
 	fileStats.close();
