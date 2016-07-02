@@ -1,9 +1,11 @@
 #include "utils.h"
+#include "rodde_current_time.h"
 #include <stdexcept>
 
 using std::runtime_error;
 using namespace std;
 using namespace lemon;
+using rodde::current_time::milliseconds;
 
 int N_THREADS;
 
@@ -12,6 +14,8 @@ int N_THREADS;
 static pair<vector<StaticDigraph::Node>, vector<StaticDigraph::Arc>>
 get_circular_walk(const StaticDigraph& graph, bool debug_print)
 {
+	uint64_t start_time = milliseconds();
+	
 	if (debug_print)
 	{
 		cout << "[CODERODDE](get_circular_walk) Computing the main circular walk...\n";	
@@ -53,6 +57,10 @@ get_circular_walk(const StaticDigraph& graph, bool debug_print)
 	{
 		cout << "[CODERODDE](get_circular_walk) The length of the main circular walk is: " << main_walk.size() << "\n";	
 	}
+	
+	uint64_t end_time = milliseconds();
+	
+	cout << "[ALEXANDRU] get_circular_walk() in " << (end_time - start_time) << " milliseconds.\n";
 	
 	return pair<vector<StaticDigraph::Node>, vector<StaticDigraph::Arc>>(main_walk, main_walk_arcs);
 }
