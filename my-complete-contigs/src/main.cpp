@@ -194,7 +194,7 @@ static void find_certificate_sets(const StaticDigraph& graph,
 	             << endl;*/
 	}
 	
-	uint64_t end_time = millisecond();
+	uint64_t end_time = milliseconds();
 	
 	cout << "[ALEXANDRU] find_certificate_sets() in " << (end_time - start_time) << " milliseconds.\n";
 }
@@ -205,7 +205,7 @@ static void find_certificate_sets(const StaticDigraph& graph,
 static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const StaticDigraph& graph,
 								     bool debug_print)
 {
-	uint64_t start_time = millisecond();
+	uint64_t start_time = milliseconds();
 	
 	if (debug_print)
 	{
