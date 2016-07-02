@@ -562,6 +562,8 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		     << "Found " << ret.size() << " omnitigs.\n";
 	}
 	
+	cout << "[CODERODDE] Sample: " << ret[0].str << "\n";
+	
 	return ret;
 }
 
