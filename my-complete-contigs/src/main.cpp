@@ -18,7 +18,7 @@ get_circular_walk(const StaticDigraph& graph, bool debug_print)
 	
 	if (debug_print)
 	{
-		cout << "[CODERODDE](get_circular_walk) Computing the main circular walk...\n";	
+		cout << "[ALEXANDRU](get_circular_walk) Computing the main circular walk...\n";	
 	}
 	
 	vector<StaticDigraph::Node> main_walk;
@@ -55,7 +55,7 @@ get_circular_walk(const StaticDigraph& graph, bool debug_print)
 	
 	if (debug_print)
 	{
-		cout << "[CODERODDE](get_circular_walk) The length of the main circular walk is: " << main_walk.size() << "\n";	
+		cout << "[ALEXANDRU](get_circular_walk) The length of the main circular walk is: " << main_walk.size() << "\n";	
 	}
 	
 	uint64_t end_time = milliseconds();
@@ -71,11 +71,13 @@ static void find_certificate_sets(const StaticDigraph& graph,
 				  StaticDigraph::NodeMap<unordered_set<int>>& map_node_to_certificate_set,
 			  	  bool debug_print)
 {
+	uint64_t start_time = milliseconds();
+	
 	int nodes = graph.nodeNum();
 	
 	if (debug_print)
 	{
-		cout << "[CODERODDE](find_certificate_sets) Computing the certificate sets!\n";	
+		cout << "[ALEXANDRU](find_certificate_sets) Computing the certificate sets!\n";	
 	}
 	
 	for (int id = 0; id < nodes; ++id)
@@ -99,7 +101,7 @@ static void find_certificate_sets(const StaticDigraph& graph,
 	
 	if (debug_print)
 	{
-		cout << "[CODERODDE](find_certificate_sets) The size of the subdivided graph is "
+		cout << "[ALEXANDRU](find_certificate_sets) The size of the subdivided graph is "
 		     << countNodes(subdivided_graph) << endl;	
 	}
 	
@@ -120,7 +122,7 @@ static void find_certificate_sets(const StaticDigraph& graph,
 	
 	if (debug_print)
 	{
-		cout << "[CODERODDE](find_certificate_sets) The number of divided arcs before copying the arcs is "
+		cout << "[ALEXANDRU](find_certificate_sets) The number of divided arcs before copying the arcs is "
 		     << countArcs(subdivided_graph)
 		     << "\n";		
 	}
@@ -142,7 +144,7 @@ static void find_certificate_sets(const StaticDigraph& graph,
 	
 	if (debug_print)
 	{
-		cout << "[CODERODDE] The number of divided arcs after copying the arcs is " << countArcs(subdivided_graph) << endl;		
+		cout << "[ALEXANDRU] The number of divided arcs after copying the arcs is " << countArcs(subdivided_graph) << endl;		
 	}
 	
 	// Next, for each x in V(G) construct the graph G'_x.
@@ -191,6 +193,10 @@ static void find_certificate_sets(const StaticDigraph& graph,
 		     << map_node_to_certificate_set[tmp_node].size()
 	             << endl;*/
 	}
+	
+	uint64_t end_time = millisecond();
+	
+	cout << "[ALEXANDRU] find_certificate_sets() in " << (end_time - start_time) << " milliseconds.\n";
 }
 
 
@@ -199,9 +205,11 @@ static void find_certificate_sets(const StaticDigraph& graph,
 static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const StaticDigraph& graph,
 								     bool debug_print)
 {
+	uint64_t start_time = millisecond();
+	
 	if (debug_print)
 	{
-		cout << "[CODERODDE](compute_a_matrix) Computing the a-matrix in O(m^2)...\n";
+		cout << "[ALEXANDRU](compute_a_matrix) Computing the a-matrix in O(m^2)...\n";
 	}
 	
 	unordered_map<int, unordered_map<int, bool>> a_matrix;
@@ -269,6 +277,10 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 		//cout << "Start arc ID: " << removed_arc_id << ", mappings: " << a_matrix[removed_arc_id].size() << endl;
 	}
 	
+	uint64_t end_time = milliseconds();
+	
+	cout << "[ALEXANDRU] compute_a_matrix() in " << (end_time - start_time) << " milliseconds.\n";
+	
 	return a_matrix;
 }
 
@@ -277,9 +289,11 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 // strongly connected components.
 static unordered_set<int> find_strong_bridges(const StaticDigraph& graph, bool debug_print)
 {
+	uint64_t start_time = milliseconds();
+	
 	if (debug_print)
 	{
-		cout << "[CODERODDE](find_strong_bridges) Computing strong bridges...\n";
+		cout << "[ALEXANDRU](find_strong_bridges) Computing strong bridges...\n";
 	}
 	
 	unordered_set<int> ret;
@@ -326,8 +340,12 @@ static unordered_set<int> find_strong_bridges(const StaticDigraph& graph, bool d
 	
 	if (debug_print)
 	{
-		cout << "[CODERODDE](find_strong_bridges) Number of strong bridges: " << ret.size() << "\n";
+		cout << "[ALEXANDRU](find_strong_bridges) Number of strong bridges: " << ret.size() << "\n";
 	}
+	
+	uint64_t end_time = milliseconds();
+	
+	cout << "[ALEXANDRU] find_strong_bridges() in " << (end_time - start_time) << " milliseconds.\n";
 	
 	return ret;
 }
@@ -336,6 +354,8 @@ unordered_map<int, int> compute_funky_ell_indices(const StaticDigraph& graph,
 						  vector<StaticDigraph::Node> main_walk,
 						  StaticDigraph::NodeMap<unordered_set<int>>& map_node_to_certificate_set)
 {
+	uint64_t start_time = milliseconds();
+	
 	// The 'main_walk' consists of d nodes and d arcs, where n <= d <= n^2.
 	// Iterate over all nodes of the walk:
 	unordered_map<int, int> ell_map;
@@ -411,6 +431,10 @@ unordered_map<int, int> compute_funky_ell_indices(const StaticDigraph& graph,
 		}
 	}
 	
+	uint64_t end_time = milliseconds();
+	
+	cout << "[ALEXANDRU] compute_funky_ell_indices() in " << (end_time - start_time) << " milliseconds.\n";
+	
 	return ell_map;
 }
 
@@ -420,17 +444,18 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					   const string& sequence,
 					   const bool debug_print)
 {
+	uint64_t start_time = milliseconds();
 	vector<contig> ret;
 	size_t nodes = graph.nodeNum();
 	
 	if (debug_print)
 	{
-		cout << "[CODERODDE] Entered 'coderodde_project_algorithm'." << endl;	
-		cout << "[CODERODDE] The size of the input graph is: " << nodes << endl;
-		cout << "[CODERODDE] The number of arcs in the graph is: " << graph.arcNum() << endl;
+		cout << "[ALEXANDRU] Entered 'coderodde_project_algorithm'." << endl;	
+		cout << "[ALEXANDRU] The size of the input graph is: " << nodes << endl;
+		cout << "[ALEXANDRU] The number of arcs in the graph is: " << graph.arcNum() << endl;
 	
-		cout << "[CODERODDE] k-mer size: " << kmersize << endl;
-		cout << "[CODERODDE] Sequence length: " << sequence.length() << endl;
+		cout << "[ALEXANDRU] k-mer size: " << kmersize << endl;
+		cout << "[ALEXANDRU] Sequence length: " << sequence.length() << endl;
 		//cout << "[CODERODDE] Input file name: " << inputFileName << endl;
 	}
 	    ////////////////////////////////////////////////////
@@ -460,7 +485,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	if (debug_print)
 	{
-		cout << "[CODERODDE] Number of strong bridges is " << strong_bridge_id_set.size() << endl;
+		cout << "[ALEXANDRU] Number of strong bridges is " << strong_bridge_id_set.size() << endl;
 	}
 	
 	    /////////////////////////////////////
@@ -471,7 +496,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 								    map_node_to_certificate_set);
 	if (debug_print)
 	{
-		cout << "[CODERODDE] ell_map size: " << ell_map.size() << "\n";	
+		cout << "[ALEXANDRU] ell_map size: " << ell_map.size() << "\n";	
 	}
 	    /////////////////////
 	  //// Algorithm 1 ////
@@ -554,21 +579,25 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 			ret.push_back(current_contig);
 		}
 	}
-	
+	/*
 	cout << "RESULT SHIT\n";
 	
 	for (int k = 0; k < S_k.size(); ++k)
 	{
 		cout << "k = " << k << ", size = " << S_k[k].size() << "\n";
-	}
+	}*/
 	
 	populate_with_strings_from_node_labels(sequence, kmersize, graph, nodeLabel, ret);
 			
 	if (debug_print)
 	{
-		cout << "[CODERODDE] Exiting 'coderodde_project_algorithm'. "
+		cout << "[ALEXANDRU] Exiting 'coderodde_project_algorithm'. "
 		     << "Found " << ret.size() << " omnitigs.\n";
 	}
+	
+	uint64_t end_time = milliseconds();
+	
+	cout << "[ALEXANDRU] Total duration: " << (end_time - start_time) << " milliseconds.\n";
 	
 	return ret;
 }
