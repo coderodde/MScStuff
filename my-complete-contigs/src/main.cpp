@@ -506,6 +506,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	const int n = graph.nodeNum();
 	const int d = main_walk.size();
+	size_t contig_count = 0;
 	
 	vector<unordered_set<int>> S_k(n + 1);
 	
@@ -527,6 +528,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					if (ell_map[end_index] <= start_index)
 					{
 						S_k[1].insert(i);
+						contig_count++;
 					}
 				}
 			}
@@ -563,6 +565,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 				if (ell_map[end_index] <= start_index)
 				{
 					S_k[k].insert(i);
+					contig_count++;
 				}
 			}
 		}
@@ -582,6 +585,9 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 			ret.push_back(current_contig);
 		}
 	}
+	
+	cout << "[ALEXANDRU] Number of contigs: " << contig_count << "\n";
+	
 	/*
 	cout << "RESULT SHIT\n";
 	
@@ -607,7 +613,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		total_length += a.str.length();
 	}
 	
-	cout << "[ALEXANDRU] Total length: " << total_length << "\n.";
+	cout << "[ALEXANDRU] Total length: " << total_length << "\n";
 	
 	cout << "[ALEXNADRU] Inner algorithm duration: " << (end_time - start_time_2) << " milliseconds.\n";
 	cout << "[ALEXANDRU] Total duration: " << (end_time - start_time) << " milliseconds.\n";
