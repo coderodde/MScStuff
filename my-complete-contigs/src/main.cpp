@@ -501,6 +501,8 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	    /////////////////////
 	  //// Algorithm 1 ////
 	/////////////////////
+	uint64_t start_time_2 = milliseconds();
+	
 	const int n = graph.nodeNum();
 	const int d = main_walk.size();
 	
@@ -597,6 +599,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	uint64_t end_time = milliseconds();
 	
+	cout << "[ALEXNADRU] Inner algorithm duration: " << (end_time - start_time_2) << " milliseconds.\n";
 	cout << "[ALEXANDRU] Total duration: " << (end_time - start_time) << " milliseconds.\n";
 	
 	return ret;
