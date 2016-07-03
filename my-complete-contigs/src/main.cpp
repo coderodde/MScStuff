@@ -440,6 +440,7 @@ unordered_map<int, int> compute_funky_ell_indices(const StaticDigraph& graph,
 
 vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					   const StaticDigraph::NodeMap<string>& nodeLabel,
+					   const string& inputFilename,
 					   const size_t kmersize,
 					   const string& sequence,
 					   const bool debug_print)
@@ -601,17 +602,19 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	cout << "[ALEXNADRU] Inner algorithm duration: " << (end_time - start_time_2) << " milliseconds.\n";
 	cout << "[ALEXANDRU] Total duration: " << (end_time - start_time) << " milliseconds.\n";
-	
+	print_collection(ret, inputFileName + ".k" + std::to_string(kmersize), ".coderodde_omnitigs");
 	return ret;
 }
 
 vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					   const StaticDigraph::NodeMap<string>& nodeLabel,
+					   const string& inputFileName,
 					   const size_t kmersize,
 					   const string& sequence)
 {
 	return coderodde_project_algorithm(graph,
 					   nodeLabel,
+					   inputFileName,
 					   kmersize,
 					   sequence,
 					   false);
@@ -1811,7 +1814,7 @@ int main(int argc, char **argv)
 	
 	cout << "[CODERODDE] Steps into the room..." << endl;
 	//coderodde_project_algorithm(graph, length, seqStart, kmersize, sequence, inputFileName, true);
-	coderodde_project_algorithm(graph, nodeLabel, kmersize, sequence, true);
+	coderodde_project_algorithm(graph, nodeLabel, inputFileName, kmersize, sequence, true);
 	cout << "[CODERODDE] Exited the funky algorithm." << endl;
 	
 	fileStats.close();
