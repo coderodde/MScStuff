@@ -438,6 +438,26 @@ unordered_map<int, int> compute_funky_ell_indices(const StaticDigraph& graph,
 	return ell_map;
 }
 
+void prune_non_maximal_contigs(vector<unordered_set<int>>& S_k)
+{
+	uint64_t start_time = milliseconds();
+	
+	for (int i = S_k.size() - 1; i >= 0; --i)
+	{
+		for (int ii : S_k[i])
+		{
+			for (int j = i - 1; j >= 0; --j)
+			{
+				S_k[j].erase(ii);
+			}
+		}
+	}
+	
+	uint64_t end_time = milliseconds();
+	
+	cout << "[ALEXANDRU] prune_non_maximal_contigs() in " << (end_time - start_time) << " milliseconds.\n";
+}
+
 vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					   const StaticDigraph::NodeMap<string>& nodeLabel,
 					   const string& inputFileName,
@@ -586,15 +606,18 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		}
 	}
 	
-	cout << "[ALEXANDRU] Number of contigs: " << contig_count << "\n";
+	cout << "[ALEXANDRU] Number of contigs before pruning: " << contig_count << "\n";
 	
-	/*
-	cout << "RESULT SHIT\n";
+	prune_non_maximal_contigs(S_k);
 	
-	for (int k = 0; k < S_k.size(); ++k)
+	size_t sz = 0;
+	
+	for (unordered_set<int>& set : S_k)
 	{
-		cout << "k = " << k << ", size = " << S_k[k].size() << "\n";
-	}*/
+		sz += set.size();
+	}
+	
+	cout << "[ALEXANDRU] Number of contigs after pruning:  " << sz << "\n";
 	
 	populate_with_strings_from_node_labels(sequence, kmersize, graph, nodeLabel, ret);
 			
