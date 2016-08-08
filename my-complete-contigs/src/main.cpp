@@ -457,19 +457,7 @@ struct omnitig_descriptor {
 };
 
 void prune_non_maximal_contigs(vector<unordered_set<int>>& S_k)
-{
-	vector<omnitig_descriptor*> omnitig_descriptor_vector;
-	
-	for (size_t k = S_k.size() - 1; k >= 0; --k)
-	{
-		for (int i : S_k[k])
-		{
-			omnitig_descriptor_vector.push_back(new omnitig_descriptor(i, k));
-		}
-	}
-	
-	cout << "descriptors:: " << omnitig_descriptor_vector.size() << "\n";
-	
+{	
 	uint64_t start_time = milliseconds();
 	
 	for (int i = S_k.size() - 1; i >= 0; --i)
