@@ -511,8 +511,8 @@ void prune_non_maximal_contigs(vector<unordered_set<int>>& S_k)
 		}
 	}
 	
-	cout << "descriptor_vec.size() = " << descriptor_vec.size() << "\n";
-	cout << "pruned_descriptor_vec.size() = " << pruned_descriptor_vec.size() << "\n";
+	//cout << "descriptor_vec.size() = " << descriptor_vec.size() << "\n";
+	//cout << "pruned_descriptor_vec.size() = " << pruned_descriptor_vec.size() << "\n";
 	
 	size_t sz = S_k.size();
 	S_k.clear();
@@ -522,18 +522,6 @@ void prune_non_maximal_contigs(vector<unordered_set<int>>& S_k)
 	{
 		S_k[desc->k].insert(desc->i);
 	}
-	
-	/*
-	for (int i = S_k.size() - 1; i >= 0; --i)
-	{
-		for (int ii : S_k[i])
-		{
-			for (int j = i - 1; j >= 0; --j)
-			{
-				S_k[j].erase(ii);
-			}
-		}
-	}*/
 	
 	uint64_t end_time = milliseconds();
 	
@@ -709,8 +697,6 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		sum += k * S_k[k].size();
 		//cout << k << "(" << S_k[k].size() << ")\n";
 	}
-	
-	cout << "\n";
 	
 	cout << "[ALEXANDRU] Average number of nodes per omnitig: " << sum / sz << "\n";
 	
