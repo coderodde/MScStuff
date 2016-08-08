@@ -465,7 +465,7 @@ void prune_non_maximal_contigs(vector<unordered_set<int>>& S_k)
 		for (int i : S_k[k])
 		{
 			omnitig_descriptor current(i, k);
-			omnitig_descriptor_vector.push_back(current);
+			omnitig_descriptor_vector.emplace_back(current);
 		}
 	}
 	
