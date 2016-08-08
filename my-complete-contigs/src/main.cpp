@@ -482,7 +482,7 @@ void prune_non_maximal_contigs(vector<unordered_set<int>>& S_k)
 			// Attempt to prune C(i, k) away:
 			for (size_t kk = k + 1; kk < S_k.size(); ++kk)
 			{
-				for (int ii : S_k[kk)
+				for (int ii : S_k[kk])
 				{
 					if (is_included_in(i, k, ii, kk))
 					{
