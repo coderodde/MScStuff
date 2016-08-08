@@ -438,8 +438,39 @@ unordered_map<int, int> compute_funky_ell_indices(const StaticDigraph& graph,
 	return ell_map;
 }
 
+struct omnitig_descriptor {
+	int i;
+	size_t k;
+	
+	omnitig_descriptor(int i_, size_t k_) : i(i_), k(k_) {}
+	
+	bool includes(const omnitig_descriptor& other) const
+	{
+		if (other.k > k)
+		{
+			return false;
+		}
+		
+		const size_t size_difference = k - other.k;
+		return i <= other.i && other.i <= i + size_difference;
+	}
+};
+
 void prune_non_maximal_contigs(vector<unordered_set<int>>& S_k)
 {
+	vector<omnitig_descriptor> omnitig_descriptor_vector;
+	
+	for (size_t k = S_k.size() - 1; k >= 0; --k)
+	{
+		for (int i : S_k[k])
+		{
+			omnitig_descriptor current(i, k);
+			omnitig_descriptor_vector.push_back(current);
+		}
+	}
+	
+	cout << "descriptors:: " << omnitig_descriptor_vector.size() << "\n";
+	
 	uint64_t start_time = milliseconds();
 	
 	for (int i = S_k.size() - 1; i >= 0; --i)
