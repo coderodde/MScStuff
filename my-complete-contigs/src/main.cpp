@@ -514,6 +514,14 @@ void prune_non_maximal_contigs(vector<unordered_set<int>>& S_k)
 	cout << "descriptor_vec.size() = " << descriptor_vec.size() << "\n";
 	cout << "pruned_descriptor_vec.size() = " << pruned_descriptor_vec.size() << "\n";
 	
+	S_k.clear();
+	
+	for (omnitig_descriptor* desc : pruned_descriptor_vec)
+	{
+		S_k[desc->k].insert(desc->i);
+	}
+	
+	/*
 	for (int i = S_k.size() - 1; i >= 0; --i)
 	{
 		for (int ii : S_k[i])
@@ -523,7 +531,7 @@ void prune_non_maximal_contigs(vector<unordered_set<int>>& S_k)
 				S_k[j].erase(ii);
 			}
 		}
-	}
+	}*/
 	
 	uint64_t end_time = milliseconds();
 	
