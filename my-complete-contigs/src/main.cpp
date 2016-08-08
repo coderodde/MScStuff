@@ -483,7 +483,7 @@ void prune_non_maximal_contigs(vector<unordered_set<int>>& S_k)
 		}
 	}
 	
-	cout << "YOU SHOULD SEE THIS\n";
+	cout << "YOU SHOULD SEE THIS: " << descriptor_vec.size() << "\n";
 	
 	for (int i = S_k.size() - 1; i >= 0; --i)
 	{
