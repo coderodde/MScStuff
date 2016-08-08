@@ -619,12 +619,21 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	cout << "[ALEXANDRU] Number of contigs after pruning:  " << sz << "\n";
 	
+	//// Compute and print the average size of omnitigs:
+	size_t sum = 0;
+	
+	for (size_t i = 0; i < S_k.size(); ++i)
+	{
+		sum += i * S_k[i].size();
+	}
+	
+	cout << "[ALEXANDRU] Average number of nodes per omnitig: " << sum / sz << "\n";
+	
 	populate_with_strings_from_node_labels(sequence, kmersize, graph, nodeLabel, ret);
 			
 	if (debug_print)
 	{
-		cout << "[ALEXANDRU] Exiting 'coderodde_project_algorithm'. "
-		     << "Found " << ret.size() << " omnitigs.\n";
+		cout << "[ALEXANDRU] Exiting 'coderodde_project_algorithm'.\n";
 	}
 	
 	uint64_t end_time = milliseconds();
