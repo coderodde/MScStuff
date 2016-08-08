@@ -456,9 +456,45 @@ struct omnitig_descriptor {
 	}
 };
 
+/////////////////////////////////////////////////////////////
+  //// Checks that C(i1, k1) is included in C(i2, k2). ////
+/////////////////////////////////////////////////////////////
+static bool is_included_in(int i1, size_t k1, int i2, size_t k2)
+{
+	if (k1 > k2)
+	{
+		return false;
+	}
+	
+	const size_t size_difference = k2 - k1;
+	return i2 <= i1 && i1 <= i2 + size_difference;
+}
+
 void prune_non_maximal_contigs(vector<unordered_set<int>>& S_k)
 {	
 	uint64_t start_time = milliseconds();
+	
+	for (size_t k = 0; k < S_k.size(); ++k)
+	{
+		loop:
+		for (int i : S_k[k])
+		{
+			// Attempt to prune C(i, k) away:
+			for (size_t kk = k + 1; kk < S_k.size(); ++kk)
+			{
+				for (int ii : S_k[kk)
+				{
+					if (is_included_in(i, k, ii, kk))
+					{
+						S_k[k].erase(i);
+						continue loop;
+					}
+				}
+			}
+		}
+	}
+	
+	cout << "YOU SHOULD SEE THIS\N";
 	
 	for (int i = S_k.size() - 1; i >= 0; --i)
 	{
