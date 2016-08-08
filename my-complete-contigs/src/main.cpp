@@ -475,6 +475,7 @@ void prune_non_maximal_contigs(vector<unordered_set<int>>& S_k)
 	uint64_t start_time = milliseconds();
 	vector<omnitig_descriptor*> descriptor_vec;
 	
+	// Load the C(i, k) descriptors:
 	for (size_t k = 0; k < S_k.size(); ++k)
 	{
 		for (int i : S_k[k])
@@ -483,7 +484,35 @@ void prune_non_maximal_contigs(vector<unordered_set<int>>& S_k)
 		}
 	}
 	
-	cout << "YOU SHOULD SEE THIS: " << descriptor_vec.size() << "\n";
+	vector<omnitig_descriptor*> pruned_descriptor_vec;
+	
+	for (size_t i = 0; i < descriptor_vec.size(); ++i)
+	{
+		bool is_maximal = true; // descriptor_vec[i] is assumed to be maximal.
+		
+		for (size_t j = 0; j < descriptor_vec.size(); ++j)
+		{
+			if (i == j)
+			{
+				// Omit itself.
+				continue;
+			}
+			
+			if (descriptor_vec[j]->includes(*descriptor_vec[i]))
+			{
+				is_maximal = false;
+				break;
+			}
+		}
+		
+		if (is_maximal)
+		{
+			pruned_descriptor_vec.push_back(descriptor_vec[i]);
+		}
+	}
+	
+	cout << "descriptor_vec.size() = " << descriptor_vec.size() << "\n";
+	cout << "pruned_descriptor_vec.size() = " << pruned_descriptor_vec.size() << "\n";
 	
 	for (int i = S_k.size() - 1; i >= 0; --i)
 	{
