@@ -683,7 +683,6 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	{
 		sum += k * S_k[k].size();
 		cout << "yeah\n";
-		//cout << k << "(" << S_k[k].size() << ")\n";
 	}
 	
 	cout << "[ALEXANDRU] Average number of nodes per omnitig: " << sum / sz << "\n";
