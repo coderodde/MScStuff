@@ -470,26 +470,36 @@ static bool is_included_in(int i1, size_t k1, int i2, size_t k2)
 	return i2 <= i1 && i1 <= i2 + size_difference;
 }
 
+bool prune_impl(int i, size_t k, vector<unordered_set<int>& S_k)
+{
+	for (size_t kk = k + 1; kk < S_k.size(); ++kk)
+	{
+		for (int ii : S_k[kk])
+		{
+			if (is_included_in(i, k, ii, kk))
+			{
+				S_k[k].erase(i);
+				return true;
+			}
+		}
+	}
+	
+	return false;
+}
+
 void prune_non_maximal_contigs(vector<unordered_set<int>>& S_k)
 {	
 	uint64_t start_time = milliseconds();
 	
 	for (size_t k = 0; k < S_k.size(); ++k)
 	{
-		loop:
-		for (int i : S_k[k])
+		for (auto iter = S_k[k].begin(); iter != S_k[k].end(); ++iter)
 		{
-			// Attempt to prune C(i, k) away:
-			for (size_t kk = k + 1; kk < S_k.size(); ++kk)
+			int i = *iter;
+			
+			if (prune_impl(i, k, S_k))
 			{
-				for (int ii : S_k[kk])
-				{
-					if (is_included_in(i, k, ii, kk))
-					{
-						S_k[k].erase(i);
-						continue loop;
-					}
-				}
+				S_k[k].erase(iter);
 			}
 		}
 	}
