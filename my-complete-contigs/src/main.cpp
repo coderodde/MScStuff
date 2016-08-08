@@ -470,7 +470,7 @@ static bool is_included_in(int i1, size_t k1, int i2, size_t k2)
 	return i2 <= i1 && i1 <= i2 + size_difference;
 }
 
-bool prune_impl(int i, size_t k, vector<unordered_set<int>& S_k)
+bool prune_impl(int i, size_t k, vector<unordered_set<int>>& S_k)
 {
 	for (size_t kk = k + 1; kk < S_k.size(); ++kk)
 	{
