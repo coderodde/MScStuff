@@ -473,12 +473,13 @@ static bool is_included_in(int i1, size_t k1, int i2, size_t k2)
 void prune_non_maximal_contigs(vector<unordered_set<int>>& S_k)
 {	
 	uint64_t start_time = milliseconds();
+	vector<omnitig_descriptor*> descriptor_vec;
 	
 	for (size_t k = 0; k < S_k.size(); ++k)
 	{
 		for (int i : S_k[k])
 		{
-			
+			descriptor_vec.push_back(new omnitig_descriptor(i, k));
 		}
 	}
 	
