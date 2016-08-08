@@ -678,6 +678,8 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	//// Compute and print the average size of omnitigs:
 	size_t sum = 0;
 	
+	cout << "[FORMAT FOR BELOW TOKENS] k(frequency of omnitigs with the given k):\n";
+	
 	for (size_t k = 0; k < S_k.size(); ++k)
 	{
 		sum += k * S_k[k].size();
