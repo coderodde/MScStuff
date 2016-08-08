@@ -456,20 +456,6 @@ struct omnitig_descriptor {
 	}
 };
 
-/////////////////////////////////////////////////////////////
-  //// Checks that C(i1, k1) is included in C(i2, k2). ////
-/////////////////////////////////////////////////////////////
-static bool is_included_in(int i1, size_t k1, int i2, size_t k2)
-{
-	if (k1 > k2)
-	{
-		return false;
-	}
-	
-	const size_t size_difference = k2 - k1;
-	return i2 <= i1 && i1 <= i2 + size_difference;
-}
-
 void prune_non_maximal_contigs(vector<unordered_set<int>>& S_k)
 {	
 	uint64_t start_time = milliseconds();
@@ -692,6 +678,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	//// Compute and print the average size of omnitigs:
 	size_t sum = 0;
 	
+	cout << "Shit: " << S_k.size() << "\n";
 	for (size_t k = 0; k < S_k.size(); ++k)
 	{
 		sum += k * S_k[k].size();
