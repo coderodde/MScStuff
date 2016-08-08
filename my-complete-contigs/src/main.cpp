@@ -514,7 +514,9 @@ void prune_non_maximal_contigs(vector<unordered_set<int>>& S_k)
 	cout << "descriptor_vec.size() = " << descriptor_vec.size() << "\n";
 	cout << "pruned_descriptor_vec.size() = " << pruned_descriptor_vec.size() << "\n";
 	
+	size_t sz = S_k.size();
 	S_k.clear();
+	S_k.resize(sz);
 	
 	for (omnitig_descriptor* desc : pruned_descriptor_vec)
 	{
