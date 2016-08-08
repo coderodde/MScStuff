@@ -682,6 +682,10 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	for (size_t k = 0; k < S_k.size(); ++k)
 	{
 		sum += k * S_k[k].size();
+<<<<<<< HEAD
+=======
+		cout << "yeah\n";
+>>>>>>> 819d29225f6f6f1e607ec0aca583ed6a9d3828bb
 		//cout << k << "(" << S_k[k].size() << ")\n";
 	}
 	
