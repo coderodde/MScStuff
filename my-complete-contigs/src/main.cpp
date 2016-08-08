@@ -678,11 +678,10 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	//// Compute and print the average size of omnitigs:
 	size_t sum = 0;
 	
-	cout << "Shit: " << S_k.size() << "\n";
 	for (size_t k = 0; k < S_k.size(); ++k)
 	{
 		sum += k * S_k[k].size();
-		cout << "yeah\n";   
+		cout << k << "(" << S_k[k].size() << ")\n";
 	}
 	
 	cout << "[ALEXANDRU] Average number of nodes per omnitig: " << sum / sz << "\n";
