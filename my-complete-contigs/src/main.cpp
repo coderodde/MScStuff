@@ -1598,12 +1598,15 @@ static void test_strong_bridges()
 	ListDigraph::Node b = my_graph.addNode();
 	ListDigraph::Node c = my_graph.addNode();
 	ListDigraph::Node d = my_graph.addNode();
+	ListDigraph::Node e = my_graph.addNode();
 	
 	// Strong bridges:
 	ListDigraph::Arc ab = my_graph.addArc(a, b);
 	ListDigraph::Arc bd = my_graph.addArc(b, d);
 	ListDigraph::Arc dc = my_graph.addArc(d, c);
 	ListDigraph::Arc ca = my_graph.addArc(c, a);
+	ListDigraph::Arc be = my_graph.addArc(b, e);
+	ListDigraph::Arc ed = my_graph.addArc(e, d);
 	
 	// Other arcs:
 	ListDigraph::Arc db = my_graph.addArc(d, b);
@@ -1619,6 +1622,8 @@ static void test_strong_bridges()
 	StaticDigraph::Arc bridge_bd = graph_arcs_to_static_graph_arcs[bd];
 	StaticDigraph::Arc bridge_dc = graph_arcs_to_static_graph_arcs[dc];
 	StaticDigraph::Arc bridge_ca = graph_arcs_to_static_graph_arcs[ca];
+	StaticDigraph::Arc bridge_be = graph_arcs_to_static_graph_arcs[be];
+	StaticDigraph::Arc bridge_ed = graph_arcs_to_static_graph_arcs[ed];
 	
 	cout << "Static graph nodes: " << countNodes(static_graph) << "\n";
 	cout << "Static graph arcs:  " << countArcs(static_graph)  << "\n";
@@ -1627,6 +1632,8 @@ static void test_strong_bridges()
 	cout << "b -> d: " << static_graph.id(bridge_bd) << "\n";
 	cout << "d -> c: " << static_graph.id(bridge_dc) << "\n";
 	cout << "c -> a: " << static_graph.id(bridge_ca) << "\n";
+	cout << "b -> e: " << static_graph.id(bridge_be) << "\n";
+	cout << "e -> d: " << static_graph.id(bridge_ed) << "\n";
 	
 	unordered_set<int> strong_bridge_id_set = find_strong_bridges(const_cast<const StaticDigraph&>(static_graph), false);
 	
@@ -1697,9 +1704,9 @@ static void test_a_matrix_algo()
 int main(int argc, char **argv)
 {
 	//test_list_digraph_node_ids();
-	//test_strong_bridges();
+	test_strong_bridges();
 	//test_a_matrix_algo();
-	//exit(0);
+	exit(0);
 	
 	//////////////////////////////////////////
 	//////////////////////////////////////////
