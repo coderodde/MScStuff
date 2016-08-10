@@ -1629,7 +1629,6 @@ static void test_strong_bridges()
 	cout << "Static graph arcs:  " << countArcs(static_graph)  << "\n";
 	
 	cout << "a -> b: " << static_graph.id(bridge_ab) << "\n";
-	cout << "b -> d: " << static_graph.id(bridge_bd) << "\n";
 	cout << "d -> c: " << static_graph.id(bridge_dc) << "\n";
 	cout << "c -> a: " << static_graph.id(bridge_ca) << "\n";
 	cout << "b -> e: " << static_graph.id(bridge_be) << "\n";
@@ -1637,8 +1636,8 @@ static void test_strong_bridges()
 	
 	unordered_set<int> strong_bridge_id_set = find_strong_bridges(const_cast<const StaticDigraph&>(static_graph), false);
 	
-	cout << "Strong bridges: " << strong_bridge_id_set.size() << "\n";
-	cout << "Contents: ";
+	cout << "Number of strong bridges: " << strong_bridge_id_set.size() << "\n";
+	cout << "Contents (IDs): ";
 	
 	for (const auto id : strong_bridge_id_set)
 	{
