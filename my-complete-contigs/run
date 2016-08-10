@@ -1,0 +1,2 @@
+cd bin
+./complete-contigs -i ../../data/Arcobacter_nitrofigilis.fna
