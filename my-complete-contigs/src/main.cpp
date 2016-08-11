@@ -598,7 +598,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 				
 				if (iter != strong_bridge_id_set.end())
 				{
-					int end_index = i + 1;
+					int end_index = (i + 1) % d;
 					int start_index = i;
 					
 					if (ell_map[end_index] <= start_index)
@@ -635,7 +635,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 				}
 				
 				// Last check: Cert(v_i) \cap .. \cap Cert(v_{i + k mod d} not empty:
-				const int end_index = i + 1;
+				const int end_index = (i + k) % d;
 				const int start_index = i;
 				
 				if (ell_map[end_index] <= start_index)
