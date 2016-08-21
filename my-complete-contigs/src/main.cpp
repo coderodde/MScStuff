@@ -1674,7 +1674,7 @@ static void test_certicate_preprocessing()
 	ListDigraph::ArcMap<StaticDigraph::Arc>   graph_arcs_to_static_graph_arcs(graph);
 	
 	static_graph.build(graph, graph_nodes_to_static_graph_nodes, graph_arcs_to_static_graph_arcs);
-	StaticDigraph::NodeMap<unordered_set<int>> map_node_to_certificate_set;
+	StaticDigraph::NodeMap<unordered_set<int>> map_node_to_certificate_set(static_graph);
 	
 	find_certificate_sets(static_graph, map_node_to_certificate_set, false);
 	
