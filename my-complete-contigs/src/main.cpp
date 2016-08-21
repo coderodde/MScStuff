@@ -1753,6 +1753,30 @@ static void test_certificate_preprocessing()
 	}
 	
 	cout << " }\n";
+	cout << "Cert(b) = {";
+	
+	for (auto i : map_node_to_certificate_set_2[graph_nodes_to_static_graph_nodes_2[b]])
+	{
+		cout << " " << i;
+	}
+	
+	cout << " }\n";
+	cout << "Cert(c) = {";
+	
+	for (auto i : map_node_to_certificate_set_2[graph_nodes_to_static_graph_nodes_2[c]])
+	{
+		cout << " " << i;
+	}
+	
+	cout << " }\n";
+	cout << "Cert(d) = {";
+	
+	for (auto i : map_node_to_certificate_set_2[graph_nodes_to_static_graph_nodes_2[d]])
+	{
+		cout << " " << i;
+	}
+	
+	cout << " }\n";
 }
 
 static void test_list_digraph_node_ids()
