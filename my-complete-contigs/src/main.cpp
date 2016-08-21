@@ -1747,7 +1747,7 @@ static void test_certificate_preprocessing()
 	
 	cout << "Cert(a) = {";
 	
-	for (auto i : map_node_to_certificate_set_2[graph_nodes_to_static_graph_nodes_2[a])
+	for (auto i : map_node_to_certificate_set_2[graph_nodes_to_static_graph_nodes_2[a]])
 	{
 		cout << " " << i;
 	}
