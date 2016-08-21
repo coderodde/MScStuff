@@ -1650,6 +1650,7 @@ static void test_strong_bridges()
 
 static void test_certificate_preprocessing()
 {
+	// rodde: this is my test I verified with Alexandru:
 	ListDigraph graph;
 	
 	ListDigraph::Node l1 = graph.addNode();
@@ -1694,11 +1695,12 @@ static void test_certificate_preprocessing()
 	unordered_set<int> cert_set_of_m2 = map_node_to_certificate_set[graph_nodes_to_static_graph_nodes[m2]];
 	unordered_set<int> cert_set_of_m3 = map_node_to_certificate_set[graph_nodes_to_static_graph_nodes[m3]];
 	
-	cout << "First test passed: " << (cert_set_of_m1 == cert_set_of_m2 &&
+	cout << "First test passed: " << std::boolalpha
+				      << (cert_set_of_m1 == cert_set_of_m2 &&
 					  cert_set_of_m2 == cert_set_of_m3)
 				      << "\n";
 	
-	cout << "The node ID's are\n";
+	cout << "The node ID's are:\n";
 	
 	for (auto i : cert_set_of_m1)
 	{
@@ -1706,6 +1708,32 @@ static void test_certificate_preprocessing()
 	}
 	
 	cout << "\n";
+	
+	// The following test setting is provided by Alex. Thanky you, Alexandru! :-)
+	// Test (a):
+	graph.clear();
+	
+	ListDigraph::Node a = graph.addNode();
+	ListDigraph::Node b = graph.addNode();
+	ListDigraph::Node c = graph.addNode();
+	ListDigraph::Node d = graph.addNode();
+	ListDigraph::Node e = graph.addNode();
+	
+	ListDigraph::Arc ab = graph.addArc(a, b);
+	ListDigraph::Arc bc = graph.addArc(b, c);
+	ListDigraph::Arc cd = graph.addArc(c, d);
+	ListDigraph::Arc de = graph.addArc(d, e);
+	ListDigraph::Arc ea = graph.addArc(e, a);
+	ListDigraph::Arc ca = graph.addArc(c, a);
+	ListDigraph::Arc db = graph.addArc(d, b);
+	
+	StaticDigraph static_graph_2;
+	
+	ListDigraph::NodeMap<StaticDigraph::Node> graph_nodes_to_static_graph_nodes_2(graph);
+	ListDigraph::ArcMap<StaticDigraph::Arc>   graph_arcs_to_static_graph_arcs_2(graph);
+	
+	static_graph_2.build(graph, graph_nodes_to_static_graph_nodes_2, graph_arcs_to_static_graph_arcs_2);
+	StaticDigraph::NodeMap<unordered_set<int>> map_node_to_certificate_set(static_graph_2);
 }
 
 static void test_list_digraph_node_ids()
