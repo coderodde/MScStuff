@@ -1829,6 +1829,18 @@ static void test_certificate_preprocessing()
 	}
 	
 	cout << " }\n";
+	
+	{		
+		graph.clear();
+	
+		a = graph.addNode();
+		b = graph.addNode();
+		c = graph.addNode();
+		d = graph.addNode();
+		e = graph.addNode();
+	
+		ListDigraph::Arc ab = graph.addArc(a, b);
+	}
 }
 
 static void test_list_digraph_node_ids()
