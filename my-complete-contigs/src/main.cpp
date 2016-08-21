@@ -1777,6 +1777,58 @@ static void test_certificate_preprocessing()
 	}
 	
 	cout << " }\n";
+	
+	graph.erase(e);
+	
+	StaticDigraph static_graph_3;
+	
+	ListDigraph::NodeMap<StaticDigraph::Node> graph_nodes_to_static_graph_nodes_3(graph);
+	ListDigraph::ArcMap<StaticDigraph::Arc>   graph_arcs_to_static_graph_arcs_3(graph);
+	
+	static_graph_3.build(graph, graph_nodes_to_static_graph_nodes_3, graph_arcs_to_static_graph_arcs_3);
+	StaticDigraph::NodeMap<unordered_set<int>> map_node_to_certificate_set_3(static_graph_3);
+	
+	find_certificate_sets(static_graph_3, map_node_to_certificate_set_3, false);
+	
+	cout << "List of StaticDigraph node IDs in Test (b):\n";
+	
+	cout << "a: " << static_graph_3.id(graph_nodes_to_static_graph_nodes_3[a]) << "\n";
+	cout << "b: " << static_graph_3.id(graph_nodes_to_static_graph_nodes_3[b]) << "\n";
+	cout << "c: " << static_graph_3.id(graph_nodes_to_static_graph_nodes_3[c]) << "\n";
+	cout << "d: " << static_graph_3.id(graph_nodes_to_static_graph_nodes_3[d]) << "\n";
+	
+	cout << "Cert(a) = {";
+	
+	for (auto i : map_node_to_certificate_set_3[graph_nodes_to_static_graph_nodes_3[a]])
+	{
+		cout << " " << i;
+	}
+	
+	cout << " }\n";
+	cout << "Cert(b) = {";
+	
+	for (auto i : map_node_to_certificate_set_3[graph_nodes_to_static_graph_nodes_3[b]])
+	{
+		cout << " " << i;
+	}
+	
+	cout << " }\n";
+	cout << "Cert(c) = {";
+	
+	for (auto i : map_node_to_certificate_set_3[graph_nodes_to_static_graph_nodes_3[c]])
+	{
+		cout << " " << i;
+	}
+	
+	cout << " }\n";
+	cout << "Cert(d) = {";
+	
+	for (auto i : map_node_to_certificate_set_3[graph_nodes_to_static_graph_nodes_3[d]])
+	{
+		cout << " " << i;
+	}
+	
+	cout << " }\n";
 }
 
 static void test_list_digraph_node_ids()
