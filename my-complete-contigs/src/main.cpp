@@ -1833,13 +1833,79 @@ static void test_certificate_preprocessing()
 	{		
 		graph.clear();
 	
-		a = graph.addNode();
-		b = graph.addNode();
-		c = graph.addNode();
-		d = graph.addNode();
-		e = graph.addNode();
+		ListDigraph::Node a = graph.addNode();
+		ListDigraph::Node b = graph.addNode();
+		ListDigraph::Node c = graph.addNode();
+		ListDigraph::Node d = graph.addNode();
+		ListDigraph::Node e = graph.addNode();
 	
 		ListDigraph::Arc ab = graph.addArc(a, b);
+		ListDigraph::Arc bc = graph.addArc(b, c);
+		ListDigraph::Arc cd = graph.addArc(c, d);
+		ListDigraph::Arc de = graph.addArc(d, e);
+		ListDigraph::Arc ea = graph.addArc(e, a);
+		ListDigraph::Arc cb = graph.addArc(c, b);
+		ListDigraph::Arc db = graph.addArc(d, b);
+		ListDigraph::Arc ca = graph.addArc(c, a);
+		
+		StaticDigraph static_graph;
+	
+		ListDigraph::NodeMap<StaticDigraph::Node> graph_nodes_to_static_graph_nodes(graph);
+		ListDigraph::ArcMap<StaticDigraph::Arc>   graph_arcs_to_static_graph_arcs(graph);
+	
+		static_graph.build(graph, graph_nodes_to_static_graph_nodes, graph_arcs_to_static_graph_arcs);
+		StaticDigraph::NodeMap<unordered_set<int>> map_node_to_certificate_set(static_graph);
+		
+		find_certificate_sets(static_graph, map_node_to_certificate_set, false);
+		
+		out << "List of StaticDigraph node IDs in Test (c):\n";
+	
+		cout << "a: " << static_graph.id(graph_nodes_to_static_graph_nodes[a]) << "\n";
+		cout << "b: " << static_graph.id(graph_nodes_to_static_graph_nodes[b]) << "\n";
+		cout << "c: " << static_graph.id(graph_nodes_to_static_graph_nodes[c]) << "\n";
+		cout << "d: " << static_graph.id(graph_nodes_to_static_graph_nodes[d]) << "\n";
+		cout << "e: " << static_graph.id(graph_nodes_to_static_graph_nodes[e]) << "\n";
+	
+		cout << "Cert(a) = {";
+	
+		for (auto i : map_node_to_certificate_set[graph_nodes_to_static_graph_nodes[a]])
+		{
+			cout << " " << i;
+		}
+	
+		cout << " }\n";
+		cout << "Cert(b) = {";
+		
+		for (auto i : map_node_to_certificate_set[graph_nodes_to_static_graph_nodes[b]])
+		{
+			cout << " " << i;
+		}
+	
+		cout << " }\n";
+		cout << "Cert(c) = {";
+		
+		for (auto i : map_node_to_certificate_set[graph_nodes_to_static_graph_nodes[c]])
+		{
+			cout << " " << i;
+		}
+	
+		cout << " }\n";
+		cout << "Cert(d) = {";
+		
+		for (auto i : map_node_to_certificate_set[graph_nodes_to_static_graph_nodes[d]])
+		{
+			cout << " " << i;
+		}
+	
+		cout << " }\n";
+		cout << "Cert(e) = {";
+		
+		for (auto i : map_node_to_certificate_set[graph_nodes_to_static_graph_nodes[d]])
+		{
+			cout << " " << i;
+		}
+	
+		cout << " }\n";	
 	}
 }
 
