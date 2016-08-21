@@ -1681,6 +1681,12 @@ static void test_certificate_preprocessing()
 	cout << "List of StaticDigraph node IDs:\n";
 	
 	cout << "l1: " << static_graph.id(graph_nodes_to_static_graph_nodes[l1]) << "\n";
+	cout << "l2: " << static_graph.id(graph_nodes_to_static_graph_nodes[l2]) << "\n";
+	cout << "m1: " << static_graph.id(graph_nodes_to_static_graph_nodes[m1]) << "\n";
+	cout << "m2: " << static_graph.id(graph_nodes_to_static_graph_nodes[m2]) << "\n";
+	cout << "m3: " << static_graph.id(graph_nodes_to_static_graph_nodes[m3]) << "\n";
+	cout << "r1: " << static_graph.id(graph_nodes_to_static_graph_nodes[r1]) << "\n";
+	cout << "r2: " << static_graph.id(graph_nodes_to_static_graph_nodes[r2]) << "\n";
 }
 
 static void test_list_digraph_node_ids()
