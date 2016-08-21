@@ -1733,7 +1733,7 @@ static void test_certificate_preprocessing()
 	ListDigraph::ArcMap<StaticDigraph::Arc>   graph_arcs_to_static_graph_arcs_2(graph);
 	
 	static_graph_2.build(graph, graph_nodes_to_static_graph_nodes_2, graph_arcs_to_static_graph_arcs_2);
-	StaticDigraph::NodeMap<unordered_set<int>> map_node_to_certificate_set(static_graph_2);
+	StaticDigraph::NodeMap<unordered_set<int>> map_node_to_certificate_set_2(static_graph_2);
 }
 
 static void test_list_digraph_node_ids()
