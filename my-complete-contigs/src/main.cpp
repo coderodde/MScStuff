@@ -1701,13 +1701,13 @@ static void test_certificate_preprocessing()
 			      cert_set_of_m1.end(),
 			      cert_set_of_m2.begin(),
 			      cert_set_of_m2.end(),
-			      result1.begin());
+			      result1.end());
 	
 	std::set_intersection(cert_set_of_m3.begin(),
 			      cert_set_of_m3.end(),
 			      result1.begin(),
 			      result1.end(),
-			      result2.begin());
+			      result2.end());
 	
 	cout << "length: " << result2.size() << "\n";
 }
