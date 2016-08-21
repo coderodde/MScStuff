@@ -1688,8 +1688,10 @@ static void test_certificate_preprocessing()
 	cout << "r1: " << static_graph.id(graph_nodes_to_static_graph_nodes[r1]) << "\n";
 	cout << "r2: " << static_graph.id(graph_nodes_to_static_graph_nodes[r2]) << "\n";
 	
-	// Certificate of m1:
+	// Certificate sets of m1, m2, and m3:
 	unordered_set<int> cert_set_of_m1 = map_node_to_certificate_set[graph_nodes_to_static_graph_nodes[m1]];
+	unordered_set<int> cert_set_of_m2 = map_node_to_certificate_set[graph_nodes_to_static_graph_nodes[m2]];
+	unordered_set<int> cert_set_of_m3 = map_node_to_certificate_set[graph_nodes_to_static_graph_nodes[m3]];
 }
 
 static void test_list_digraph_node_ids()
