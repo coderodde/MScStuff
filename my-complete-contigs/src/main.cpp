@@ -1647,6 +1647,39 @@ static void test_strong_bridges()
 	cout << "\n";
 }
 
+static void test_certicate_preprocessing()
+{
+	ListDigraph graph;
+	
+	ListDigraph::Node l1 = graph.addNode();
+	ListDigraph::Node l2 = graph.addNode();
+	ListDigraph::Node m1 = graph.addNode();
+	ListDigraph::Node m2 = graph.addNode();
+	ListDigraph::Node m3 = graph.addNode();
+	ListDigraph::Node r1 = graph.addNode();
+	ListDigraph::Node r2 = graph.addNode();
+	
+	ListDigraph::Arc l1l2 = graph.addArc(l1, l2);
+	ListDigraph::Arc l2m3 = graph.addArc(l2, m3);
+	ListDigraph::Arc m3m2 = graph.addArc(m3, m2);
+	ListDigraph::Arc m2m1 = graph.addArc(m2, m1);
+	ListDigraph::Arc m1l1 = graph.addArc(m1, l1);
+	ListDigraph::Arc m1r1 = graph.addArc(m1, r1);
+	ListDigraph::Arc r1r2 = graph.addArc(r1, r2);
+	ListDigraph::Arc r2m3 = graph.addArc(r2, m3);
+	
+	StaticDigraph static_graph;
+	
+	ListDigraph::NodeMap<StaticDigraph::Node> graph_nodes_to_static_graph_nodes(my_graph);
+	ListDigraph::ArcMap<StaticDigraph::Arc>   graph_arcs_to_static_graph_arcs(my_graph);
+	
+	static_graph.build(graph, graph_nodes_to_static_graph_nodes, graph_arcs_to_static_graph_arcs);
+	StaticDigraph::NodeMap<unordered_set<int>> map_node_to_certificate_set;
+	
+	find_certificate_sets(static_graph, map_node_to_certificate_set, false);
+	
+}
+
 static void test_list_digraph_node_ids()
 {
 	ListDigraph graph;
