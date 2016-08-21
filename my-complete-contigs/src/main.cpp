@@ -1,5 +1,6 @@
 #include "utils.h"
 #include "rodde_current_time.h"
+#include <algorithm>
 #include <stdexcept>
 
 using std::runtime_error;
@@ -1692,6 +1693,23 @@ static void test_certificate_preprocessing()
 	unordered_set<int> cert_set_of_m1 = map_node_to_certificate_set[graph_nodes_to_static_graph_nodes[m1]];
 	unordered_set<int> cert_set_of_m2 = map_node_to_certificate_set[graph_nodes_to_static_graph_nodes[m2]];
 	unordered_set<int> cert_set_of_m3 = map_node_to_certificate_set[graph_nodes_to_static_graph_nodes[m3]];
+	
+	unordered_set<int> result1;
+	unordered_set<int> result2;
+	
+	std::set_intersection(cert_set_of_m1.begin(),
+			      cert_set_of_m1.end(),
+			      cert_set_of_m2.begin(),
+			      cert_set_of_m2.end(),
+			      result1.begin());
+	
+	std::set_intersection(cert_set_of_m3.begin(),
+			      cert_set_of_m3.end(),
+			      result1.begin(),
+			      result1.end(),
+			      result2.begin());
+	
+	cout << "length: " << result2.size() << "\n";
 }
 
 static void test_list_digraph_node_ids()
