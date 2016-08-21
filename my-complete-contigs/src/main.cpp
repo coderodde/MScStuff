@@ -1734,6 +1734,17 @@ static void test_certificate_preprocessing()
 	
 	static_graph_2.build(graph, graph_nodes_to_static_graph_nodes_2, graph_arcs_to_static_graph_arcs_2);
 	StaticDigraph::NodeMap<unordered_set<int>> map_node_to_certificate_set_2(static_graph_2);
+	
+	
+	find_certificate_sets(static_graph_2, map_node_to_certificate_set_2, false);
+	
+	cout << "List of StaticDigraph node IDs in Test (a):\n";
+	
+	cout << "a: " << static_graph_2.id(graph_nodes_to_static_graph_nodes_2[a]) << "\n";
+	cout << "b: " << static_graph_2.id(graph_nodes_to_static_graph_nodes_2[b]) << "\n";
+	cout << "c: " << static_graph_2.id(graph_nodes_to_static_graph_nodes_2[c]) << "\n";
+	cout << "d: " << static_graph_2.id(graph_nodes_to_static_graph_nodes_2[d]) << "\n";
+	cout << "e: " << static_graph_2.id(graph_nodes_to_static_graph_nodes_2[e]) << "\n";
 }
 
 static void test_list_digraph_node_ids()
