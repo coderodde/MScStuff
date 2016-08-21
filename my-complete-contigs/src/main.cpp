@@ -1678,6 +1678,9 @@ static void test_certificate_preprocessing()
 	
 	find_certificate_sets(static_graph, map_node_to_certificate_set, false);
 	
+	cout << "List of StaticDigraph node IDs:\n";
+	
+	cout << "l1: " << static_graph.id(graph_nodes_to_static_graph_nodes[l1]) << "\n";
 }
 
 static void test_list_digraph_node_ids()
