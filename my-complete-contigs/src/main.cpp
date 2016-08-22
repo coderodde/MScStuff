@@ -2013,7 +2013,7 @@ static void test_a_matrix_algo()
 		cout << "HWA\n";
 		for (const auto& n : a_matrix)
 		{
-			for (const auto& nn : u.second)
+			for (const auto& nn : n.second)
 			{
 				cout << nn.second << " ";	
 			}
