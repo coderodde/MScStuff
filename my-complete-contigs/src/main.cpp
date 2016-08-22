@@ -2016,7 +2016,7 @@ static void test_a_matrix_algo()
 		
 		for (StaticDigraph::ArcIt iter(static_graph); iter != INVALID; ++iter)
 		{
-			id_vec.push_back(static_graph.id(*iter));
+			id_vec.push_back(static_graph.id(iter));
 		}
 		
 		std:sort(id_vec.begin(), id_vec.end());
