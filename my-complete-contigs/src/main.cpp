@@ -1925,6 +1925,12 @@ static void test_list_digraph_node_ids()
 	cout << "\n";
 }
 
+static void crash()
+{
+	cout << "CRASH: A test failed!\n";
+	std::exit(1);
+}
+
 static void test_a_matrix_algo()
 {/*
 	ListDigraph list_graph;
@@ -2002,6 +2008,20 @@ static void test_a_matrix_algo()
 		int isz2x2 = static_graph.id(sz2x2); //graph_arcs_to_static_graph_arcs[z2x2];
 		int isz2y2 = static_graph.id(sz2y2); //graph_arcs_to_static_graph_arcs[z2y2];
 		
+		if (a_matrix[isx1y1][isx2y2] == false) crash();
+		if (a_matrix[isx1y1][isy1x2] == false) crash();
+		if (a_matrix[isy1x2][isx2y2] == true) crash();
+		
+		if (a_matrix[isx2y2][isx1y1] == true) crash();
+		if (a_matrix[isx1y1][isy1x2] == true) crash();
+		if (a_matrix[isy1x2][isx2y2] == false) crash();
+		
+		if (a_matrix[isx1z1][isz2y2] == false) crash();
+		if (a_matrix[isx1z1][isz1z2] == true) crash();
+		
+		
+		
+		/*
 		std::map<int, std::string> name_map;
 		
 		name_map[isx1y1] = "(x1 -> y1)";
@@ -2020,15 +2040,16 @@ static void test_a_matrix_algo()
 		}
 		
 		std:sort(id_vec.begin(), id_vec.end());
-		
-		cout << "IDs of the arcs:\n";
+		cout << "          ";
 		
 		for (auto i : id_vec)
 		{
-			cout << i << " ";	
+			cout << name_map[i] << " ";	
 		}
-		
+				
 		cout << "\n";
+		
+		for (auto )*/
 	}
 }
 
