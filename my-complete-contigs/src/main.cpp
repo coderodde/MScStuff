@@ -1963,10 +1963,10 @@ static void test_a_matrix_algo()
 	int isd = static_graph.id(sd);
 	
 	cout << "     (x,a) (x,b) (x,c) (x,d)\n";
-	cout << "(a,x) " << a_matrix[isa][isa] << "     " << a_matrix[isa][isb] << "      " << a_matrix[isa][isc] << "     " << a_matrix[isa][isd] << "\n";
-	cout << "(b,x) " << a_matrix[isb][isa] << " " << a_matrix[isb][isb] << " " << a_matrix[isb][isc] << " " << a_matrix[isb][isd] << "\n";
-	cout << "(c,x) " << a_matrix[isc][isa] << " " << a_matrix[isc][isb] << " " << a_matrix[isc][isc] << " " << a_matrix[isc][isd] << "\n";
-	cout << "(d,x) " << a_matrix[isd][isa] << " " << a_matrix[isd][isb] << " " << a_matrix[isd][isc] << " " << a_matrix[isd][isd] << "\n";
+	cout << "(a,x) " << a_matrix[isa][isa] << "     " << a_matrix[isa][isb] << "     " << a_matrix[isa][isc] << "     " << a_matrix[isa][isd] << "\n";
+	cout << "(b,x) " << a_matrix[isb][isa] << "     " << a_matrix[isb][isb] << "     " << a_matrix[isb][isc] << "     " << a_matrix[isb][isd] << "\n";
+	cout << "(c,x) " << a_matrix[isc][isa] << "     " << a_matrix[isc][isb] << "     " << a_matrix[isc][isc] << "     " << a_matrix[isc][isd] << "\n";
+	cout << "(d,x) " << a_matrix[isd][isa] << "     " << a_matrix[isd][isb] << "     " << a_matrix[isd][isc] << "     " << a_matrix[isd][isd] << "\n";
 
 	{
 		ListDigraph list_graph;
