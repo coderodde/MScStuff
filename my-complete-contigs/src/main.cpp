@@ -2021,7 +2021,14 @@ static void test_a_matrix_algo()
 		
 		std:sort(id_vec.begin(), id_vec.end());
 		
+		cout << "IDs of the arcs:\n";
 		
+		for (auto i : id_vec)
+		{
+			cout << i << " ";	
+		}
+		
+		cout << "\n";
 	}
 }
 
