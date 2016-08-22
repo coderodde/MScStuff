@@ -1932,7 +1932,7 @@ static void crash()
 }
 
 static void test_a_matrix_algo()
-{/*
+{
 	ListDigraph list_graph;
 	
 	ListDigraph::Node x = list_graph.addNode();
@@ -1965,7 +1965,7 @@ static void test_a_matrix_algo()
 	cout << "x " << a_matrix[isa][isb] << " " << a_matrix[isa][isc] << " " << a_matrix[isa][isd] << "\n";
 	cout << a_matrix[isb][isa] << " x " << a_matrix[isb][isc] << " " << a_matrix[isb][isd] << "\n";
 	cout << a_matrix[isc][isa] << " " << a_matrix[isc][isb] << " x " << a_matrix[isc][isd] << "\n";
-	cout << a_matrix[isd][isa] << " " << a_matrix[isd][isb] << " " << a_matrix[isd][isc] << " x\n";*/
+	cout << a_matrix[isd][isa] << " " << a_matrix[isd][isb] << " " << a_matrix[isd][isc] << " x\n";
 
 	{
 		ListDigraph list_graph;
@@ -2008,14 +2008,17 @@ static void test_a_matrix_algo()
 		int isz2x2 = static_graph.id(sz2x2); //graph_arcs_to_static_graph_arcs[z2x2];
 		int isz2y2 = static_graph.id(sz2y2); //graph_arcs_to_static_graph_arcs[z2y2];
 		
+		cout << "phase\n";
 		if (a_matrix[isx1y1][isx2y2] == false) crash();
 		if (a_matrix[isx1y1][isy1x2] == false) crash();
 		if (a_matrix[isy1x2][isx2y2] == true) crash();
 		
+		cout << "phase\n";
 		if (a_matrix[isx2y2][isx1y1] == true) crash();
 		if (a_matrix[isx1y1][isy1x2] == true) crash();
 		if (a_matrix[isy1x2][isx2y2] == false) crash();
 		
+		cout << "phase\n";
 		if (a_matrix[isx1z1][isz2y2] == false) crash();
 		if (a_matrix[isx1z1][isz1z2] == true) crash();
 		
