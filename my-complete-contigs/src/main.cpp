@@ -2010,13 +2010,12 @@ static void test_a_matrix_algo()
 		int isz2x2 = static_graph.id(sz2x2); //graph_arcs_to_static_graph_arcs[z2x2];
 		int isz2y2 = static_graph.id(sz2y2); //graph_arcs_to_static_graph_arcs[z2y2];
 		
-		cout << "WHAT:\n";
-		
-		for (const auto& n : a_matrix)
+		cout << "HWA\n";
+		for (const auto& n : u)
 		{
-			for (const auto& nn : n.second)
+			for (const auto& nn : u.second)
 			{
-				cout << "(" + n.first << "," << nn.first << ")=" << nn.second << " ";
+				cout << nn.second << " ";	
 			}
 			
 			cout << "\n";
