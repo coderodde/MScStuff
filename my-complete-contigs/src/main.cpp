@@ -1962,7 +1962,8 @@ static void test_a_matrix_algo()
 	int isc = static_graph.id(sc);
 	int isd = static_graph.id(sd);
 	
-	cout << "x " << a_matrix[isa][isb] << " " << a_matrix[isa][isc] << " " << a_matrix[isa][isd] << "\n";
+	cout << "    (a,b) (a,c) (a,d)\n";
+	cout << a_matrix[isa][isa] << a_matrix[isa][isb] << " " << a_matrix[isa][isc] << " " << a_matrix[isa][isd] << "\n";
 	cout << a_matrix[isb][isa] << " x " << a_matrix[isb][isc] << " " << a_matrix[isb][isd] << "\n";
 	cout << a_matrix[isc][isa] << " " << a_matrix[isc][isb] << " x " << a_matrix[isc][isd] << "\n";
 	cout << a_matrix[isd][isa] << " " << a_matrix[isd][isb] << " " << a_matrix[isd][isc] << " x\n";
@@ -2010,6 +2011,8 @@ static void test_a_matrix_algo()
 		
 		cout << "phase\n";
 		if (a_matrix[isx1y1][isx2y2] == false) crash();
+		
+		cout << "phase\n";
 		if (a_matrix[isx1y1][isy1x2] == false) crash();
 		if (a_matrix[isy1x2][isx2y2] == true) crash();
 		
