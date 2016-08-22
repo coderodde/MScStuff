@@ -2016,7 +2016,7 @@ static void test_a_matrix_algo()
 		{
 			for (const auto& nn : n.second)
 			{
-				cout << nn.second << " ";	
+				cout << "(" + n.first << "," << nn.first << ")=" << nn.second << " ";
 			}
 			
 			cout << "\n";
