@@ -2011,7 +2011,7 @@ static void test_a_matrix_algo()
 		int isz2y2 = static_graph.id(sz2y2); //graph_arcs_to_static_graph_arcs[z2y2];
 		
 		cout << "HWA\n";
-		for (const auto& n : u)
+		for (const auto& n : a_matrix)
 		{
 			for (const auto& nn : u.second)
 			{
