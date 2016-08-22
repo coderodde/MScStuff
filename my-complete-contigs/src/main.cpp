@@ -270,6 +270,7 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 				ListDigraph::Node w = work_graph.source(in_arc);
 				int r_w = dfs.reached(w) ? 1 : 0;
 				a_matrix[removed_arc_id][work_graph.id(in_arc)] = d_z - r_w > 0;
+				
 			}
 		}
 		
@@ -2009,16 +2010,11 @@ static void test_a_matrix_algo()
 		int isz2x2 = static_graph.id(sz2x2); //graph_arcs_to_static_graph_arcs[z2x2];
 		int isz2y2 = static_graph.id(sz2y2); //graph_arcs_to_static_graph_arcs[z2y2];
 		
-		if (a_matrix[isx2y2][isx1y1] == true)
-		{
-			cout << "YEAH!\n";
-		}
-		else
-		{
-			cout << "NOOOO!\n";
+		cout << "phase\n";
+		if (a_matrix[isx1y1][isx2y2] || a_matrix[isx2y2][isx1y1]) {
+			cout << "Some of them!\n";
 		}
 		
-		cout << "phase\n";
 		if (a_matrix[isx1y1][isx2y2] == false) crash();
 		
 		cout << "phase\n";
