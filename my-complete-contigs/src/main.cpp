@@ -2009,6 +2009,15 @@ static void test_a_matrix_algo()
 		int isz2x2 = static_graph.id(sz2x2); //graph_arcs_to_static_graph_arcs[z2x2];
 		int isz2y2 = static_graph.id(sz2y2); //graph_arcs_to_static_graph_arcs[z2y2];
 		
+		if (a_matrix[isx2y2][isx1y1] == true)
+		{
+			cout << "YEAH!\n";
+		}
+		else
+		{
+			cout << "NOOOO!\n";
+		}
+		
 		cout << "phase\n";
 		if (a_matrix[isx1y1][isx2y2] == false) crash();
 		
