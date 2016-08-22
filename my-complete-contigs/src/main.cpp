@@ -2012,7 +2012,7 @@ static void test_a_matrix_algo()
 		
 		cout << "WHAT:\n";
 		
-		for (const auto& n : u)
+		for (const auto& n : a_matrix)
 		{
 			for (const auto& nn : u.second)
 			{
