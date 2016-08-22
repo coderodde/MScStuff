@@ -1926,7 +1926,7 @@ static void test_list_digraph_node_ids()
 }
 
 static void test_a_matrix_algo()
-{
+{/*
 	ListDigraph list_graph;
 	
 	ListDigraph::Node x = list_graph.addNode();
@@ -1959,7 +1959,70 @@ static void test_a_matrix_algo()
 	cout << "x " << a_matrix[isa][isb] << " " << a_matrix[isa][isc] << " " << a_matrix[isa][isd] << "\n";
 	cout << a_matrix[isb][isa] << " x " << a_matrix[isb][isc] << " " << a_matrix[isb][isd] << "\n";
 	cout << a_matrix[isc][isa] << " " << a_matrix[isc][isb] << " x " << a_matrix[isc][isd] << "\n";
-	cout << a_matrix[isd][isa] << " " << a_matrix[isd][isb] << " " << a_matrix[isd][isc] << " x\n";
+	cout << a_matrix[isd][isa] << " " << a_matrix[isd][isb] << " " << a_matrix[isd][isc] << " x\n";*/
+
+	{
+		ListDigraph list_graph;
+		
+		ListDigraph::Node x1 = list_graph.addNode();
+		ListDigraph::Node y1 = list_graph.addNode();
+		ListDigraph::Node x2 = list_graph.addNode();
+		ListDigraph::Node y2 = list_graph.addNode();
+		ListDigraph::Node z1 = list_graph.addNode();
+		ListDigraph::Node z2 = list_graph.addNode();
+		
+		ListDigraph::Arc x1y1 = list_graph.addArc(x1, y1);
+		ListDigraph::Arc y1x2 = list_graph.addArc(y1, x2);
+		ListDigraph::Arc x2y2 = list_graph.addArc(x2, y2);
+		ListDigraph::Arc x1z1 = list_graph.addArc(x1, z1);
+		ListDigraph::Arc z1z2 = list_graph.addArc(z1, z2);
+		ListDigraph::Arc z2x2 = list_graph.addArc(z2, x2);
+		ListDigraph::Arc z2y2 = list_graph.addArc(z2, y2);
+		
+		ListDigraph::NodeMap<StaticDigraph::Node> graph_nodes_to_static_graph_nodes(list_graph);
+		ListDigraph::ArcMap<StaticDigraph::Arc>   graph_arcs_to_static_graph_arcs(list_graph);
+	
+		StaticDigraph static_graph;
+		static_graph.build(list_graph, graph_nodes_to_static_graph_nodes, graph_arcs_to_static_graph_arcs);
+		unordered_map<int, unordered_map<int, bool>> a_matrix = compute_a_matrix(static_graph, false);
+	
+		StaticDigraph::Arc sx1y1 = graph_arcs_to_static_graph_arcs[x1y1];
+		StaticDigraph::Arc sy1x2 = graph_arcs_to_static_graph_arcs[y1x2];
+		StaticDigraph::Arc sx2y2 = graph_arcs_to_static_graph_arcs[x2y2];
+		StaticDigraph::Arc sx1z1 = graph_arcs_to_static_graph_arcs[x1z1];
+		StaticDigraph::Arc sz1z2 = graph_arcs_to_static_graph_arcs[z1z2];
+		StaticDigraph::Arc sz2x2 = graph_arcs_to_static_graph_arcs[z2x2];
+		StaticDigraph::Arc sz2y2 = graph_arcs_to_static_graph_arcs[z2y2];
+		
+		int isx1y1 = graph_arcs_to_static_graph_arcs[x1y1];
+		int isy1x2 = graph_arcs_to_static_graph_arcs[y1x2];
+		int isx2y2 = graph_arcs_to_static_graph_arcs[x2y2];
+		int isx1z1 = graph_arcs_to_static_graph_arcs[x1z1];
+		int isz1z2 = graph_arcs_to_static_graph_arcs[z1z2];
+		int isz2x2 = graph_arcs_to_static_graph_arcs[z2x2];
+		int isz2y2 = graph_arcs_to_static_graph_arcs[z2y2];
+		
+		std::map<int, std::string> name_map;
+		
+		name_map[isx1y1] = "(x1 -> y1)";
+		name_map[isy1x2] = "(y1 -> x2)";
+		name_map[isx2y2] = "(x2 -> y2)";
+		name_map[isx1z1] = "(x1 -> z1)";
+		name_map[isz1z2] = "(z1 -> z2)";
+		name_map[isz2x2] = "(z2 -> x2)";
+		name_map[isz2y2] = "(z2 -> y2)";
+		
+		std::vector<int> id_vec;
+		
+		for (StaticDigraph::ArcIt iter(static_graph); iter != INVALID; ++iter)
+		{
+			id_vec.push_back(static_graph.id(*iter));
+		}
+		
+		std:sort(id_vec.begin(), id_vec.end());
+		
+		
+	}
 }
 
 int main(int argc, char **argv)
