@@ -221,9 +221,29 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 	
 	// Copy the input graph to the ListDigraph created above:
 	DigraphCopy<StaticDigraph, ListDigraph> copy_graph(graph, work_graph);
+	
+	StaticDigraph::ArcMap<ListDigraph::Arc> map_static_digraph_arcs_to_list_digraph_arcs(graph);
+	copy_graph.arcRef(map_static_digraph_arcs_to_list_digraph_arcs);
+	
+	for (StaticDigraph::ArcIt acr(graph); arc != INVALID; ++arc)
+	{
+		// Get the corresponding arc from the list digraph:
+		ListDigraph::Arc removed_arc = map_static_digraph_arcs_to_list_digraph_arcs[arc];
+	}
+	
+	/*
+	// Copying the node references:
+	StaticDigraph::NodeMap<ListDigraph::Node> map_static_digraph_nodes_to_list_digraph_nodes (graph);
+	copy_graph.nodeRef(map_static_digraph_nodes_to_list_digraph_nodes);
+	
+	// Copying the inverse arc references:
+	ListDigraph::ArcMap<StaticDigraph::Arc> map_list_digraph_arcs_to_static_digraph_arcs(work_graph);
+	copy_graph.arcCrossRef(map_list_digraph_arcs_to_static_digraph_arcs);
+	
+	
+	
 	ListDigraph::ArcMap<StaticDigraph::Arc>   map_list_digraph_arcs_to_static_digraph_arcs   (work_graph);
 	StaticDigraph::ArcMap<ListDigraph::Arc>   map_static_digraph_arcs_to_list_digraph_arcs   (graph);
-	StaticDigraph::NodeMap<ListDigraph::Node> map_static_digraph_nodes_to_list_digraph_nodes (graph);
 	
 	copy_graph.arcCrossRef(map_list_digraph_arcs_to_static_digraph_arcs);
 	copy_graph.nodeRef(map_static_digraph_nodes_to_list_digraph_nodes);
@@ -234,9 +254,9 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 	{
 		map_static_digraph_arcs_to_list_digraph_arcs[map_list_digraph_arcs_to_static_digraph_arcs[arcit]] = arcit;
 	}
-	/*
+	
 	cout << "StaticDigraph.nodes() = " << countNodes(graph) << ", .arcs() = " << countArcs(graph) << "\n";
-	cout << "ListDigraph.nodes() = " << countNodes(work_graph) << ", .arcs() = " << countArcs(work_graph) << "\n";*/
+	cout << "ListDigraph.nodes() = " << countNodes(work_graph) << ", .arcs() = " << countArcs(work_graph) << "\n";
 		
 	for (StaticDigraph::ArcIt a(graph); a != INVALID; ++a)
 	{
@@ -283,7 +303,7 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 		work_graph.addArc(removed_arc_tail, removed_arc_head);
 		//cout << "Start arc ID: " << removed_arc_id << ", mappings: " << a_matrix[removed_arc_id].size() << endl;
 	}
-	
+	*/
 	uint64_t end_time = milliseconds();
 	
 	cout << "[ALEXANDRU] compute_a_matrix() in " << (end_time - start_time) << " milliseconds.\n";
