@@ -222,8 +222,11 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 	// Copy the input graph to the ListDigraph created above:
 	DigraphCopy<StaticDigraph, ListDigraph> copy_graph(graph, work_graph);
 	
-	StaticDigraph::ArcMap<ListDigraph::Arc> map_static_digraph_arcs_to_list_digraph_arcs(graph);
+	StaticDigraph::ArcMap<ListDigraph::Arc>   map_static_digraph_arcs_to_list_digraph_arcs(graph);
+	StaticDigraph::NodeMap<ListDigraph::Node> map_static_digraph_nodes_to_list_digraph_nodes(graph);
+	
 	copy_graph.arcRef(map_static_digraph_arcs_to_list_digraph_arcs);
+	copy_graph.nodeRef(map_static_digraph_nodes_to_list_digraph_nodes);
 	copy_graph.run();
 	
 	for (StaticDigraph::ArcIt arc(graph); arc != INVALID; ++arc)
@@ -238,6 +241,12 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 		// Run the DFS in order to find all the nodes reachable from the node x_1:
 		Dfs<> dfs(work_graph);
 		dfs.run(removed_arc_tail);
+		
+		// Consider each node z in V(G):
+		for (StaticDigraph::NodeIt nodeit(graph); nodeit != INVALID; ++nodeit)
+		{
+			ListDigraph::Node z = map_static_digraph_nodes_to_list_digraph_nodes[nodeit];
+		}
 		
 		// Return the removed arc back to the work graph:
 		work_graph.addArc(removed_arc_tail, removed_arc_head);
