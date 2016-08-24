@@ -234,9 +234,9 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 	{
 		map_static_digraph_arcs_to_list_digraph_arcs[map_list_digraph_arcs_to_static_digraph_arcs[arcit]] = arcit;
 	}
-	
+	/*
 	cout << "StaticDigraph.nodes() = " << countNodes(graph) << ", .arcs() = " << countArcs(graph) << "\n";
-	cout << "ListDigraph.nodes() = " << countNodes(work_graph) << ", .arcs() = " << countArcs(work_graph) << "\n";
+	cout << "ListDigraph.nodes() = " << countNodes(work_graph) << ", .arcs() = " << countArcs(work_graph) << "\n";*/
 		
 	for (StaticDigraph::ArcIt a(graph); a != INVALID; ++a)
 	{
@@ -2018,6 +2018,14 @@ static void test_a_matrix_algo()
 		int isz1z2 = static_graph.id(sz1z2); 
 		int isz2x2 = static_graph.id(sz2x2);
 		int isz2y2 = static_graph.id(sz2y2); 
+		
+		cout << "(x1 -> y1): " << isx1y1 << "\n";
+		cout << "(y1 -> x2): " << isy1x2 << "\n";
+		cout << "(x2 -> y2): " << isx2y2 << "\n";
+		cout << "(x1 -> z1): " << isx1z1 << "\n";
+		cout << "(z1 -> z2): " << isz1z2 << "\n";
+		cout << "(z2 -> x2): " << isz2x2 << "\n";
+		cout << "(z2 -> y2): " << isz2y2 << "\n";
 		
 		cout << "HWA\n";
 		for (const auto& n : a_matrix)
