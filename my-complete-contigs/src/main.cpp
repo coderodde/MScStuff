@@ -232,7 +232,7 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 		ListDigraph::Node removed_arc_tail = work_graph.source(removed_arc); // x_1
 		ListDigraph::Node removed_arc_head = work_graph.target(removed_arc); // x_2
 		int removed_arc_id = work_graph.id(removed_arc);
-		//work_graph.erase(removed_arc);
+		work_graph.erase(removed_arc);
 		
 		// Run the DFS in order to find all the nodes reachable from the node x_1:
 		//Dfs<> dfs(work_graph);
