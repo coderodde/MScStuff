@@ -264,7 +264,7 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 			{
 				ListDigraph::Node w = work_graph.source(in_arc);
 				int r_w = dfs.reached(w) ? 1 : 0;
-				a_matrix[removed_arc_id][work_graph_id(in_arc)] = d_z - r_w > 0;
+				a_matrix[removed_arc_id][work_graph.id(in_arc)] = d_z - r_w > 0;
 			}
 		}
 		
