@@ -237,6 +237,7 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 		ListDigraph::Arc removed_arc = map_static_digraph_arcs_to_list_digraph_arcs[arc];
 		ListDigraph::Node removed_arc_tail = work_graph.source(removed_arc); // x_1
 		ListDigraph::Node removed_arc_head = work_graph.target(removed_arc); // x_2
+		int removed_static_arc_id = graph.id(arc);
 		int removed_arc_id = work_graph.id(removed_arc);
 		work_graph.erase(removed_arc);
 		
@@ -266,7 +267,9 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 			{
 				ListDigraph::Node w = work_graph.source(in_arc);
 				int r_w = dfs.reached(w) ? 1 : 0;
-				a_matrix[removed_arc_id][work_graph.id(in_arc)] = d_z - r_w > 0;
+				StaticDigraph::Arc corresponding_arc = map_list_digraph_arcs_to_static_digraph_arcs[in_arc];
+				int corresponding_arc_id = graph.id(corresponding_arc);
+				a_matrix[removed_static_arc_id][corresponding_arc_id] = d_z - r_w > 0;
 			}
 		}
 		
