@@ -246,6 +246,26 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 		for (StaticDigraph::NodeIt nodeit(graph); nodeit != INVALID; ++nodeit)
 		{
 			ListDigraph::Node z = map_static_digraph_nodes_to_list_digraph_nodes[nodeit];
+			int d_z = 0;
+			
+			// Iterate over all in-neighbours of z:
+			for (ListDigraph::InArcIt in_arc(work_graph, z); in_arc != INVALID; ++in_arc)
+			{
+				ListDigraph::Node incoming_node = work_graph.source(in_arc);
+				
+				if (dfs.reached(incoming_node))
+				{
+					d_z++;
+				}
+			}
+			
+			// Iterate over all in-neighbours of z once again:
+			for (ListDigraph::InArcIt in_arc(work_graph, z); in_arc != INVALID; ++in_arc)
+			{
+				ListDigraph::Node w = work_graph.source(in_arc);
+				int r_w = dfs.reached(w) ? 1 : 0;
+				a_matrix[removed_arc_id][work_graph_id(in_arc)] = d_z - r_w > 0;
+			}
 		}
 		
 		// Return the removed arc back to the work graph:
