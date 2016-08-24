@@ -1971,7 +1971,7 @@ static void test_a_matrix_algo()
 	cout << "(c,x) " << a_matrix[isc][isa] << "     " << a_matrix[isc][isb] << "     " << a_matrix[isc][isc] << "     " << a_matrix[isc][isd] << "\n";
 	cout << "(d,x) " << a_matrix[isd][isa] << "     " << a_matrix[isd][isb] << "     " << a_matrix[isd][isc] << "     " << a_matrix[isd][isd] << "\n";
 	
-	cout << "HELLO: " << a_matrix[isa].size() << "\n";
+	cout << "HELLO: " << a_matrix[isa].size() << " and " << a_matrix.size() << "\n";
 
 	{
 		ListDigraph list_graph;
