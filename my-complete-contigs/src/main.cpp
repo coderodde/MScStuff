@@ -234,6 +234,9 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 	{
 		map_static_digraph_arcs_to_list_digraph_arcs[map_list_digraph_arcs_to_static_digraph_arcs[arcit]] = arcit;
 	}
+	
+	cout << "StaticDigraph.nodes() = " << countNodes(graph) << ", .arcs() = " << countArcs(graph) << "\n";
+	cout << "ListDigraph.nodes() = " << countNodes(work_graph) << ", .arcs() = " << countArcs(work_graph) << "\n";
 		
 	for (StaticDigraph::ArcIt a(graph); a != INVALID; ++a)
 	{
@@ -1964,6 +1967,8 @@ static void test_a_matrix_algo()
 	int isb = static_graph.id(sb);
 	int isc = static_graph.id(sc);
 	int isd = static_graph.id(sd);
+	
+	
 	
 	cout << "     (x,a) (x,b) (x,c) (x,d)\n";
 	cout << "(a,x) " << a_matrix[isa][isa] << "     " << a_matrix[isa][isb] << "     " << a_matrix[isa][isc] << "     " << a_matrix[isa][isd] << "\n";
