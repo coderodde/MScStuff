@@ -225,7 +225,7 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 	StaticDigraph::ArcMap<ListDigraph::Arc> map_static_digraph_arcs_to_list_digraph_arcs(graph);
 	copy_graph.arcRef(map_static_digraph_arcs_to_list_digraph_arcs);
 	
-	for (StaticDigraph::ArcIt acr(graph); arc != INVALID; ++arc)
+	for (StaticDigraph::ArcIt arc(graph); arc != INVALID; ++arc)
 	{
 		// Get the corresponding arc from the list digraph:
 		ListDigraph::Arc removed_arc = map_static_digraph_arcs_to_list_digraph_arcs[arc];
