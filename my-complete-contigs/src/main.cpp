@@ -2004,20 +2004,21 @@ static void test_a_matrix_algo()
 		StaticDigraph::Arc sz2x2 = graph_arcs_to_static_graph_arcs[z2x2];
 		StaticDigraph::Arc sz2y2 = graph_arcs_to_static_graph_arcs[z2y2];
 		
-		int isx1y1 = static_graph.id(sx1y1); //graph_arcs_to_static_graph_arcs[x1y1];
-		int isy1x2 = static_graph.id(sy1x2); //graph_arcs_to_static_graph_arcs[y1x2];
-		int isx2y2 = static_graph.id(sx2y2); //graph_arcs_to_static_graph_arcs[x2y2];
-		int isx1z1 = static_graph.id(sx1z1); //graph_arcs_to_static_graph_arcs[x1z1];
-		int isz1z2 = static_graph.id(sz1z2); //graph_arcs_to_static_graph_arcs[z1z2];
-		int isz2x2 = static_graph.id(sz2x2); //graph_arcs_to_static_graph_arcs[z2x2];
-		int isz2y2 = static_graph.id(sz2y2); //graph_arcs_to_static_graph_arcs[z2y2];
+		int isx1y1 = static_graph.id(sx1y1); 
+		int isy1x2 = static_graph.id(sy1x2); 
+		int isx2y2 = static_graph.id(sx2y2);
+		int isx1z1 = static_graph.id(sx1z1); 
+		int isz1z2 = static_graph.id(sz1z2); 
+		int isz2x2 = static_graph.id(sz2x2);
+		int isz2y2 = static_graph.id(sz2y2); 
 		
 		cout << "HWA\n";
 		for (const auto& n : a_matrix)
 		{
+			cout << "size: " << n.second.size() << ": ";
 			for (const auto& nn : n.second)
 			{
-				cout << nn.second << " ";	
+				cout << "(" << n.first << ", " << nn.first << ")=" << nn.second << " ";
 			}
 			
 			cout << "\n";
