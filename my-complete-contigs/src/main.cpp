@@ -736,10 +736,9 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	}
 	
 	cout << "[ALEXANDRU] Number of contigs: " << contig_count << "\n";
-	/*
 	cout << "[ALEXANDRU] Number of contigs before pruning: " << contig_count << "\n";
 	
-	prune_non_maximal_contigs(S_k);
+	//prune_non_maximal_contigs(S_k);
 	
 	size_t sz = 0;
 	
@@ -749,7 +748,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	}
 	
 	cout << "[ALEXANDRU] Number of contigs after pruning:  " << sz << "\n";
-	*/
+	
 	
 	//// Compute and print the average size of omnitigs:
 	size_t sum = 0;
