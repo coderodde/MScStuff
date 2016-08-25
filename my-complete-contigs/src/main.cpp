@@ -790,7 +790,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	//print_collection(unitigs, inputFileName + ".k" + std::to_string(kmersize) + "." + genome_type, ".unitigs");
 	
-	print_collection(ret, inputFileName + ".k" + std::to_string(kmersize) + "." + genome_type, ".coderodde_omnitigs");
+	print_collection(ret, inputFileName + ".k" + std::to_string(kmersize), ".alexandru_omnitigs");
 	return ret;
 }
 
