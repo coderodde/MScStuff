@@ -2104,6 +2104,7 @@ static void test_a_matrix_algo()
 			
 			cout << "\n";
 		}
+		
 		if (a_matrix[isx1y1][isx2y2] == false) crash();
 		if (a_matrix[isx1y1][isy1x2] == false) crash();
 		if (a_matrix[isy1x2][isx2y2] == true) crash();
@@ -2120,8 +2121,8 @@ int main(int argc, char **argv)
 	//test_certificate_preprocessing();
 	//test_list_digraph_node_ids();
 	//test_strong_bridges();
-	test_a_matrix_algo();
-	exit(0);
+	//test_a_matrix_algo();
+	//exit(0);
 	
 	//////////////////////////////////////////
 	//////////////////////////////////////////
