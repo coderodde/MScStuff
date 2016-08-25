@@ -1,5 +1,6 @@
 #include "utils.h"
 #include "rodde_current_time.h"
+#include <algorithm>
 #include <stdexcept>
 
 using std::runtime_error;
@@ -220,9 +221,75 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 	
 	// Copy the input graph to the ListDigraph created above:
 	DigraphCopy<StaticDigraph, ListDigraph> copy_graph(graph, work_graph);
+	
+	StaticDigraph::ArcMap<ListDigraph::Arc>   map_static_digraph_arcs_to_list_digraph_arcs(graph);
+	StaticDigraph::NodeMap<ListDigraph::Node> map_static_digraph_nodes_to_list_digraph_nodes(graph);
+	ListDigraph::ArcMap<StaticDigraph::Arc>   map_list_digraph_arcs_to_static_digraph_arcs(work_graph);
+	
+	copy_graph.arcRef(map_static_digraph_arcs_to_list_digraph_arcs);
+	copy_graph.nodeRef(map_static_digraph_nodes_to_list_digraph_nodes);
+	copy_graph.arcCrossRef(map_list_digraph_arcs_to_static_digraph_arcs);
+	copy_graph.run();
+	
+	for (StaticDigraph::ArcIt arc(graph); arc != INVALID; ++arc)
+	{
+		// Get the corresponding arc from the list digraph (x_1, x_2)
+		ListDigraph::Arc removed_arc = map_static_digraph_arcs_to_list_digraph_arcs[arc];
+		ListDigraph::Node removed_arc_tail = work_graph.source(removed_arc); // x_1
+		ListDigraph::Node removed_arc_head = work_graph.target(removed_arc); // x_2
+		int removed_static_arc_id = graph.id(arc);
+		int removed_arc_id = work_graph.id(removed_arc);
+		work_graph.erase(removed_arc);
+		
+		// Run the DFS in order to find all the nodes reachable from the node x_1:
+		Dfs<> dfs(work_graph);
+		dfs.run(removed_arc_tail);
+		
+		// Consider each node z in V(G):
+		for (StaticDigraph::NodeIt nodeit(graph); nodeit != INVALID; ++nodeit)
+		{
+			ListDigraph::Node z = map_static_digraph_nodes_to_list_digraph_nodes[nodeit];
+			int d_z = 0;
+			
+			// Iterate over all in-neighbours of z:
+			for (ListDigraph::InArcIt in_arc(work_graph, z); in_arc != INVALID; ++in_arc)
+			{
+				ListDigraph::Node incoming_node = work_graph.source(in_arc);
+				
+				if (dfs.reached(incoming_node))
+				{
+					d_z++;
+				}
+			}
+			
+			// Iterate over all in-neighbours of z once again:
+			for (ListDigraph::InArcIt in_arc(work_graph, z); in_arc != INVALID; ++in_arc)
+			{
+				ListDigraph::Node w = work_graph.source(in_arc);
+				int r_w = dfs.reached(w) ? 1 : 0;
+				StaticDigraph::Arc corresponding_arc = map_list_digraph_arcs_to_static_digraph_arcs[in_arc];
+				int corresponding_arc_id = graph.id(corresponding_arc);
+				a_matrix[removed_static_arc_id][corresponding_arc_id] = d_z - r_w > 0;
+			}
+		}
+		
+		// Return the removed arc back to the work graph:
+		work_graph.addArc(removed_arc_tail, removed_arc_head);
+	}
+	
+	/*
+	// Copying the node references:
+	StaticDigraph::NodeMap<ListDigraph::Node> map_static_digraph_nodes_to_list_digraph_nodes (graph);
+	copy_graph.nodeRef(map_static_digraph_nodes_to_list_digraph_nodes);
+	
+	// Copying the inverse arc references:
+	ListDigraph::ArcMap<StaticDigraph::Arc> map_list_digraph_arcs_to_static_digraph_arcs(work_graph);
+	copy_graph.arcCrossRef(map_list_digraph_arcs_to_static_digraph_arcs);
+	
+	
+	
 	ListDigraph::ArcMap<StaticDigraph::Arc>   map_list_digraph_arcs_to_static_digraph_arcs   (work_graph);
 	StaticDigraph::ArcMap<ListDigraph::Arc>   map_static_digraph_arcs_to_list_digraph_arcs   (graph);
-	StaticDigraph::NodeMap<ListDigraph::Node> map_static_digraph_nodes_to_list_digraph_nodes (graph);
 	
 	copy_graph.arcCrossRef(map_list_digraph_arcs_to_static_digraph_arcs);
 	copy_graph.nodeRef(map_static_digraph_nodes_to_list_digraph_nodes);
@@ -233,6 +300,9 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 	{
 		map_static_digraph_arcs_to_list_digraph_arcs[map_list_digraph_arcs_to_static_digraph_arcs[arcit]] = arcit;
 	}
+	
+	cout << "StaticDigraph.nodes() = " << countNodes(graph) << ", .arcs() = " << countArcs(graph) << "\n";
+	cout << "ListDigraph.nodes() = " << countNodes(work_graph) << ", .arcs() = " << countArcs(work_graph) << "\n";
 		
 	for (StaticDigraph::ArcIt a(graph); a != INVALID; ++a)
 	{
@@ -268,7 +338,10 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 			{
 				ListDigraph::Node w = work_graph.source(in_arc);
 				int r_w = dfs.reached(w) ? 1 : 0;
-				a_matrix[removed_arc_id][work_graph.id(in_arc)] = d_z - r_w > 0;
+				// Reversed the key order:
+				a_matrix[work_graph.id(in_arc)][removed_arc_id] = d_z - r_w > 0;
+				//a_matrix[removed_arc_id][work_graph.id(in_arc)] = d_z - r_w > 0; // This is the original order!
+				
 			}
 		}
 		
@@ -276,7 +349,7 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 		work_graph.addArc(removed_arc_tail, removed_arc_head);
 		//cout << "Start arc ID: " << removed_arc_id << ", mappings: " << a_matrix[removed_arc_id].size() << endl;
 	}
-	
+	*/
 	uint64_t end_time = milliseconds();
 	
 	cout << "[ALEXANDRU] compute_a_matrix() in " << (end_time - start_time) << " milliseconds.\n";
@@ -598,7 +671,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 				
 				if (iter != strong_bridge_id_set.end())
 				{
-					int end_index = i + 1;
+					int end_index = (i + 1) % d;
 					int start_index = i;
 					
 					if (ell_map[end_index] <= start_index)
@@ -635,7 +708,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 				}
 				
 				// Last check: Cert(v_i) \cap .. \cap Cert(v_{i + k mod d} not empty:
-				const int end_index = i + 1;
+				const int end_index = (i + k) % d;
 				const int start_index = i;
 				
 				if (ell_map[end_index] <= start_index)
@@ -1647,6 +1720,267 @@ static void test_strong_bridges()
 	cout << "\n";
 }
 
+static void test_certificate_preprocessing()
+{
+	// rodde: this is my test I verified with Alexandru:
+	ListDigraph graph;
+	
+	ListDigraph::Node l1 = graph.addNode();
+	ListDigraph::Node l2 = graph.addNode();
+	ListDigraph::Node m1 = graph.addNode();
+	ListDigraph::Node m2 = graph.addNode();
+	ListDigraph::Node m3 = graph.addNode();
+	ListDigraph::Node r1 = graph.addNode();
+	ListDigraph::Node r2 = graph.addNode();
+	
+	ListDigraph::Arc l1l2 = graph.addArc(l1, l2);
+	ListDigraph::Arc l2m3 = graph.addArc(l2, m3);
+	ListDigraph::Arc m3m2 = graph.addArc(m3, m2);
+	ListDigraph::Arc m2m1 = graph.addArc(m2, m1);
+	ListDigraph::Arc m1l1 = graph.addArc(m1, l1);
+	ListDigraph::Arc m1r1 = graph.addArc(m1, r1);
+	ListDigraph::Arc r1r2 = graph.addArc(r1, r2);
+	ListDigraph::Arc r2m3 = graph.addArc(r2, m3);
+	
+	StaticDigraph static_graph;
+	
+	ListDigraph::NodeMap<StaticDigraph::Node> graph_nodes_to_static_graph_nodes(graph);
+	ListDigraph::ArcMap<StaticDigraph::Arc>   graph_arcs_to_static_graph_arcs(graph);
+	
+	static_graph.build(graph, graph_nodes_to_static_graph_nodes, graph_arcs_to_static_graph_arcs);
+	StaticDigraph::NodeMap<unordered_set<int>> map_node_to_certificate_set(static_graph);
+	
+	find_certificate_sets(static_graph, map_node_to_certificate_set, false);
+	
+	cout << "List of StaticDigraph node IDs:\n";
+	
+	cout << "l1: " << static_graph.id(graph_nodes_to_static_graph_nodes[l1]) << "\n";
+	cout << "l2: " << static_graph.id(graph_nodes_to_static_graph_nodes[l2]) << "\n";
+	cout << "m1: " << static_graph.id(graph_nodes_to_static_graph_nodes[m1]) << "\n";
+	cout << "m2: " << static_graph.id(graph_nodes_to_static_graph_nodes[m2]) << "\n";
+	cout << "m3: " << static_graph.id(graph_nodes_to_static_graph_nodes[m3]) << "\n";
+	cout << "r1: " << static_graph.id(graph_nodes_to_static_graph_nodes[r1]) << "\n";
+	cout << "r2: " << static_graph.id(graph_nodes_to_static_graph_nodes[r2]) << "\n";
+	
+	// Certificate sets of m1, m2, and m3:
+	unordered_set<int> cert_set_of_m1 = map_node_to_certificate_set[graph_nodes_to_static_graph_nodes[m1]];
+	unordered_set<int> cert_set_of_m2 = map_node_to_certificate_set[graph_nodes_to_static_graph_nodes[m2]];
+	unordered_set<int> cert_set_of_m3 = map_node_to_certificate_set[graph_nodes_to_static_graph_nodes[m3]];
+	
+	cout << "First test passed: " << std::boolalpha
+				      << (cert_set_of_m1 == cert_set_of_m2 &&
+					  cert_set_of_m2 == cert_set_of_m3)
+				      << "\n";
+	
+	cout << "The node ID's are:\n";
+	
+	for (auto i : cert_set_of_m1)
+	{
+		cout << i << " ";
+	}
+	
+	cout << "\n";
+	
+	// The following test setting is provided by Alex. Thanky you, Alexandru! :-)
+	// Test (a):
+	graph.clear();
+	
+	ListDigraph::Node a = graph.addNode();
+	ListDigraph::Node b = graph.addNode();
+	ListDigraph::Node c = graph.addNode();
+	ListDigraph::Node d = graph.addNode();
+	ListDigraph::Node e = graph.addNode();
+	
+	ListDigraph::Arc ab = graph.addArc(a, b);
+	ListDigraph::Arc bc = graph.addArc(b, c);
+	ListDigraph::Arc cd = graph.addArc(c, d);
+	ListDigraph::Arc de = graph.addArc(d, e);
+	ListDigraph::Arc ea = graph.addArc(e, a);
+	ListDigraph::Arc ca = graph.addArc(c, a);
+	ListDigraph::Arc db = graph.addArc(d, b);
+	
+	StaticDigraph static_graph_2;
+	
+	ListDigraph::NodeMap<StaticDigraph::Node> graph_nodes_to_static_graph_nodes_2(graph);
+	ListDigraph::ArcMap<StaticDigraph::Arc>   graph_arcs_to_static_graph_arcs_2(graph);
+	
+	static_graph_2.build(graph, graph_nodes_to_static_graph_nodes_2, graph_arcs_to_static_graph_arcs_2);
+	StaticDigraph::NodeMap<unordered_set<int>> map_node_to_certificate_set_2(static_graph_2);
+	
+	find_certificate_sets(static_graph_2, map_node_to_certificate_set_2, false);
+	
+	cout << "List of StaticDigraph node IDs in Test (a):\n";
+	
+	cout << "a: " << static_graph_2.id(graph_nodes_to_static_graph_nodes_2[a]) << "\n";
+	cout << "b: " << static_graph_2.id(graph_nodes_to_static_graph_nodes_2[b]) << "\n";
+	cout << "c: " << static_graph_2.id(graph_nodes_to_static_graph_nodes_2[c]) << "\n";
+	cout << "d: " << static_graph_2.id(graph_nodes_to_static_graph_nodes_2[d]) << "\n";
+	cout << "e: " << static_graph_2.id(graph_nodes_to_static_graph_nodes_2[e]) << "\n";
+	
+	cout << "Cert(a) = {";
+	
+	for (auto i : map_node_to_certificate_set_2[graph_nodes_to_static_graph_nodes_2[a]])
+	{
+		cout << " " << i;
+	}
+	
+	cout << " }\n";
+	cout << "Cert(b) = {";
+	
+	for (auto i : map_node_to_certificate_set_2[graph_nodes_to_static_graph_nodes_2[b]])
+	{
+		cout << " " << i;
+	}
+	
+	cout << " }\n";
+	cout << "Cert(c) = {";
+	
+	for (auto i : map_node_to_certificate_set_2[graph_nodes_to_static_graph_nodes_2[c]])
+	{
+		cout << " " << i;
+	}
+	
+	cout << " }\n";
+	cout << "Cert(d) = {";
+	
+	for (auto i : map_node_to_certificate_set_2[graph_nodes_to_static_graph_nodes_2[d]])
+	{
+		cout << " " << i;
+	}
+	
+	cout << " }\n";
+	
+	graph.erase(e);
+	
+	StaticDigraph static_graph_3;
+	
+	ListDigraph::NodeMap<StaticDigraph::Node> graph_nodes_to_static_graph_nodes_3(graph);
+	ListDigraph::ArcMap<StaticDigraph::Arc>   graph_arcs_to_static_graph_arcs_3(graph);
+	
+	static_graph_3.build(graph, graph_nodes_to_static_graph_nodes_3, graph_arcs_to_static_graph_arcs_3);
+	StaticDigraph::NodeMap<unordered_set<int>> map_node_to_certificate_set_3(static_graph_3);
+	
+	find_certificate_sets(static_graph_3, map_node_to_certificate_set_3, false);
+	
+	cout << "List of StaticDigraph node IDs in Test (b):\n";
+	
+	cout << "a: " << static_graph_3.id(graph_nodes_to_static_graph_nodes_3[a]) << "\n";
+	cout << "b: " << static_graph_3.id(graph_nodes_to_static_graph_nodes_3[b]) << "\n";
+	cout << "c: " << static_graph_3.id(graph_nodes_to_static_graph_nodes_3[c]) << "\n";
+	cout << "d: " << static_graph_3.id(graph_nodes_to_static_graph_nodes_3[d]) << "\n";
+	
+	cout << "Cert(a) = {";
+	
+	for (auto i : map_node_to_certificate_set_3[graph_nodes_to_static_graph_nodes_3[a]])
+	{
+		cout << " " << i;
+	}
+	
+	cout << " }\n";
+	cout << "Cert(b) = {";
+	
+	for (auto i : map_node_to_certificate_set_3[graph_nodes_to_static_graph_nodes_3[b]])
+	{
+		cout << " " << i;
+	}
+	
+	cout << " }\n";
+	cout << "Cert(c) = {";
+	
+	for (auto i : map_node_to_certificate_set_3[graph_nodes_to_static_graph_nodes_3[c]])
+	{
+		cout << " " << i;
+	}
+	
+	cout << " }\n";
+	cout << "Cert(d) = {";
+	
+	for (auto i : map_node_to_certificate_set_3[graph_nodes_to_static_graph_nodes_3[d]])
+	{
+		cout << " " << i;
+	}
+	
+	cout << " }\n";
+	
+	{		
+		graph.clear();
+	
+		ListDigraph::Node a = graph.addNode();
+		ListDigraph::Node b = graph.addNode();
+		ListDigraph::Node c = graph.addNode();
+		ListDigraph::Node d = graph.addNode();
+		ListDigraph::Node e = graph.addNode();
+	
+		ListDigraph::Arc ab = graph.addArc(a, b);
+		ListDigraph::Arc bc = graph.addArc(b, c);
+		ListDigraph::Arc cd = graph.addArc(c, d);
+		ListDigraph::Arc de = graph.addArc(d, e);
+		ListDigraph::Arc ea = graph.addArc(e, a);
+		ListDigraph::Arc cb = graph.addArc(c, b);
+		ListDigraph::Arc db = graph.addArc(d, b);
+		ListDigraph::Arc ca = graph.addArc(c, a);
+		
+		StaticDigraph static_graph;
+	
+		ListDigraph::NodeMap<StaticDigraph::Node> graph_nodes_to_static_graph_nodes(graph);
+		ListDigraph::ArcMap<StaticDigraph::Arc>   graph_arcs_to_static_graph_arcs(graph);
+	
+		static_graph.build(graph, graph_nodes_to_static_graph_nodes, graph_arcs_to_static_graph_arcs);
+		StaticDigraph::NodeMap<unordered_set<int>> map_node_to_certificate_set(static_graph);
+		
+		find_certificate_sets(static_graph, map_node_to_certificate_set, false);
+		
+		cout << "List of StaticDigraph node IDs in Test (c):\n";
+	
+		cout << "a: " << static_graph.id(graph_nodes_to_static_graph_nodes[a]) << "\n";
+		cout << "b: " << static_graph.id(graph_nodes_to_static_graph_nodes[b]) << "\n";
+		cout << "c: " << static_graph.id(graph_nodes_to_static_graph_nodes[c]) << "\n";
+		cout << "d: " << static_graph.id(graph_nodes_to_static_graph_nodes[d]) << "\n";
+		cout << "e: " << static_graph.id(graph_nodes_to_static_graph_nodes[e]) << "\n";
+	
+		cout << "Cert(a) = {";
+	
+		for (auto i : map_node_to_certificate_set[graph_nodes_to_static_graph_nodes[a]])
+		{
+			cout << " " << i;
+		}
+	
+		cout << " }\n";
+		cout << "Cert(b) = {";
+		
+		for (auto i : map_node_to_certificate_set[graph_nodes_to_static_graph_nodes[b]])
+		{
+			cout << " " << i;
+		}
+	
+		cout << " }\n";
+		cout << "Cert(c) = {";
+		
+		for (auto i : map_node_to_certificate_set[graph_nodes_to_static_graph_nodes[c]])
+		{
+			cout << " " << i;
+		}
+	
+		cout << " }\n";
+		cout << "Cert(d) = {";
+		
+		for (auto i : map_node_to_certificate_set[graph_nodes_to_static_graph_nodes[d]])
+		{
+			cout << " " << i;
+		}
+	
+		cout << " }\n";
+		cout << "Cert(e) = {";
+		
+		for (auto i : map_node_to_certificate_set[graph_nodes_to_static_graph_nodes[d]])
+		{
+			cout << " " << i;
+		}
+	
+		cout << " }\n";	
+	}
+}
+
 static void test_list_digraph_node_ids()
 {
 	ListDigraph graph;
@@ -1661,6 +1995,12 @@ static void test_list_digraph_node_ids()
 	}
 	
 	cout << "\n";
+}
+
+static void crash()
+{
+	cout << "CRASH: A test failed!\n";
+	std::exit(1);
 }
 
 static void test_a_matrix_algo()
@@ -1694,18 +2034,138 @@ static void test_a_matrix_algo()
 	int isc = static_graph.id(sc);
 	int isd = static_graph.id(sd);
 	
-	cout << "x " << a_matrix[isa][isb] << " " << a_matrix[isa][isc] << " " << a_matrix[isa][isd] << "\n";
-	cout << a_matrix[isb][isa] << " x " << a_matrix[isb][isc] << " " << a_matrix[isb][isd] << "\n";
-	cout << a_matrix[isc][isa] << " " << a_matrix[isc][isb] << " x " << a_matrix[isc][isd] << "\n";
-	cout << a_matrix[isd][isa] << " " << a_matrix[isd][isb] << " " << a_matrix[isd][isc] << " x\n";
+	
+	
+	cout << "     (x,a) (x,b) (x,c) (x,d)\n";
+	cout << "(a,x) " << a_matrix[isa][isa] << "     " << a_matrix[isa][isb] << "     " << a_matrix[isa][isc] << "     " << a_matrix[isa][isd] << "\n";
+	cout << "(b,x) " << a_matrix[isb][isa] << "     " << a_matrix[isb][isb] << "     " << a_matrix[isb][isc] << "     " << a_matrix[isb][isd] << "\n";
+	cout << "(c,x) " << a_matrix[isc][isa] << "     " << a_matrix[isc][isb] << "     " << a_matrix[isc][isc] << "     " << a_matrix[isc][isd] << "\n";
+	cout << "(d,x) " << a_matrix[isd][isa] << "     " << a_matrix[isd][isb] << "     " << a_matrix[isd][isc] << "     " << a_matrix[isd][isd] << "\n";
+	
+	cout << "HELLO: " << a_matrix[isa].size() << " and " << a_matrix.size() << "\n";
+
+	{
+		ListDigraph list_graph;
+		
+		ListDigraph::Node x1 = list_graph.addNode();
+		ListDigraph::Node y1 = list_graph.addNode();
+		ListDigraph::Node x2 = list_graph.addNode();
+		ListDigraph::Node y2 = list_graph.addNode();
+		ListDigraph::Node z1 = list_graph.addNode();
+		ListDigraph::Node z2 = list_graph.addNode();
+		
+		ListDigraph::Arc x1y1 = list_graph.addArc(x1, y1);
+		ListDigraph::Arc y1x2 = list_graph.addArc(y1, x2);
+		ListDigraph::Arc x2y2 = list_graph.addArc(x2, y2);
+		ListDigraph::Arc x1z1 = list_graph.addArc(x1, z1);
+		ListDigraph::Arc z1z2 = list_graph.addArc(z1, z2);
+		ListDigraph::Arc z2x2 = list_graph.addArc(z2, x2);
+		ListDigraph::Arc z2y2 = list_graph.addArc(z2, y2);
+		
+		ListDigraph::NodeMap<StaticDigraph::Node> graph_nodes_to_static_graph_nodes(list_graph);
+		ListDigraph::ArcMap<StaticDigraph::Arc>   graph_arcs_to_static_graph_arcs(list_graph);
+	
+		StaticDigraph static_graph;
+		static_graph.build(list_graph, graph_nodes_to_static_graph_nodes, graph_arcs_to_static_graph_arcs);
+		unordered_map<int, unordered_map<int, bool>> a_matrix = compute_a_matrix(static_graph, false);
+	
+		StaticDigraph::Arc sx1y1 = graph_arcs_to_static_graph_arcs[x1y1];
+		StaticDigraph::Arc sy1x2 = graph_arcs_to_static_graph_arcs[y1x2];
+		StaticDigraph::Arc sx2y2 = graph_arcs_to_static_graph_arcs[x2y2];
+		StaticDigraph::Arc sx1z1 = graph_arcs_to_static_graph_arcs[x1z1];
+		StaticDigraph::Arc sz1z2 = graph_arcs_to_static_graph_arcs[z1z2];
+		StaticDigraph::Arc sz2x2 = graph_arcs_to_static_graph_arcs[z2x2];
+		StaticDigraph::Arc sz2y2 = graph_arcs_to_static_graph_arcs[z2y2];
+		
+		int isx1y1 = static_graph.id(sx1y1); 
+		int isy1x2 = static_graph.id(sy1x2); 
+		int isx2y2 = static_graph.id(sx2y2);
+		int isx1z1 = static_graph.id(sx1z1); 
+		int isz1z2 = static_graph.id(sz1z2); 
+		int isz2x2 = static_graph.id(sz2x2);
+		int isz2y2 = static_graph.id(sz2y2); 
+		
+		cout << "(x1 -> y1): " << isx1y1 << "\n";
+		cout << "(y1 -> x2): " << isy1x2 << "\n";
+		cout << "(x2 -> y2): " << isx2y2 << "\n";
+		cout << "(x1 -> z1): " << isx1z1 << "\n";
+		cout << "(z1 -> z2): " << isz1z2 << "\n";
+		cout << "(z2 -> x2): " << isz2x2 << "\n";
+		cout << "(z2 -> y2): " << isz2y2 << "\n";
+		
+		cout << "HWA\n";
+		for (const auto& n : a_matrix)
+		{
+			cout << "size: " << n.second.size() << ": ";
+			for (const auto& nn : n.second)
+			{
+				cout << "(" << n.first << ", " << nn.first << ")=" << nn.second << " ";
+			}
+			
+			cout << "\n";
+		}
+		
+		cout << "phase\n";
+		if (a_matrix[isx1y1][isx2y2] || a_matrix[isx2y2][isx1y1]) {
+			cout << "Some of them!\n";
+		}
+		
+		if (a_matrix[isx1y1][isx2y2] == false) crash();
+		
+		cout << "phase\n";
+		if (a_matrix[isx1y1][isy1x2] == false) crash();
+		if (a_matrix[isy1x2][isx2y2] == true) crash();
+		
+		cout << "phase\n";
+		if (a_matrix[isx2y2][isx1y1] == true) crash();
+		if (a_matrix[isx1y1][isy1x2] == true) crash();
+		if (a_matrix[isy1x2][isx2y2] == false) crash();
+		
+		cout << "phase\n";
+		if (a_matrix[isx1z1][isz2y2] == false) crash();
+		if (a_matrix[isx1z1][isz1z2] == true) crash();
+		
+		
+		
+		/*
+		std::map<int, std::string> name_map;
+		
+		name_map[isx1y1] = "(x1 -> y1)";
+		name_map[isy1x2] = "(y1 -> x2)";
+		name_map[isx2y2] = "(x2 -> y2)";
+		name_map[isx1z1] = "(x1 -> z1)";
+		name_map[isz1z2] = "(z1 -> z2)";
+		name_map[isz2x2] = "(z2 -> x2)";
+		name_map[isz2y2] = "(z2 -> y2)";
+		
+		std::vector<int> id_vec;
+		
+		for (StaticDigraph::ArcIt iter(static_graph); iter != INVALID; ++iter)
+		{
+			id_vec.push_back(static_graph.id(iter));
+		}
+		
+		std:sort(id_vec.begin(), id_vec.end());
+		cout << "          ";
+		
+		for (auto i : id_vec)
+		{
+			cout << name_map[i] << " ";	
+		}
+				
+		cout << "\n";
+		
+		for (auto )*/
+	}
 }
 
 int main(int argc, char **argv)
 {
+	//test_certificate_preprocessing();
 	//test_list_digraph_node_ids();
 	//test_strong_bridges();
-	//test_a_matrix_algo();
-	//exit(0);
+	test_a_matrix_algo();
+	exit(0);
 	
 	//////////////////////////////////////////
 	//////////////////////////////////////////
