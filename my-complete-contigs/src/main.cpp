@@ -2106,9 +2106,6 @@ static void test_a_matrix_algo()
 		}
 		
 		cout << "phase\n";
-		if (a_matrix[isx1y1][isx2y2] || a_matrix[isx2y2][isx1y1]) {
-			cout << "Some of them!\n";
-		}
 		
 		if (a_matrix[isx1y1][isx2y2] == false) crash();
 		
@@ -2118,8 +2115,8 @@ static void test_a_matrix_algo()
 		
 		cout << "phase\n";
 		if (a_matrix[isx2y2][isx1y1] == true) crash();
-		if (a_matrix[isx1y1][isy1x2] == true) crash();
-		if (a_matrix[isy1x2][isx2y2] == false) crash();
+		if (a_matrix[isx1y1][isy1x2] == false) crash();
+		if (a_matrix[isy1x2][isx2y2] == true) crash();
 		
 		cout << "phase\n";
 		if (a_matrix[isx1z1][isz2y2] == false) crash();
