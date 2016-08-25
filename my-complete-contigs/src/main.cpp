@@ -787,7 +787,10 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	cout << "[ALEXNADRU] Inner algorithm duration: " << (end_time - start_time_2) << " milliseconds.\n";
 	cout << "[ALEXANDRU] Total duration: " << (end_time - start_time) << " milliseconds.\n";
-	print_collection(ret, inputFileName + ".k" + std::to_string(kmersize), ".coderodde_omnitigs");
+	
+	print_collection(unitigs, inputFileName + ".k" + std::to_string(kmersize) + "." + genome_type, ".unitigs");
+	
+	print_collection(ret, inputFileName + ".k" + std::to_string(kmersize) + "." + genome_type, ".coderodde_omnitigs");
 	return ret;
 }
 
