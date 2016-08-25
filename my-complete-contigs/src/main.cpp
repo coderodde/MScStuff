@@ -2104,55 +2104,14 @@ static void test_a_matrix_algo()
 			
 			cout << "\n";
 		}
-		
-		cout << "phase\n";
-		
 		if (a_matrix[isx1y1][isx2y2] == false) crash();
-		
-		cout << "phase\n";
 		if (a_matrix[isx1y1][isy1x2] == false) crash();
 		if (a_matrix[isy1x2][isx2y2] == true) crash();
-		
-		cout << "phase\n";
 		if (a_matrix[isx2y2][isx1y1] == true) crash();
 		if (a_matrix[isx1y1][isy1x2] == false) crash();
 		if (a_matrix[isy1x2][isx2y2] == true) crash();
-		
-		cout << "phase\n";
 		if (a_matrix[isx1z1][isz2y2] == false) crash();
 		if (a_matrix[isx1z1][isz1z2] == true) crash();
-		
-		
-		
-		/*
-		std::map<int, std::string> name_map;
-		
-		name_map[isx1y1] = "(x1 -> y1)";
-		name_map[isy1x2] = "(y1 -> x2)";
-		name_map[isx2y2] = "(x2 -> y2)";
-		name_map[isx1z1] = "(x1 -> z1)";
-		name_map[isz1z2] = "(z1 -> z2)";
-		name_map[isz2x2] = "(z2 -> x2)";
-		name_map[isz2y2] = "(z2 -> y2)";
-		
-		std::vector<int> id_vec;
-		
-		for (StaticDigraph::ArcIt iter(static_graph); iter != INVALID; ++iter)
-		{
-			id_vec.push_back(static_graph.id(iter));
-		}
-		
-		std:sort(id_vec.begin(), id_vec.end());
-		cout << "          ";
-		
-		for (auto i : id_vec)
-		{
-			cout << name_map[i] << " ";	
-		}
-				
-		cout << "\n";
-		
-		for (auto )*/
 	}
 }
 
