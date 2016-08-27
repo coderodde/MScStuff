@@ -17,7 +17,7 @@ build:
 	mkdir -p ../bin; cd ../src/; $(CC) $(CPPFLAGS_ASSEMBLER) -o ../bin/$(OUT_EXE_ASSEMBLER) $(FILES_ASSEMBLER)
 
 maximality:
-	$(COMPILE_RLCSA); $(CC) $(CPPFLAGS_MAXIMALITY) -o ../bin/$(OUT_EXE_MAXIMALITY) $(FILES_MAXIMALITY) ../bin/rlcsa/rlcsa.a
+	$(CC) $(CPPFLAGS_MAXIMALITY) -o ../bin/$(OUT_EXE_MAXIMALITY) $(FILES_MAXIMALITY) ../bin/rlcsa/rlcsa.a
 
 clean:
 	rm -f ../bin/$(OUT_EXE_ASSEMBLER); rm -f ../bin/$(OUT_EXE_MAXIMALITY); rm -fr ../bin/rlcsa
