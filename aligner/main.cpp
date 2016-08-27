@@ -612,8 +612,8 @@ int main(int argc, char** argv)
     	.description(desc)
     	.epilog(epilog);
 
-	parser.add_option("-r", "--readfile") .type("string") .dest("r") .set_default("") .help("contig file (.fasta/.fa format)");
-	parser.add_option("-g", "--reference") .type("string") .dest("g") .set_default("") .help("reference genome (default: %default)");
+	parser.add_option("-r", "--readfile") .type("string") .dest("r") .set_default("") .help("contig file with extension (.fasta/.fa format)");
+	parser.add_option("-g", "--reference") .type("string") .dest("g") .set_default("") .help("filename of reference genome with extension (.fasta/.fa format)");
 	parser.add_option("-b", "--buildindex") .action("store_true") .set_default(false) .dest("b") .help("build the index and exit");
 	parser.add_option("-l", "--loadindex") .action("store_true") .set_default(false) .dest("l") .help("load the index from disk");
 	parser.add_option("-c", "--circular") .action("store_true") .set_default(false) .dest("c") .help("flag for circular genome");
@@ -696,74 +696,45 @@ int main(int argc, char** argv)
 	ifstream fileStats_read;
 	string header_line, unitigs_line, ns_contigs_line, YtoV_contigs_line, omnitigs_line, previous_line;
 
-	fileStats_read.open(outputStatsFileName);
-	getline(fileStats_read,header_line);
-	getline(fileStats_read,unitigs_line);
-	//getline(fileStats_read,ns_contigs_line);
-	getline(fileStats_read,YtoV_contigs_line);
-	getline(fileStats_read,omnitigs_line);
-	fileStats_read.close();
-	
 	ofstream fileStats;
 	fileStats.open(outputStatsFileName);
 	fileStats << header_line << ",genome length,#strings,AVG_length,MAX_length,E-size,AVG #SNPs/c,MAX #SNPs/c,#SNP pairs in same contig,total exon content,AVG exon content,total n_exons,AVG n_exons,unmapped" << endl;
 
-	for (string algorithm : { "unitigs",  "YtoV-contigs", "omnitigs.maximal"}) // "non-switching-contigs",
-	{
+	ofstream fileDumpContigStats;
+	ofstream fileDumpSNPStats;
+	fileDumpContigStats.open(readFileName + ".dumpContigStats.csv");
+	fileDumpContigStats << "contig_name,contig_length,#SNPs,#exons touched,exon content,number of alignments (max over all its alignments)" << endl;
 
-		ofstream fileDumpContigStats;
-		ofstream fileDumpSNPStats;
-		fileDumpContigStats.open(readFileName + "." + algorithm + ".dumpContigStats.csv");
-		fileDumpContigStats << "contig_name,contig_length,#SNPs,#exons touched,exon content,number of alignments (max over all its alignments)" << endl;
+	fileDumpSNPStats.open(readFileName + ".dumpSNPStats.csv");
+	fileDumpSNPStats << "pos,contig_name,pos_on_contig,#SNPs in the same contig (max over all contigs aligning on that SNP)" << endl;
 
-		fileDumpSNPStats.open(readFileName + "." + algorithm + ".dumpSNPStats.csv");
-		fileDumpSNPStats << "pos,contig_name,pos_on_contig,#SNPs in the same contig (max over all contigs aligning on that SNP)" << endl;
+	previous_line = "";
 
-		cout << "*********** " << algorithm << endl;
+ 	// we load the reads
+	get_reads(readFileName, reads, read_labels);
+	
+	ofstream fileReads;	
+	fileReads.open(readFileName + ".aligned");
+	align_reads(rlcsa,
+		reads,
+		read_labels,
+		fileStats,
+		fileDumpContigStats,
+		fileDumpSNPStats,
+		fileReads,
+		referenceFileName,
+		previous_line,
+		prefixSum_snp,
+		next_snp,
+		SNP_map,
+		next_exon_start,
+		next_exon_end);
 
-		if (algorithm == "unitigs")
-		{
-			previous_line = unitigs_line;
-		}
-		if (algorithm == "non-switching-contigs")
-		{
-			previous_line = ns_contigs_line;
-		}
-		if (algorithm == "YtoV-contigs")
-		{
-			previous_line = YtoV_contigs_line;
-		}		
-		if (algorithm == "omnitigs.maximal")
-		{
-			previous_line = omnitigs_line;
-		}
+	reads.clear();
+	read_labels.clear();
 
-	 	// we load the reads
- 		get_reads(readFileName + "." + algorithm, reads, read_labels);
- 		
- 		ofstream fileReads;	
-		fileReads.open(readFileName + "." + algorithm + ".aligned");
- 		align_reads(rlcsa,
-			reads,
-			read_labels,
-			fileStats,
-			fileDumpContigStats,
-			fileDumpSNPStats,
-			fileReads,
-			referenceFileName,
-			previous_line,
-			prefixSum_snp,
-			next_snp,
-			SNP_map,
-			next_exon_start,
-			next_exon_end);
-
- 		reads.clear();
- 		read_labels.clear();
-
- 		fileDumpContigStats.close();
- 		fileDumpSNPStats.close();
- 	}
+	fileDumpContigStats.close();
+	fileDumpSNPStats.close();
 
  	fileStats.close();
 
