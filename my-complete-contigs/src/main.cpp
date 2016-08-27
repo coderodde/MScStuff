@@ -735,9 +735,10 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		}
 	}
 	
+	cout << "[ALEXANDRU] Number of contigs: " << contig_count << "\n";
 	cout << "[ALEXANDRU] Number of contigs before pruning: " << contig_count << "\n";
 	
-	prune_non_maximal_contigs(S_k);
+	//prune_non_maximal_contigs(S_k);
 	
 	size_t sz = 0;
 	
@@ -747,6 +748,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	}
 	
 	cout << "[ALEXANDRU] Number of contigs after pruning:  " << sz << "\n";
+	
 	
 	//// Compute and print the average size of omnitigs:
 	size_t sum = 0;
@@ -785,7 +787,10 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	cout << "[ALEXNADRU] Inner algorithm duration: " << (end_time - start_time_2) << " milliseconds.\n";
 	cout << "[ALEXANDRU] Total duration: " << (end_time - start_time) << " milliseconds.\n";
-	print_collection(ret, inputFileName + ".k" + std::to_string(kmersize), ".coderodde_omnitigs");
+	
+	//print_collection(unitigs, inputFileName + ".k" + std::to_string(kmersize) + "." + genome_type, ".unitigs");
+	
+	print_collection(ret, inputFileName + ".k" + std::to_string(kmersize), ".alexandru_omnitigs");
 	return ret;
 }
 
@@ -2105,57 +2110,14 @@ static void test_a_matrix_algo()
 			cout << "\n";
 		}
 		
-		cout << "phase\n";
-		if (a_matrix[isx1y1][isx2y2] || a_matrix[isx2y2][isx1y1]) {
-			cout << "Some of them!\n";
-		}
-		
 		if (a_matrix[isx1y1][isx2y2] == false) crash();
-		
-		cout << "phase\n";
 		if (a_matrix[isx1y1][isy1x2] == false) crash();
 		if (a_matrix[isy1x2][isx2y2] == true) crash();
-		
-		cout << "phase\n";
 		if (a_matrix[isx2y2][isx1y1] == true) crash();
-		if (a_matrix[isx1y1][isy1x2] == true) crash();
-		if (a_matrix[isy1x2][isx2y2] == false) crash();
-		
-		cout << "phase\n";
+		if (a_matrix[isx1y1][isy1x2] == false) crash();
+		if (a_matrix[isy1x2][isx2y2] == true) crash();
 		if (a_matrix[isx1z1][isz2y2] == false) crash();
 		if (a_matrix[isx1z1][isz1z2] == true) crash();
-		
-		
-		
-		/*
-		std::map<int, std::string> name_map;
-		
-		name_map[isx1y1] = "(x1 -> y1)";
-		name_map[isy1x2] = "(y1 -> x2)";
-		name_map[isx2y2] = "(x2 -> y2)";
-		name_map[isx1z1] = "(x1 -> z1)";
-		name_map[isz1z2] = "(z1 -> z2)";
-		name_map[isz2x2] = "(z2 -> x2)";
-		name_map[isz2y2] = "(z2 -> y2)";
-		
-		std::vector<int> id_vec;
-		
-		for (StaticDigraph::ArcIt iter(static_graph); iter != INVALID; ++iter)
-		{
-			id_vec.push_back(static_graph.id(iter));
-		}
-		
-		std:sort(id_vec.begin(), id_vec.end());
-		cout << "          ";
-		
-		for (auto i : id_vec)
-		{
-			cout << name_map[i] << " ";	
-		}
-				
-		cout << "\n";
-		
-		for (auto )*/
 	}
 }
 
@@ -2164,8 +2126,8 @@ int main(int argc, char **argv)
 	//test_certificate_preprocessing();
 	//test_list_digraph_node_ids();
 	//test_strong_bridges();
-	test_a_matrix_algo();
-	exit(0);
+	//test_a_matrix_algo();
+	//exit(0);
 	
 	//////////////////////////////////////////
 	//////////////////////////////////////////
