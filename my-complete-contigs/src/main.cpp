@@ -10,6 +10,104 @@ using rodde::current_time::milliseconds;
 
 int N_THREADS;
 
+vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
+{
+	uint64_t start_time = milliseconds();
+	
+	if (debug_print)
+	{
+		cout << "[ALEXANDRU](get_node_covering_reconstruction) Computing the node covering reconstruction...\n";
+	}
+	
+	int nodes = graph.nodeNum();
+	
+	//// Subdivide the input graph:
+	ListDigraph subdivided_graph;
+	subdivided_graph.reserveNode(2 * nodes);
+	subdivided_graph.reserveArc(nodes + countArcs(graph));
+	
+	//// Create the nodes of the subdivided graph:
+	for (int id = 0; id < nodes; ++id)
+	{
+		subdivided_graph.addNode();
+		subdivided_graph.addNode();
+	}
+	
+	if (debug_print)
+	{
+		cout << "[ALEXANDRU](get_node_covering_reconstruction) The size of the subdivided graph is "
+		     << countNodes(subdivided_graph) << endl;	
+	}
+	
+	//// Maps the indices of the tail and head nodes to the actual arc between them:
+	unordered_map<int, unordered_map<int, ListDigraph::Arc>> arc_matrix;
+	
+	// Create the subdivision arcs for the subdivided graph. We split each
+	// node x into two nodes x_in and x_out, where x_in = x, and x_out is
+	// a newly added node.
+	for (int id = 0; id < nodes; ++id)
+	{
+		ListDigraph::Node tail = subdivided_graph.nodeFromId(id);
+		ListDigraph::Node head = subdivided_graph.nodeFromId(id + nodes);
+		ListDigraph::Arc arc   = subdivided_graph.addArc(tail, head);
+		// Save the arc for further management.
+		arc_matrix[id][id + nodes] = arc;
+	}
+	
+	if (debug_print)
+	{
+		cout << "[ALEXANDRU](get_node_covering_reconstruction) The number of divided arcs before copying the arcs is "
+		     << countArcs(subdivided_graph)
+		     << "\n";		
+	}
+	
+	// Copy the original arcs to the subdivided graph.
+	// For each arc (y, z) in G, add an arc (y_out, z_in) to G'.
+	for (StaticDigraph::ArcIt arcit(graph); arcit != INVALID; ++arcit)
+	{
+		StaticDigraph::Node y = graph.source(arcit);
+		StaticDigraph::Node z = graph.target(arcit);
+		
+		int y_index = graph.index(y) + nodes; // The index of y_out.
+		int z_index = graph.index(z);         // The index of z_in.
+		
+		ListDigraph::Node new_arc_tail = subdivided_graph.nodeFromId(y_index);
+		ListDigraph::Node new_arc_head = subdivided_graph.nodeFromId(z_index);
+		subdivided_graph.addArc(new_arc_tail, new_arc_head);
+	}
+	
+	if (debug_print)
+	{
+		cout << "[ALEXANDRU](get_node_covering_reconstruction) The number of divided arcs after copying the arcs is "
+		     << countArcs(subdivided_graph)
+		     << endl;		
+	}
+	
+	//// Once here, we have the subdivided graph!
+	
+	cout << "StaticDigraph node ids:\n";
+	
+	for (StaticDigraph::NodeIt nodeit(graph); nodeit != INVALID; ++nodeit)
+	{
+		cout << graph.id(nodeit) << endl;
+	}
+	
+	cout << "\nListDigraph node ids:\n";
+	
+	for (ListDigraph::NodeIt nodeit(subdivided_graph); nodeit != INVALID; ++nodeit)
+	{
+		cout << subdivided_graph.id(nodeit) << endl;
+	}
+	cout << endl;
+	
+	vector<vector<int>> ret;
+	
+	uint64_t end_time = milliseconds();
+	cout << "[ALEXANDRU] get_node_covering_reconstruction() in "
+	     << end_time - start_time << "\n";
+	return ret;
+}
+
 // This function returns a circular node-covering walk in the input graph.
 // A node-covering walk is a walk that visits each node at least once.
 static pair<vector<StaticDigraph::Node>, vector<StaticDigraph::Arc>>
@@ -2356,6 +2454,8 @@ int main(int argc, char **argv)
 	cout << "[CODERODDE] Exited the funky algorithm." << endl;
 	
 	fileStats.close();
+	
+	get_node_covering_reconstruction(graph, true);
 
 	return EXIT_SUCCESS;
 }
