@@ -43,6 +43,13 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	//// Maps the indices of the tail and head nodes to the actual arc between them:
 	unordered_map<int, unordered_map<int, ListDigraph::Arc>> arc_matrix;
 	
+	// The two maps are used for specifying the demand:
+	ListDigraph::ArcMap<int64_t> lowerMap(subdivided_graph);
+	ListDigraph::ArcMap<int64_t> upperMap(subdivided_graph);
+	
+	// This map stores the costs for all arcs in the subdivided graph:
+	ListDigraph::ArcMap<int64_t> costMap (subdivided_graph);
+	
 	// Create the subdivision arcs for the subdivided graph. We split each
 	// node x into two nodes x_in and x_out, where x_in = x, and x_out is
 	// a newly added node.
@@ -51,6 +58,10 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		ListDigraph::Node tail = subdivided_graph.nodeFromId(id);
 		ListDigraph::Node head = subdivided_graph.nodeFromId(id + nodes);
 		ListDigraph::Arc arc   = subdivided_graph.addArc(tail, head);
+		// Subdivided arcs: demand 1, cost 0:
+		lowerMap[arc] = 1;
+		upperMap[arc] = numeric_limits<int64_t>::max();
+		costMap [arc] = 0;
 		// Save the arc for further management.
 		arc_matrix[id][id + nodes] = arc;
 	}
@@ -74,7 +85,12 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		
 		ListDigraph::Node new_arc_tail = subdivided_graph.nodeFromId(y_index);
 		ListDigraph::Node new_arc_head = subdivided_graph.nodeFromId(z_index);
-		subdivided_graph.addArc(new_arc_tail, new_arc_head);
+		ListDigraph::Arc new_arc = subdivided_graph.addArc(new_arc_tail, new_arc_head);
+		
+		// Original graph arcs: demand 0, cost 1:
+		lowerMap[arc] = 0;
+		upperMap[arc] = numeric_limits<int64_t>::max();
+		costMap [arc] = 1;
 	}
 	
 	if (debug_print)
@@ -85,22 +101,12 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	}
 	
 	//// Once here, we have the subdivided graph!
-	ListDigraph::ArcMap<int64_t> lowerMap(subdivided_graph);
-	ListDigraph::ArcMap<int64_t> upperMap(subdivided_graph);
-	ListDigraph::ArcMap<int64_t> costMap (subdivided_graph);
 	ListDigraph::NodeMap<int64_t> supplyMap(subdivided_graph);
 	
 	// In 'supplyMap', map each node to zero:
 	for (ListDigraph::NodeIt nodeit(subdivided_graph); nodeit != INVALID; ++nodeit)
 	{
 		supplyMap[nodeit] = 0;
-	}
-	
-	// Set the arc maps:
-	for (ListDigraph::ArcIt arcit(subdivided_graph); arcit != INVALID; ++arcit)
-	{
-		lowerMap[arcit] = 0;
-		upperMap[arcit] = numeric_limits<int64_t>::max();
 	}
 	
 	vector<vector<int>> ret;
