@@ -88,9 +88,9 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		ListDigraph::Arc new_arc = subdivided_graph.addArc(new_arc_tail, new_arc_head);
 		
 		// Original graph arcs: demand 0, cost 1:
-		lowerMap[arc] = 0;
-		upperMap[arc] = numeric_limits<int64_t>::max();
-		costMap [arc] = 1;
+		lowerMap[new_arc] = 0;
+		upperMap[new_arc] = numeric_limits<int64_t>::max();
+		costMap [new_arc] = 1;
 	}
 	
 	if (debug_print)
