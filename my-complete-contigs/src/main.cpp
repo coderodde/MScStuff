@@ -2,6 +2,7 @@
 #include "rodde_current_time.h"
 #include <algorithm>
 #include <stdexcept>
+#include <limits>
 
 using std::runtime_error;
 using namespace std;
@@ -93,6 +94,13 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	for (ListDigraph::NodeIt nodeit(subdivided_graph); nodeit != INVALID; ++nodeit)
 	{
 		supplyMap[nodeit] = 0;
+	}
+	
+	// Set the arc maps:
+	for (ListDigraph::ArcIt arcit(subdivided_graph); arcit != INVALID; ++arcit)
+	{
+		lowerMap[arcit] = 0;
+		upperMap[arcit] = numeric_limits<int64_t>::max();
 	}
 	
 	vector<vector<int>> ret;
