@@ -141,7 +141,6 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	while (non_zero_flow_arcs != 0)
 	{
 		vector<int> cycle;
-		
 		ListDigraph::ArcIt target_arc;
 		
 		// First find any arc with non-zero flow:
@@ -150,18 +149,27 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 			if (resultFlowMap[arcit] > 0)
 			{
 				target_arc = arcit;
-				cycle.push_back(subdivided_graph.id(arcit));
+				break;
 			}
 		}
 		
 		int start_id = subdivided_graph.id(subdivided_graph.source(target_arc));
+		ListDigraph::Node current_node = subdivided_graph.target(target_arc);
+		int current_node_id = subdivided_graph.id(current_node);
 		cycle.push_back(start_id);
 		
-		// Keep traversing a cycle through non-zero flow arcs:
-		int current_id = subdivided_graph.id(subdivided_graph.target(target_arc));
+		while (current_id != start_id)
+		{
+			cycle.push_back(current_node_id);
+			
+			for (ListDigraph::OutArcIt arcit(subdivided_graph, current_node); arcit != INVALID; ++arcit)
+			{
+				break;
+			}
+			
+			break;
+		}
 		
-		
-		cycles.push_back(cycle);
 		break;
 	}
 	
