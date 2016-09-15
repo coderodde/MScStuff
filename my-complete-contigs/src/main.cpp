@@ -158,7 +158,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		int current_node_id = subdivided_graph.id(current_node);
 		cycle.push_back(start_id);
 		
-		while (current_id != start_id)
+		while (current_node_id != start_id)
 		{
 			cycle.push_back(current_node_id);
 			
