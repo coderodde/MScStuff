@@ -162,16 +162,45 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		{
 			cycle.push_back(current_node_id);
 			
+			// Find next node to visit:
 			for (ListDigraph::OutArcIt arcit(subdivided_graph, current_node); arcit != INVALID; ++arcit)
 			{
-				break;
+				if (resultFlowMap[arcit] > 0)
+				{
+					ListDigraph::Node next_node = subdivided_graph.target(arcit);
+					current_node = next_node;
+					current_node_id = subdivided_graph.id(current_node);
+					break;
+				}
 			}
-			
-			break;
 		}
 		
-		break;
+		// Remove one unit of flow from each arc in the currently found cycle:
+		for (size_t i = 0; i < cycle.size() - 1; ++i)
+		{
+			int tail_node_id = cycle[i];
+			int head_node_id = cycle[i + 1];
+			ListDigraph::Arc arc = arc_matrix[tail_node_id][head_node_id];
+			
+			if (resultFlowMap[arc] == 1)
+			{
+				--non_zero_flow_arcs;
+			}
+			
+			resultFlowMap[arc]--;
+		}
+		
+		cycles.push_back(cycle);
 	}
+	
+	cout << "FUNKEEEHH" << endl;
+	
+	for (const auto& cycle : cycles)
+	{
+		cout << cycle.size() << endl;
+	}
+	
+	cout << "#####" << endl;
 	
 	//// Fix the cycles:
 	
