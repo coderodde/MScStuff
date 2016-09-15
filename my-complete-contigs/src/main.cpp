@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <stdexcept>
 #include <limits>
+#include <lemon/network_simplex.h>
 
 using std::runtime_error;
 using namespace std;
