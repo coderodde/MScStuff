@@ -118,8 +118,13 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	
 	if (result == NetworkSimplex<ListDigraph, int64_t>::OPTIMAL)
 	{
-		cout << "OPTIMAL!" << endl;
+		cout << "[ALEXANDRU](get_node_covering_reconstruction) The min-cost flow is optimal!" << endl;
 	}
+	
+	ListDigraph::ArcMap<int64_t> resultFlowMap(subdivided_graph);
+	ns.flowMap(resultFlowMap);
+
+	cout << "Flow map size: " << resultFlowMap.size() << endl;
 	
 	vector<vector<int>> ret;
 	
