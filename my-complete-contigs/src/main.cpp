@@ -162,7 +162,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	uint64_t end_time = milliseconds();
 	cout << "[ALEXANDRU] get_node_covering_reconstruction() in "
 	     << end_time - start_time << "\n";
-	return ret;
+	return cycles;
 }
 
 // This function returns a circular node-covering walk in the input graph.
