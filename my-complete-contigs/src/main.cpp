@@ -161,6 +161,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		while (current_node_id != start_id)
 		{
 			cycle.push_back(current_node_id);
+			bool found = false;
 			
 			// Find next node to visit:
 			for (ListDigraph::OutArcIt arcit(subdivided_graph, current_node); arcit != INVALID; ++arcit)
@@ -170,8 +171,14 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 					ListDigraph::Node next_node = subdivided_graph.target(arcit);
 					current_node = next_node;
 					current_node_id = subdivided_graph.id(current_node);
+					found = true;
 					break;
 				}
+			}
+			
+			if (!found)
+			{
+				break;
 			}
 		}
 		
