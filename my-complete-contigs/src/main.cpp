@@ -154,11 +154,11 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 			}
 		}
 		
-		int start_id = subdivided_graph.id(subdivided_graph.source(arcit));
+		int start_id = subdivided_graph.id(subdivided_graph.source(target_arc));
 		cycle.push_back(start_id);
 		
 		// Keep traversing a cycle through non-zero flow arcs:
-		int current_id = subdivided_graph.id(subdivided_graph.target(arcit));
+		int current_id = subdivided_graph.id(subdivided_graph.target(target_arc));
 		
 		
 		cycles.push_back(cycle);
