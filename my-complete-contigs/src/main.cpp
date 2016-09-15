@@ -131,13 +131,11 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	{
 		if (resultFlowMap[arcit] != 0)
 		{
-			cout << "non zero" << endl;
-		}
-		else
-		{
-			cout << "zero" << endl;
+			non_zero_flow_arcs.insert(arcit);	
 		}
 	}
+	
+	cout << "Non zero flow arcs: " << non_zero_flow_arcs.size() << endl;
 	
 	//// Fix the cycles:
 	vector<vector<int>> ret;
