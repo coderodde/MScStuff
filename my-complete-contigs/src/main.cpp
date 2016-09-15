@@ -124,8 +124,22 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	ListDigraph::ArcMap<int64_t> resultFlowMap(subdivided_graph);
 	ns.flowMap(resultFlowMap);
 
-	cout << "Flow map size: " << resultFlowMap.size() << endl;
+	unordered_set<ListDigraph::Arc> non_zero_flow_arcs;
+
+	//// Reconstruct the cycles:
+	for (ListDigraph::ArcIt arcit(subdivided_graph); arcit != INVALID; ++arcit)
+	{
+		if (resultFlowMap[arcit] != 0)
+		{
+			cout << "non zero" << endl;
+		}
+		else
+		{
+			cout << "zero" << endl;
+		}
+	}
 	
+	//// Fix the cycles:
 	vector<vector<int>> ret;
 	
 	uint64_t end_time = milliseconds();
