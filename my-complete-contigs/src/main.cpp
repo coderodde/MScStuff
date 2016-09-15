@@ -194,7 +194,9 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 				--non_zero_flow_arcs;
 			}
 			
+			cout << resultFlowMap[arc];
 			resultFlowMap[arc]--;
+			cout << ":" << resultFlowMap[arc] << endl;
 		}
 		
 		cycles.push_back(cycle);
