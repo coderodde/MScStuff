@@ -109,6 +109,17 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		supplyMap[nodeit] = 0;
 	}
 	
+	NetworkSimplex<ListDigraph, int64_t> ns(subdivided_graph);
+	ns.lowerMap(lowerMap).upperMap(upperMap).costMap(costMap).supplyMap(supplyMap);
+	
+	NetworkSimplex<ListDigraph, int64_t>::ProblemType result =
+	ns.run(NetworkSimplex<ListDigraph, int64_t>::CANDIDATE_LIST);
+	
+	if (result == NetworkSimplex<ListDigraph, int64_t>::OPTIMAL)
+	{
+		cout << "OPTIMAL!" << endl;
+	}
+	
 	vector<vector<int>> ret;
 	
 	uint64_t end_time = milliseconds();
