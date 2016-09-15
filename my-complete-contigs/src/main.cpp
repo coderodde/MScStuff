@@ -150,9 +150,17 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 			if (resultFlowMap[arcit] > 0)
 			{
 				target_arc = arcit;
+				cycle.push_back(subdivided_graph.id(arcit));
 			}
 		}
-	
+		
+		int start_id = subdivided_graph.id(subdivided_graph.source(arcit));
+		cycle.push_back(start_id);
+		
+		// Keep traversing a cycle through non-zero flow arcs:
+		int current_id = subdivided_graph.id(subdivided_graph.target(arcit));
+		
+		
 		cycles.push_back(cycle);
 		break;
 	}
