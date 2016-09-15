@@ -136,14 +136,28 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	}
 	
 	cout << "Non zero flow arcs: " << non_zero_flow_arcs << endl;
+	vector<vector<int>> cycles;
 	
 	while (non_zero_flow_arcs != 0)
 	{
+		vector<int> cycle;
+		
+		ListDigraph::ArcIt target_arc;
+		
+		// First find any arc with non-zero flow:
+		for (ListDigraph::ArcIt arcit(subdivided_graph); arcit != INVALID; ++arcit)
+		{
+			if (resultFlowMap[arcit] > 0)
+			{
+				target_arc = arcit;
+			}
+		}
+	
+		cycles.push_back(cycle);
 		break;
 	}
 	
 	//// Fix the cycles:
-	vector<vector<int>> ret;
 	
 	uint64_t end_time = milliseconds();
 	cout << "[ALEXANDRU] get_node_covering_reconstruction() in "
