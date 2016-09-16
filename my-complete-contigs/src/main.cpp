@@ -127,7 +127,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	size_t non_zero_flow_arcs = 0;
 
 	//// Reconstruct the cycles:
-	for (ListDigraph::ArcIt arcit(subdivided_graph); arcit != INVALID; ++arcit)
+	/*for (ListDigraph::ArcIt arcit(subdivided_graph); arcit != INVALID; ++arcit)
 	{
 		if (resultFlowMap[arcit] != 0)
 		{
@@ -135,13 +135,14 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		}
 	}
 	
-	cout << "Non zero flow arcs: " << non_zero_flow_arcs << endl;
+	cout << "Non zero flow arcs: " << non_zero_flow_arcs << endl;*/
 	vector<vector<int>> cycles;
 	
-	while (non_zero_flow_arcs != 0)
+	while (true)
 	{
 		vector<int> cycle;
 		ListDigraph::ArcIt target_arc;
+		bool start_arc_found = false;
 		
 		// First find any arc with non-zero flow:
 		for (ListDigraph::ArcIt arcit(subdivided_graph); arcit != INVALID; ++arcit)
@@ -149,24 +150,30 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 			if (resultFlowMap[arcit] > 0)
 			{
 				target_arc = arcit;
+				start_arc_found = true;
 				break;
 			}
 		}
+		
+		if (!start_arc_found)
+		{
+			// We are done with constructing cycles:
+			break;
+		}
+		
+		unordered_set<int> filter;
 		
 		int start_id = subdivided_graph.id(subdivided_graph.source(target_arc));
 		ListDigraph::Node current_node = subdivided_graph.target(target_arc);
 		int current_node_id = subdivided_graph.id(current_node);
 		cycle.push_back(start_id);
+		filter.insert(start_id);
 		
-		cout << "BEGIN" << endl;
-		cout << start_id << endl;
-		
-		while (current_node_id != start_id)
+		// Find the cycle:
+		while (filter.find(current_node_id) == filter.end())
 		{
-			cout << current_node_id << endl;
-			
 			cycle.push_back(current_node_id);
-			bool found = false;
+			filter.insert(current_node_id);
 			
 			// Find next node to visit:
 			for (ListDigraph::OutArcIt arcit(subdivided_graph, current_node); arcit != INVALID; ++arcit)
@@ -176,22 +183,29 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 					ListDigraph::Node next_node = subdivided_graph.target(arcit);
 					current_node = next_node;
 					current_node_id = subdivided_graph.id(current_node);
-					found = true;
 					break;
 				}
 			}
-			
-			if (!found)
-			{
-				break;
-			}
 		}
 		
-		// Remove one unit of flow from each arc in the currently found cycle:
-		for (size_t i = 0; i < cycle.size() - 1; ++i)
+		// Prune the cycle:
+		vector<int> pruned_cycle;
+		size_t idx = 0;
+		
+		for (; cycle[idx] != current_node_id; ++idx) {}
+		
+		for (; idx < cycle.size(); ++idx)
 		{
-			int tail_node_id = cycle[i];
-			int head_node_id = cycle[i + 1];
+			pruned_cycle.push_back(cycle[idx]);
+		}
+		
+		cout << "SHITTT" << endl;
+		
+		// Remove one unit of flow from each arc in the currently found cycle:
+		for (size_t i = 0; i < pruned_cycle.size() - 1; ++i)
+		{
+			int tail_node_id = pruned_cycle[i];
+			int head_node_id = pruned_cycle[i + 1];
 			ListDigraph::Arc arc = arc_matrix[tail_node_id][head_node_id];
 			
 			if (resultFlowMap[arc] == 1)
@@ -204,7 +218,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 			cout << ":" << resultFlowMap[arc] << endl;
 		}
 		
-		cycles.push_back(cycle);
+		cycles.push_back(pruned_cycle);
 	}
 	
 	cout << "FUNKEEEHH" << endl;
