@@ -1892,6 +1892,30 @@ vector<contig> compute_omnitigs(StaticDigraph& graph,
 	return ret;
 }
 
+static void test_cycle_reconstruction()
+{
+	ListDigraph my_graph;
+	
+	ListDigraph::Node a = my_graph.addNode();
+	ListDigraph::Node b = my_graph.addNode();
+	ListDigraph::Node c = my_graph.addNode();
+	ListDigraph::Node d = my_graph.addNode();
+	
+	ListDigraph::Arc ab = my_graph.addArc(a, b);
+	ListDigraph::Arc bc = my_graph.addArc(b, c);
+	ListDigraph::Arc ca = my_graph.addArc(c, a);
+	ListDigraph::Arc cd = my_graph.addArc(c, d);
+	ListDigraph::Arc dc = my_graph.addArc(d, c);
+	
+	ListDigraph::NodeMap<StaticDigraph::Node> graph_nodes_to_static_graph_nodes(my_graph);
+	ListDigraph::ArcMap<StaticDigraph::Arc>   graph_arcs_to_static_graph_arcs(my_graph);
+	
+	StaticDigraph static_graph;
+	static_graph.build(my_graph, graph_nodes_to_static_graph_nodes, graph_arcs_to_static_graph_arcs);
+	
+	vector<vector<int>> result = get_node_covering_reconstruction(static_graph, true);
+}
+
 static void test_strong_bridges()
 {
 	ListDigraph my_graph;
@@ -2351,7 +2375,8 @@ int main(int argc, char **argv)
 	//test_list_digraph_node_ids();
 	//test_strong_bridges();
 	//test_a_matrix_algo();
-	//exit(0);
+	test_cycle_reconstruction();
+	exit(0);
 	
 	//////////////////////////////////////////
 	//////////////////////////////////////////
