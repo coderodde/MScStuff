@@ -158,8 +158,13 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		int current_node_id = subdivided_graph.id(current_node);
 		cycle.push_back(start_id);
 		
+		cout << "BEGIN" << endl;
+		cout < start_id << endl;
+		
 		while (current_node_id != start_id)
 		{
+			cout << current_node_id << endl;
+			
 			cycle.push_back(current_node_id);
 			bool found = false;
 			
