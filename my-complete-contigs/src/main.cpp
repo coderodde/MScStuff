@@ -195,12 +195,6 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 			int tail_node_id = pruned_cycle[i];
 			int head_node_id = pruned_cycle[i + 1];
 			ListDigraph::Arc arc = arc_matrix[tail_node_id][head_node_id];
-			
-			if (resultFlowMap[arc] == 1)
-			{
-				--non_zero_flow_arcs;
-			}
-			
 			cout << resultFlowMap[arc];
 			resultFlowMap[arc]--;
 			cout << ":" << resultFlowMap[arc] << endl;
