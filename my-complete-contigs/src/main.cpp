@@ -159,7 +159,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		cycle.push_back(start_id);
 		
 		cout << "BEGIN" << endl;
-		cout < start_id << endl;
+		cout << start_id << endl;
 		
 		while (current_node_id != start_id)
 		{
