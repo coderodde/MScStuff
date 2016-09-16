@@ -177,6 +177,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 			}
 		}
 		
+		cout << "Last ID:  " << current_node_id << endl;
 		cout << "The cycle:" << endl;
 		for (int i : cycle)
 		{
