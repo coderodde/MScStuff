@@ -187,7 +187,6 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 			}
 		}
 		
-		cout << "len: " << cycle.size() << endl;
 		// Prune the cycle:
 		vector<int> pruned_cycle;
 		size_t idx = 0;
