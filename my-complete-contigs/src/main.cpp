@@ -201,7 +201,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		//abort();
 		
 		// Remove one unit of flow from each arc in the currently found cycle:
-		for (size_t i = 0; i < pruned_cycle.size() - 1; ++i)
+		for (size_t i = 0; i < pruned_cycle.size(); ++i)
 		{
 			int tail_node_id = pruned_cycle[i];
 			int head_node_id = pruned_cycle[(i + 1) % pruned_cycle.size()];
@@ -287,7 +287,6 @@ get_circular_walk(const StaticDigraph& graph, bool debug_print)
 	uint64_t end_time = milliseconds();
 	
 	cout << "[ALEXANDRU] get_circular_walk() in " << (end_time - start_time) << " milliseconds.\n";
-	cout << graph.id(main_walk[0]) << " and " << graph.id(main_walk[main_walk.size() - 1]) << endl;
 	return pair<vector<StaticDigraph::Node>, vector<StaticDigraph::Arc>>(main_walk, main_walk_arcs);
 }
 
