@@ -177,12 +177,12 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 			}
 		}
 		
-		cout << "Last ID:  " << current_node_id << endl;
+		/*cout << "Last ID:  " << current_node_id << endl;
 		cout << "The cycle:" << endl;
 		for (int i : cycle)
 		{
 			cout << i << endl;
-		}
+		}*/
 		
 		// Prune the cycle:
 		vector<int> pruned_cycle;
@@ -190,15 +190,15 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		
 		for (; cycle[idx] != current_node_id; ++idx) {}
 		
-		cout << "current idx: " << idx << endl;
+		// cout << "current idx: " << idx << endl;
 		
 		for (; idx < cycle.size(); ++idx)
 		{
 			pruned_cycle.push_back(cycle[idx]);
 		}
 		
-		cout << cycle.size() << " vs " << pruned_cycle.size() << endl;
-		abort();
+		//cout << cycle.size() << " vs " << pruned_cycle.size() << endl;
+		//abort();
 		
 		// Remove one unit of flow from each arc in the currently found cycle:
 		for (size_t i = 0; i < pruned_cycle.size() - 1; ++i)
@@ -209,6 +209,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 			resultFlowMap[arc]--;
 		}
 		
+		cout << "Pushing a cycle of length " << pruned_cycle.size() << endl;
 		cycles.push_back(pruned_cycle);
 	}
 	
