@@ -287,7 +287,7 @@ get_circular_walk(const StaticDigraph& graph, bool debug_print)
 	uint64_t end_time = milliseconds();
 	
 	cout << "[ALEXANDRU] get_circular_walk() in " << (end_time - start_time) << " milliseconds.\n";
-	
+	cout << graph.id(main_walk[0]) << " and " << graph.id(main_walk[main_walk.size() - 1]) << endl;
 	return pair<vector<StaticDigraph::Node>, vector<StaticDigraph::Arc>>(main_walk, main_walk_arcs);
 }
 
