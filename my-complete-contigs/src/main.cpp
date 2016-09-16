@@ -184,13 +184,13 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 			cout << i << endl;
 		}
 		
-		abort();
-		
 		// Prune the cycle:
 		vector<int> pruned_cycle;
 		size_t idx = 0;
 		
 		for (; cycle[idx] != current_node_id; ++idx) {}
+		
+		cout << "current idx: " << idx << endl;
 		
 		for (; idx < cycle.size(); ++idx)
 		{
@@ -198,6 +198,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		}
 		
 		cout << cycle.size() << " vs " << pruned_cycle.size() << endl;
+		abor();
 		
 		// Remove one unit of flow from each arc in the currently found cycle:
 		for (size_t i = 0; i < pruned_cycle.size() - 1; ++i)
