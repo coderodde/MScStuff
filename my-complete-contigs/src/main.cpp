@@ -124,18 +124,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	ListDigraph::ArcMap<int64_t> resultFlowMap(subdivided_graph);
 	ns.flowMap(resultFlowMap);
 	
-	size_t non_zero_flow_arcs = 0;
-
 	//// Reconstruct the cycles:
-	/*for (ListDigraph::ArcIt arcit(subdivided_graph); arcit != INVALID; ++arcit)
-	{
-		if (resultFlowMap[arcit] != 0)
-		{
-			non_zero_flow_arcs++;
-		}
-	}
-	
-	cout << "Non zero flow arcs: " << non_zero_flow_arcs << endl;*/
 	vector<vector<int>> cycles;
 	
 	while (true)
@@ -188,6 +177,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 			}
 		}
 		
+		cout << "len: " << cycle.size() << endl;
 		// Prune the cycle:
 		vector<int> pruned_cycle;
 		size_t idx = 0;
@@ -198,8 +188,6 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		{
 			pruned_cycle.push_back(cycle[idx]);
 		}
-		
-		cout << "SHITTT" << endl;
 		
 		// Remove one unit of flow from each arc in the currently found cycle:
 		for (size_t i = 0; i < pruned_cycle.size() - 1; ++i)
