@@ -134,33 +134,6 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	ListDigraph::ArcMap<int64_t> resultFlowMap(subdivided_graph);
 	ns.flowMap(resultFlowMap);
 	
-	/*
-	cout << "GRAPH:" << endl;
-	cout << "Nodes: " << endl;
-	
-	for (ListDigraph::NodeIt nodeit(subdivided_graph); nodeit != INVALID; ++nodeit)
-	{
-		cout << subdivided_graph.id(nodeit) << endl;
-	}
-	cout << "Arcs: " << endl;
-	for (ListDigraph::ArcIt arcit(subdivided_graph); arcit != INVALID; ++arcit)
-	{
-		cout << subdivided_graph.id(subdivided_graph.source(arcit)) << " -> "
-		     << subdivided_graph.id(subdivided_graph.target(arcit))
-		     << ": " << resultFlowMap[arcit] 
-		     << endl;
-	}*/
-	
-	/*cout << "FLOW DEBUG" << endl;
-	
-	for (ListDigraph::ArcIt arcit(subdivided_graph); arcit != INVALID; ++arcit)
-	{
-		cout << resultFlowMap[arcit] << " ";
-	}
-	
-	cout << endl << "DONE!" << endl;
-	abort();*/
-	
 	//// Reconstruct the cycles:
 	vector<vector<int>> cycles;
 	int count = 0;
@@ -214,48 +187,16 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 			}
 		}
 		
-		/*
-		cout << "First cycle: ";
-		
-		for (int i : cycle)
-		{
-			cout << i << " ";
-		}
-		
-		cout << endl;*/
-		
-		/*cout << "Last ID:  " << current_node_id << endl;
-		cout << "The cycle:" << endl;
-		for (int i : cycle)
-		{
-			cout << i << endl;
-		}*/
-		
 		// Prune the cycle:
 		vector<int> pruned_cycle;
 		size_t idx = 0;
 		
 		for (; cycle[idx] != current_node_id; ++idx) {}
 		
-		// cout << "current idx: " << idx << endl;
-		
 		for (; idx < cycle.size(); ++idx)
 		{
 			pruned_cycle.push_back(cycle[idx]);
 		}
-		
-		/*
-		cout << "Pruned: ";
-		
-		for (int i : pruned_cycle)
-		{
-			cout << i << " ";
-		}
-		
-		cout << endl;
-		*/
-		//cout << cycle.size() << " vs " << pruned_cycle.size() << endl;
-		//abort();
 		
 		// Remove one unit of flow from each arc in the currently found cycle:
 		for (size_t i = 0; i < pruned_cycle.size(); ++i)
@@ -263,40 +204,11 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 			int tail_node_id = pruned_cycle[i];
 			int head_node_id = pruned_cycle[(i + 1) % pruned_cycle.size()];
 			ListDigraph::Arc arc = arc_matrix[tail_node_id][head_node_id];
-			//cout << "arcId: " << subdivided_graph.id(arc) << " Reducing (" << tail_node_id << ", " << head_node_id << ")" << endl;
 			resultFlowMap[arc]--;
 		}
 		
-		/*cout << "Arcs (count == " << count << "): " << endl;
-		for (ListDigraph::ArcIt arcit(subdivided_graph); arcit != INVALID; ++arcit)
-		{
-			cout << subdivided_graph.id(subdivided_graph.source(arcit))
-			     << " -> "
-			     << subdivided_graph.id(subdivided_graph.target(arcit))
-			     << ": "
-			     << resultFlowMap[arcit] 
-			     << endl;
-		}
-		
-		cout << "Pushing a cycle of length " << pruned_cycle.size() << endl;*/
 		cycles.push_back(pruned_cycle);
-		/*
-		if (++count == 3)
-		{
-			abort();
-		}*/
 	}
-	/*
-	cout << "FUNKEEEHH" << endl;
-	
-	for (const auto& cycle : cycles)
-	{
-		cout << cycle.size() << endl;
-	}
-	
-	cout << "#####" << endl;*/
-	
-	//// Fix the cycles:
 	
 	uint64_t end_time = milliseconds();
 	cout << "[ALEXANDRU] get_node_covering_reconstruction() in "
@@ -479,13 +391,6 @@ static void find_certificate_sets(const StaticDigraph& graph,
 		
 		// Return (x_in, x_out) to the graph and start the next iteration.
 		subdivided_graph.addArc(x_in, x_out);
-		
-		/*StaticDigraph::Node tmp_node = graph.node(x_node_id);
-		cout << "map_node_to_certificate_set["
-		     << x_node_id
-		     << "].size(): "
-		     << map_node_to_certificate_set[tmp_node].size()
-	             << endl;*/
 	}
 	
 	uint64_t end_time = milliseconds();
@@ -570,83 +475,8 @@ static unordered_map<int, unordered_map<int, bool>> compute_a_matrix(const Stati
 		work_graph.addArc(removed_arc_tail, removed_arc_head);
 	}
 	
-	/*
-	// Copying the node references:
-	StaticDigraph::NodeMap<ListDigraph::Node> map_static_digraph_nodes_to_list_digraph_nodes (graph);
-	copy_graph.nodeRef(map_static_digraph_nodes_to_list_digraph_nodes);
-	
-	// Copying the inverse arc references:
-	ListDigraph::ArcMap<StaticDigraph::Arc> map_list_digraph_arcs_to_static_digraph_arcs(work_graph);
-	copy_graph.arcCrossRef(map_list_digraph_arcs_to_static_digraph_arcs);
-	
-	
-	
-	ListDigraph::ArcMap<StaticDigraph::Arc>   map_list_digraph_arcs_to_static_digraph_arcs   (work_graph);
-	StaticDigraph::ArcMap<ListDigraph::Arc>   map_static_digraph_arcs_to_list_digraph_arcs   (graph);
-	
-	copy_graph.arcCrossRef(map_list_digraph_arcs_to_static_digraph_arcs);
-	copy_graph.nodeRef(map_static_digraph_nodes_to_list_digraph_nodes);
-	copy_graph.run();
-	
-	//// We need a hashtable mapping StaticDigraph::Arc to ListDigraph::Arc:
-	for (ListDigraph::ArcIt arcit(work_graph); arcit != INVALID; ++arcit)
-	{
-		map_static_digraph_arcs_to_list_digraph_arcs[map_list_digraph_arcs_to_static_digraph_arcs[arcit]] = arcit;
-	}
-	
-	cout << "StaticDigraph.nodes() = " << countNodes(graph) << ", .arcs() = " << countArcs(graph) << "\n";
-	cout << "ListDigraph.nodes() = " << countNodes(work_graph) << ", .arcs() = " << countArcs(work_graph) << "\n";
-		
-	for (StaticDigraph::ArcIt a(graph); a != INVALID; ++a)
-	{
-		// Remove the "current" arc (x_1, y_1):
-		ListDigraph::Arc removed_arc = map_static_digraph_arcs_to_list_digraph_arcs[a];
-		ListDigraph::Node removed_arc_tail = work_graph.source(removed_arc);
-		ListDigraph::Node removed_arc_head = work_graph.target(removed_arc);
-		int removed_arc_id = work_graph.id(removed_arc);
-		work_graph.erase(removed_arc);
-		
-		// Compute which nodes are reachable from 'x_1'.
-		Dfs<> dfs(work_graph);
-		dfs.run(removed_arc_tail);
-		
-		for (StaticDigraph::NodeIt nodeit(graph); nodeit != INVALID; ++nodeit)
-		{
-			ListDigraph::Node z = map_static_digraph_nodes_to_list_digraph_nodes[nodeit];
-			int d_z = 0;
-			
-			// Iterate over all in-neighbors of 'z':
-			for (ListDigraph::InArcIt in_arc(work_graph, z); in_arc != INVALID; ++in_arc)
-			{
-				ListDigraph::Node incoming_node = work_graph.source(in_arc);
-				
-				if (dfs.reached(incoming_node))
-				{
-					++d_z;
-				}
-			}
-			
-			//Iterate the second time over all in-neighbors of 'z':
-			for (ListDigraph::InArcIt in_arc(work_graph, z); in_arc != INVALID; ++in_arc)
-			{
-				ListDigraph::Node w = work_graph.source(in_arc);
-				int r_w = dfs.reached(w) ? 1 : 0;
-				// Reversed the key order:
-				a_matrix[work_graph.id(in_arc)][removed_arc_id] = d_z - r_w > 0;
-				//a_matrix[removed_arc_id][work_graph.id(in_arc)] = d_z - r_w > 0; // This is the original order!
-				
-			}
-		}
-		
-		// Return the current arc to the 'work_graph':
-		work_graph.addArc(removed_arc_tail, removed_arc_head);
-		//cout << "Start arc ID: " << removed_arc_id << ", mappings: " << a_matrix[removed_arc_id].size() << endl;
-	}
-	*/
 	uint64_t end_time = milliseconds();
-	
 	cout << "[ALEXANDRU] compute_a_matrix() in " << (end_time - start_time) << " milliseconds.\n";
-	
 	return a_matrix;
 }
 
@@ -822,64 +652,6 @@ struct omnitig_descriptor {
 	}
 };
 
-void prune_non_maximal_contigs(vector<unordered_set<int>>& S_k)
-{	
-	uint64_t start_time = milliseconds();
-	vector<omnitig_descriptor*> descriptor_vec;
-	
-	// Load the C(i, k) descriptors:
-	for (size_t k = 0; k < S_k.size(); ++k)
-	{
-		for (int i : S_k[k])
-		{
-			descriptor_vec.push_back(new omnitig_descriptor(i, k));
-		}
-	}
-	
-	vector<omnitig_descriptor*> pruned_descriptor_vec;
-	
-	for (size_t i = 0; i < descriptor_vec.size(); ++i)
-	{
-		bool is_maximal = true; // descriptor_vec[i] is assumed to be maximal.
-		
-		for (size_t j = 0; j < descriptor_vec.size(); ++j)
-		{
-			if (i == j)
-			{
-				// Omit itself.
-				continue;
-			}
-			
-			if (descriptor_vec[j]->includes(*descriptor_vec[i]))
-			{
-				is_maximal = false;
-				break;
-			}
-		}
-		
-		if (is_maximal)
-		{
-			pruned_descriptor_vec.push_back(descriptor_vec[i]);
-		}
-	}
-	
-	//cout << "descriptor_vec.size() = " << descriptor_vec.size() << "\n";
-	//cout << "pruned_descriptor_vec.size() = " << pruned_descriptor_vec.size() << "\n";
-	
-	size_t sz = S_k.size();
-	S_k.clear();
-	S_k.resize(sz);
-	
-	for (omnitig_descriptor* desc : pruned_descriptor_vec)
-	{
-		S_k[desc->k].insert(desc->i);
-	}
-	
-	uint64_t end_time = milliseconds();
-	
-	cout << "[ALEXANDRU] prune_non_maximal_contigs() in " << (end_time - start_time) << " milliseconds.\n";
-}
-
 vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					   const StaticDigraph::NodeMap<string>& nodeLabel,
 					   const string& inputFileName,
@@ -1035,8 +807,6 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	cout << "[ALEXANDRU] Number of contigs: " << contig_count << "\n";
 	cout << "[ALEXANDRU] Number of contigs before pruning: " << contig_count << "\n";
-	
-	//prune_non_maximal_contigs(S_k);
 	
 	size_t sz = 0;
 	
