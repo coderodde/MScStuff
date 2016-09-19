@@ -107,7 +107,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	cout << "GRAPH:" << endl;
 	cout << "Nodes: " << endl;
 	
-	for (ListDigraph::Node nodeit(subdivided_graph); nodeit != INVALID; ++nodeit)
+	for (ListDigraph::NodeIt nodeit(subdivided_graph); nodeit != INVALID; ++nodeit)
 	{
 		cout << subdivided_graph.id(nodeit) << endl;
 	}
