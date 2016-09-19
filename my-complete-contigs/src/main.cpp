@@ -1771,10 +1771,10 @@ static void test_cycle_reconstruction()
 	StaticDigraph static_graph;
 	static_graph.build(my_graph, graph_nodes_to_static_graph_nodes, graph_arcs_to_static_graph_arcs);
 	
-	cout << "a: " << my_graph.id(a);
-	cout << "b: " << my_graph.id(b);
-	cout << "c: " << my_graph.id(c);
-	cout << "d: " << my_graph.id(d);
+	cout << "a: " << my_graph.id(a) << endl;
+	cout << "b: " << my_graph.id(b) << endl;
+	cout << "c: " << my_graph.id(c) << endl;
+	cout << "d: " << my_graph.id(d) << endl;
 	
 	vector<vector<int>> result = get_node_covering_reconstruction(static_graph, true);
 	
