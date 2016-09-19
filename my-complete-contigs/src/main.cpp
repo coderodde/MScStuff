@@ -120,9 +120,22 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	{
 		cout << "[ALEXANDRU](get_node_covering_reconstruction) The min-cost flow is optimal!" << endl;
 	}
+	else
+	{
+		abort();
+	}
 	
 	ListDigraph::ArcMap<int64_t> resultFlowMap(subdivided_graph);
 	ns.flowMap(resultFlowMap);
+	
+	cout << "FLOW DEBUG" << endl;
+	
+	for (ListDigraph::ArcIt arcit(subdivided_graph); arcit != INVALID; ++arcit)
+	{
+		cout << resultFlowMap[arcit] << " ";
+	}
+	
+	cout << endl << "DONE!" << endl;
 	
 	//// Reconstruct the cycles:
 	vector<vector<int>> cycles;
