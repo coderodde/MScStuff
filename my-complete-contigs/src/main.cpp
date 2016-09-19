@@ -63,7 +63,9 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		lowerMap[arc] = 1;
 		upperMap[arc] = numeric_limits<int64_t>::max();
 		costMap [arc] = 0;
-		// Save the arc for further management.
+		
+		// Save the arc for further management. We will add the original
+		// arcs into this map in the next for-loop.
 		arc_matrix[id][id + nodes] = arc;
 	}
 	
@@ -92,6 +94,9 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		lowerMap[new_arc] = 0;
 		upperMap[new_arc] = numeric_limits<int64_t>::max();
 		costMap [new_arc] = 1;
+		
+		// Put in the a-matrix:
+		arc_matrix[y_index][z_index] = new_arc;
 	}
 	
 	if (debug_print)
