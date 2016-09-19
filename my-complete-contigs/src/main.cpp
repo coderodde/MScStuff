@@ -255,15 +255,18 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 			int tail_node_id = pruned_cycle[i];
 			int head_node_id = pruned_cycle[(i + 1) % pruned_cycle.size()];
 			ListDigraph::Arc arc = arc_matrix[tail_node_id][head_node_id];
+			cout << "Reducing (" << tail_node_id << ", " << head_node_id << ")" << endl;
 			resultFlowMap[arc]--;
 		}
 		
 		cout << "Arcs (count == " << count << "): " << endl;
 		for (ListDigraph::ArcIt arcit(subdivided_graph); arcit != INVALID; ++arcit)
 		{
-			cout << subdivided_graph.id(subdivided_graph.source(arcit)) << " -> "
+			cout << subdivided_graph.id(subdivided_graph.source(arcit))
+			     << " -> "
 			     << subdivided_graph.id(subdivided_graph.target(arcit))
-			     << ": " << resultFlowMap[arcit] 
+			     << ": "
+			     << resultFlowMap[arcit] 
 			     << endl;
 		}
 		
