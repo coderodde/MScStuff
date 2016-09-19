@@ -112,7 +112,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		cout << subdivided_graph.id(nodeit) << endl;
 	}
 	cout << "Arcs: " << endl;
-	for (ListDigraph::Arc arcit(subdivided_graph); arcit != INVALID; ++arcit)
+	for (ListDigraph::ArcIt arcit(subdivided_graph); arcit != INVALID; ++arcit)
 	{
 		cout << subidvided_graph.id(subdivided_graph.source(arcit));
 		     << subidvided_graph.id(subdivided_graph.target(arcit))
