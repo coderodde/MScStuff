@@ -210,10 +210,28 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		cycles.push_back(pruned_cycle);
 	}
 	
+	//// Next, convert the cycles in the subdivided graph into cycles in the input graph:
+	vector<vector<int>> graph_cycles;
+	
+	for (vector<int>& cycle : cycles)
+	{
+		vector<int> graph_cycle;
+		
+		for (int node_id : cycle)
+		{
+			if (node_id < nodes)
+			{
+				graph_cycle.push_back(node_id);
+			}
+		}
+		
+		graph_cycles.push_back(graph_cycle);
+	}
+	
 	uint64_t end_time = milliseconds();
 	cout << "[ALEXANDRU] get_node_covering_reconstruction() in "
-	     << end_time - start_time << "milliseconds.\n";
-	return cycles;
+	     << end_time - start_time << " milliseconds.\n";
+	return graph_cycles;
 }
 
 // This function returns a circular node-covering walk in the input graph.
@@ -673,10 +691,6 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		cout << "[ALEXANDRU] Sequence length: " << sequence.length() << endl;
 		//cout << "[CODERODDE] Input file name: " << inputFileName << endl;
 	}
-	
-	// WORK SHIT IS HERE!
-	get_node_covering_reconstruction(graph, true);
-	abort();
 	
 	    ////////////////////////////////////////////////////
 	  //// Computing a node-covering circular walk C. ////
@@ -1757,7 +1771,21 @@ static void test_cycle_reconstruction()
 	StaticDigraph static_graph;
 	static_graph.build(my_graph, graph_nodes_to_static_graph_nodes, graph_arcs_to_static_graph_arcs);
 	
+	cout << "a: " << my_graph.id(a);
+	cout << "b: " << my_graph.id(b);
+	cout << "c: " << my_graph.id(c);
+	cout << "d: " << my_graph.id(d);
+	
 	vector<vector<int>> result = get_node_covering_reconstruction(static_graph, true);
+	
+	for (const vector<int>& cycle : result)
+	{
+		for (int id : cycle)
+		{
+			cout << id << " ";
+		}
+		cout << endl;
+	}
 }
 
 static void test_strong_bridges()
@@ -2219,8 +2247,8 @@ int main(int argc, char **argv)
 	//test_list_digraph_node_ids();
 	//test_strong_bridges();
 	//test_a_matrix_algo();
-	//test_cycle_reconstruction();
-	//exit(0);
+	test_cycle_reconstruction();
+	exit(0);
 	
 	//////////////////////////////////////////
 	//////////////////////////////////////////
