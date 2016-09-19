@@ -902,6 +902,11 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		cout << "[ALEXANDRU] Sequence length: " << sequence.length() << endl;
 		//cout << "[CODERODDE] Input file name: " << inputFileName << endl;
 	}
+	
+	// WORK SHIT IS HERE!
+	get_node_covering_reconstruction(graph, true);
+	abort();
+	
 	    ////////////////////////////////////////////////////
 	  //// Computing a node-covering circular walk C. ////
 	////////////////////////////////////////////////////
@@ -2445,8 +2450,8 @@ int main(int argc, char **argv)
 	//test_list_digraph_node_ids();
 	//test_strong_bridges();
 	//test_a_matrix_algo();
-	test_cycle_reconstruction();
-	exit(0);
+	//test_cycle_reconstruction();
+	//exit(0);
 	
 	//////////////////////////////////////////
 	//////////////////////////////////////////
