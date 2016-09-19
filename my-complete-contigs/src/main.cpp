@@ -157,7 +157,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	
 	//// Reconstruct the cycles:
 	vector<vector<int>> cycles;
-	
+	int count = 0;
 	while (true)
 	{
 		vector<int> cycle;
@@ -246,7 +246,10 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		
 		cout << endl;
 		
-		abort();
+		if (++count == 2)
+		{
+			abort();
+		}
 		
 		//cout << cycle.size() << " vs " << pruned_cycle.size() << endl;
 		//abort();
