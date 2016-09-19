@@ -286,7 +286,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 			abort();
 		}*/
 	}
-	
+	/*
 	cout << "FUNKEEEHH" << endl;
 	
 	for (const auto& cycle : cycles)
@@ -294,14 +294,13 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		cout << cycle.size() << endl;
 	}
 	
-	cout << "#####" << endl;
+	cout << "#####" << endl;*/
 	
 	//// Fix the cycles:
 	
 	uint64_t end_time = milliseconds();
 	cout << "[ALEXANDRU] get_node_covering_reconstruction() in "
-	     << end_time - start_time << "\n";
-	abort();
+	     << end_time - start_time << "milliseconds.\n";
 	return cycles;
 }
 
