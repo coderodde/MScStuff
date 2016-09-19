@@ -141,7 +141,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	{
 		cout << subdivided_graph.id(subdivided_graph.source(arcit)) << " -> "
 		     << subdivided_graph.id(subdivided_graph.target(arcit))
-		     << ": " << resultFlowMap 
+		     << ": " << resultFlowMap[arcit] 
 		     << endl;
 	}
 	
