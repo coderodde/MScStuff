@@ -104,23 +104,6 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	//// Once here, we have the subdivided graph!
 	ListDigraph::NodeMap<int64_t> supplyMap(subdivided_graph);
 	
-	cout << "GRAPH:" << endl;
-	cout << "Nodes: " << endl;
-	
-	for (ListDigraph::NodeIt nodeit(subdivided_graph); nodeit != INVALID; ++nodeit)
-	{
-		cout << subdivided_graph.id(nodeit) << endl;
-	}
-	cout << "Arcs: " << endl;
-	for (ListDigraph::ArcIt arcit(subdivided_graph); arcit != INVALID; ++arcit)
-	{
-		cout << subdivided_graph.id(subdivided_graph.source(arcit))
-		     << subdivided_graph.id(subdivided_graph.target(arcit))
-		     << endl;
-	}
-	
-	abort();
-	
 	// In 'supplyMap', map each node to zero:
 	for (ListDigraph::NodeIt nodeit(subdivided_graph); nodeit != INVALID; ++nodeit)
 	{
@@ -145,6 +128,24 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	
 	ListDigraph::ArcMap<int64_t> resultFlowMap(subdivided_graph);
 	ns.flowMap(resultFlowMap);
+	
+	cout << "GRAPH:" << endl;
+	cout << "Nodes: " << endl;
+	
+	for (ListDigraph::NodeIt nodeit(subdivided_graph); nodeit != INVALID; ++nodeit)
+	{
+		cout << subdivided_graph.id(nodeit) << endl;
+	}
+	cout << "Arcs: " << endl;
+	for (ListDigraph::ArcIt arcit(subdivided_graph); arcit != INVALID; ++arcit)
+	{
+		cout << subdivided_graph.id(subdivided_graph.source(arcit)) << " -> "
+		     << subdivided_graph.id(subdivided_graph.target(arcit))
+		     << ": " << resultFlowMap 
+		     << endl;
+	}
+	
+	abort();
 	
 	/*cout << "FLOW DEBUG" << endl;
 	
