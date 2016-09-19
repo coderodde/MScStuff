@@ -136,6 +136,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	}
 	
 	cout << endl << "DONE!" << endl;
+	abort();
 	
 	//// Reconstruct the cycles:
 	vector<vector<int>> cycles;
