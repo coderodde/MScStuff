@@ -255,7 +255,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 			int tail_node_id = pruned_cycle[i];
 			int head_node_id = pruned_cycle[(i + 1) % pruned_cycle.size()];
 			ListDigraph::Arc arc = arc_matrix[tail_node_id][head_node_id];
-			cout << "Reducing (" << tail_node_id << ", " << head_node_id << ")" << endl;
+			cout << "arcId: " << subdivided_graph.id(arc) << " Reducing (" << tail_node_id << ", " << head_node_id << ")" << endl;
 			resultFlowMap[arc]--;
 		}
 		
