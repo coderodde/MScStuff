@@ -122,13 +122,14 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	}
 	else
 	{
+		cerr << "[ALEXANDRU](get_node_covering_reconstruction) The min-cost flow is not found!" << endl;
 		abort();
 	}
 	
 	ListDigraph::ArcMap<int64_t> resultFlowMap(subdivided_graph);
 	ns.flowMap(resultFlowMap);
 	
-	cout << "FLOW DEBUG" << endl;
+	/*cout << "FLOW DEBUG" << endl;
 	
 	for (ListDigraph::ArcIt arcit(subdivided_graph); arcit != INVALID; ++arcit)
 	{
@@ -136,7 +137,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	}
 	
 	cout << endl << "DONE!" << endl;
-	abort();
+	abort();*/
 	
 	//// Reconstruct the cycles:
 	vector<vector<int>> cycles;
@@ -197,6 +198,15 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		{
 			cout << i << endl;
 		}*/
+		
+		cout << "Adding: " << cycle.size() << endl;
+		
+		cycles.push_back(cycle);
+		
+		if (cycles.size() == 10)
+		{
+			abort();
+		}
 		
 		// Prune the cycle:
 		vector<int> pruned_cycle;
