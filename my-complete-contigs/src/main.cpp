@@ -278,7 +278,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		cout << "Pushing a cycle of length " << pruned_cycle.size() << endl;
 		cycles.push_back(pruned_cycle);
 		
-		if (++count == 2)
+		if (++count == 3)
 		{
 			abort();
 		}
