@@ -104,6 +104,23 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	//// Once here, we have the subdivided graph!
 	ListDigraph::NodeMap<int64_t> supplyMap(subdivided_graph);
 	
+	cout << "GRAPH:" << endl;
+	cout << "Nodes: " << endl;
+	
+	for (ListDigraph::Node nodeit(subdivided_graph); nodeit != INVALID; ++nodeit)
+	{
+		cout << subdivided_graph.id(nodeit) << endl;
+	}
+	cout << "Arcs: " << endl;
+	for (ListDigraph::Arc arcit(subdivided_graph); arcit != INVALID; ++arcit)
+	{
+		cout << subidvided_graph.id(subdivided_graph.source(arcit));
+		     << subidvided_graph.id(subdivided_graph.target(arcit))
+		     << endl;
+	}
+	
+	abort();
+	
 	// In 'supplyMap', map each node to zero:
 	for (ListDigraph::NodeIt nodeit(subdivided_graph); nodeit != INVALID; ++nodeit)
 	{
