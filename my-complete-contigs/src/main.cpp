@@ -134,6 +134,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	ListDigraph::ArcMap<int64_t> resultFlowMap(subdivided_graph);
 	ns.flowMap(resultFlowMap);
 	
+	/*
 	cout << "GRAPH:" << endl;
 	cout << "Nodes: " << endl;
 	
@@ -148,7 +149,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		     << subdivided_graph.id(subdivided_graph.target(arcit))
 		     << ": " << resultFlowMap[arcit] 
 		     << endl;
-	}
+	}*/
 	
 	/*cout << "FLOW DEBUG" << endl;
 	
@@ -213,6 +214,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 			}
 		}
 		
+		/*
 		cout << "First cycle: ";
 		
 		for (int i : cycle)
@@ -220,7 +222,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 			cout << i << " ";
 		}
 		
-		cout << endl;
+		cout << endl;*/
 		
 		/*cout << "Last ID:  " << current_node_id << endl;
 		cout << "The cycle:" << endl;
@@ -242,6 +244,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 			pruned_cycle.push_back(cycle[idx]);
 		}
 		
+		/*
 		cout << "Pruned: ";
 		
 		for (int i : pruned_cycle)
@@ -250,7 +253,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		}
 		
 		cout << endl;
-		
+		*/
 		//cout << cycle.size() << " vs " << pruned_cycle.size() << endl;
 		//abort();
 		
@@ -260,11 +263,11 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 			int tail_node_id = pruned_cycle[i];
 			int head_node_id = pruned_cycle[(i + 1) % pruned_cycle.size()];
 			ListDigraph::Arc arc = arc_matrix[tail_node_id][head_node_id];
-			cout << "arcId: " << subdivided_graph.id(arc) << " Reducing (" << tail_node_id << ", " << head_node_id << ")" << endl;
+			//cout << "arcId: " << subdivided_graph.id(arc) << " Reducing (" << tail_node_id << ", " << head_node_id << ")" << endl;
 			resultFlowMap[arc]--;
 		}
 		
-		cout << "Arcs (count == " << count << "): " << endl;
+		/*cout << "Arcs (count == " << count << "): " << endl;
 		for (ListDigraph::ArcIt arcit(subdivided_graph); arcit != INVALID; ++arcit)
 		{
 			cout << subdivided_graph.id(subdivided_graph.source(arcit))
@@ -275,13 +278,13 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 			     << endl;
 		}
 		
-		cout << "Pushing a cycle of length " << pruned_cycle.size() << endl;
+		cout << "Pushing a cycle of length " << pruned_cycle.size() << endl;*/
 		cycles.push_back(pruned_cycle);
-		
+		/*
 		if (++count == 3)
 		{
 			abort();
-		}
+		}*/
 	}
 	
 	cout << "FUNKEEEHH" << endl;
@@ -298,6 +301,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	uint64_t end_time = milliseconds();
 	cout << "[ALEXANDRU] get_node_covering_reconstruction() in "
 	     << end_time - start_time << "\n";
+	abort();
 	return cycles;
 }
 
