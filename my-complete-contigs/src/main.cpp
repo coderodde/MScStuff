@@ -145,8 +145,6 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		     << endl;
 	}
 	
-	abort();
-	
 	/*cout << "FLOW DEBUG" << endl;
 	
 	for (ListDigraph::ArcIt arcit(subdivided_graph); arcit != INVALID; ++arcit)
@@ -210,21 +208,21 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 			}
 		}
 		
+		cout << "First cycle: ";
+		
+		for (int i : cycle)
+		{
+			cout << i << " ";
+		}
+		
+		cout << endl;
+		
 		/*cout << "Last ID:  " << current_node_id << endl;
 		cout << "The cycle:" << endl;
 		for (int i : cycle)
 		{
 			cout << i << endl;
 		}*/
-		
-		cout << "Adding: " << cycle.size() << endl;
-		
-		cycles.push_back(cycle);
-		
-		if (cycles.size() == 10)
-		{
-			abort();
-		}
 		
 		// Prune the cycle:
 		vector<int> pruned_cycle;
@@ -238,6 +236,17 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		{
 			pruned_cycle.push_back(cycle[idx]);
 		}
+		
+		cout << "Pruned: ";
+		
+		for (int i : pruned_cycle)
+		{
+			cout << i << " ";
+		}
+		
+		cout << endl;
+		
+		abort();
 		
 		//cout << cycle.size() << " vs " << pruned_cycle.size() << endl;
 		//abort();
