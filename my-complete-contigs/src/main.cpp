@@ -21,12 +21,6 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		cout << "[ALEXANDRU](get_node_covering_reconstruction) Computing the node covering reconstruction...\n";
 	}
 	
-	/*
-	for (StaticDigraph::NodeIt nodeit(graph); nodeit != INVALID; ++nodeit)
-	{
-		cout << "ID " << graph.id(nodeit) << endl;
-	}*/
-	
 	int nodes = graph.nodeNum();
 	
 	//// Subdivide the input graph:
@@ -79,7 +73,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		// arcs into this map in the next for-loop.
 		arc_matrix[id][id + nodes] = arc;
 		
-		// BOOM!
+		// 'tail' and 'head' in the 'subdivided_graph' both correspond to a node with ID 'id' in the static input graph 'graph':
 		list_to_static_graph_node_map[tail] = graph.nodeFromId(id);
 		list_to_static_graph_node_map[head] = graph.nodeFromId(id);
 	}
@@ -765,6 +759,12 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	vector<StaticDigraph::Node> main_walk = walk_data.first;
 	vector<StaticDigraph::Arc>  main_walk_arcs = walk_data.second;
 	
+	cout << "First walk node ID: " << graph.id(main_walk[0]) << endl;
+	cout << "Last  walk node ID: " << graph.id(main_walk.back()) << endl;
+	cout << "First arc tail ID:  " << graph.id(graph.source(main_walk_arcs[0])) << endl;
+	cout << "Last arc head ID:   " << graph.id(graph.target(main_walk_arcs.back())) << endl;
+	abort();
+  	
 	    ////////////////////////////////////////////////////
 	  //// Computing node certificate sets! Lemma 5.1 ////
 	////////////////////////////////////////////////////
@@ -1839,12 +1839,7 @@ static void test_cycle_reconstruction()
 	cout << "b: " << static_graph.id(graph_nodes_to_static_graph_nodes[b]) << endl;
 	cout << "c: " << static_graph.id(graph_nodes_to_static_graph_nodes[c]) << endl;
 	cout << "d: " << static_graph.id(graph_nodes_to_static_graph_nodes[d]) << endl;
-	/*
-	cout << "a: " << my_graph.id(a) << endl;
-	cout << "b: " << my_graph.id(b) << endl;
-	cout << "c: " << my_graph.id(c) << endl;
-	cout << "d: " << my_graph.id(d) << endl;
-	*/
+	
 	vector<vector<int>> result = get_node_covering_reconstruction(static_graph, true);
 	
 	for (const vector<int>& cycle : result)
@@ -2316,8 +2311,8 @@ int main(int argc, char **argv)
 	//test_list_digraph_node_ids();
 	//test_strong_bridges();
 	//test_a_matrix_algo();
-	test_cycle_reconstruction();
-	exit(0);
+	//test_cycle_reconstruction();
+	//exit(0);
 	
 	//////////////////////////////////////////
 	//////////////////////////////////////////
@@ -2540,6 +2535,9 @@ int main(int argc, char **argv)
 		/*stats*/ fileStats << "omnitigs," << countNodes(graph) << "," << countArcs(graph) << "," << (finish_clock.tv_sec - start_clock.tv_sec) + (finish_clock.tv_nsec - start_clock.tv_nsec) / 1000000000.0 << endl;
 	}
 	
+	//////////////////////////////////
+	//// MY ENTRY POINT IS BELOW! ////
+	//////////////////////////////////
 	cout << "[CODERODDE] Steps into the room..." << endl;
 	//coderodde_project_algorithm(graph, length, seqStart, kmersize, sequence, inputFileName, true);
 	coderodde_project_algorithm(graph, nodeLabel, inputFileName, kmersize, sequence, true);
