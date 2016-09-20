@@ -21,10 +21,11 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		cout << "[ALEXANDRU](get_node_covering_reconstruction) Computing the node covering reconstruction...\n";
 	}
 	
+	/*
 	for (StaticDigraph::NodeIt nodeit(graph); nodeit != INVALID; ++nodeit)
 	{
 		cout << "ID " << graph.id(nodeit) << endl;
-	}
+	}*
 	
 	int nodes = graph.nodeNum();
 	
@@ -66,6 +67,9 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	// This map stores the costs for all arcs in the subdivided graph:
 	ListDigraph::ArcMap<int64_t> costMap (subdivided_graph);
 	
+	// This map maps each node in the subdivided graph to a node in the static graph that it represents:
+	ListDigraph::NodeMap<StaticDigraph::Node> list_to_static_graph_node_map(subdivided_graph);
+	
 	// Create the subdivision arcs for the subdivided graph. We split each
 	// node x into two nodes x_in and x_out, where x_in = x, and x_out is
 	// a newly added node.
@@ -84,8 +88,13 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		arc_matrix[id][id + nodes] = arc;
 		
 		// Map the ListDigraph node IDs to the input StaticDigraph node IDs:
-		list_node_id_to_static_node_id[subdivided_graph.id(tail)] = id;
-		list_node_id_to_static_node_id[subdivided_graph.id(head)] = id;
+		//list_node_id_to_static_node_id[subdivided_graph.id(tail)] = id;
+		//list_node_id_to_static_node_id[subdivided_graph.id(head)] = id;
+		
+		// fdsfsafds
+		
+		list_to_static_graph_node_map[tail] = graph.nodeFromId(id);
+		list_to_static_graph_node_map[head] = graph.nodeFromId(id);
 	}
 	
 	for (auto p : list_node_id_to_static_node_id)
@@ -175,8 +184,6 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		     << ": " << resultFlowMap[arcit] 
 		     << endl;
 	}
-	
-	//////////
 	
 	//// Reconstruct the cycles:
 	vector<vector<int>> cycles;
@@ -288,7 +295,10 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		{
 			if (node_id < nodes)
 			{
-				graph_cycle.push_back(list_node_id_to_static_node_id[node_id]);
+				ListDigraph::Node tmp_node = subdivided_graph.nodeFromId(node_id);
+				StaticDigraph::Node static_tmp_node = list_to_static_graph_node_map[tmp_node];
+				graph_cycle.push_back(graph.id(static_tmp_node));
+				//graph_cycle.push_back(list_node_id_to_static_node_id[node_id]);
 			}
 		}
 		
