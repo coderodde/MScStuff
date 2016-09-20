@@ -41,15 +41,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	{
 		ListDigraph::Node tail = subdivided_graph.addNode();
 		ListDigraph::Node head = subdivided_graph.addNode();
-		
-		//list_node_id_to_static_node_id[subdivided_graph.id(tail)] = id;
-		//list_node_id_to_static_node_id[subdivided_graph.id(head)] = id;
 	}
-	/*
-	for (auto p : list_node_id_to_static_node_id)
-	{
-		cout << p.first << ":" << p.second << endl;
-	}*/
 	
 	if (debug_print)
 	{
@@ -87,12 +79,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		// arcs into this map in the next for-loop.
 		arc_matrix[id][id + nodes] = arc;
 		
-		// Map the ListDigraph node IDs to the input StaticDigraph node IDs:
-		//list_node_id_to_static_node_id[subdivided_graph.id(tail)] = id;
-		//list_node_id_to_static_node_id[subdivided_graph.id(head)] = id;
-		
-		// fdsfsafds
-		
+		// BOOM!
 		list_to_static_graph_node_map[tail] = graph.nodeFromId(id);
 		list_to_static_graph_node_map[head] = graph.nodeFromId(id);
 	}
@@ -1848,11 +1835,16 @@ static void test_cycle_reconstruction()
 	StaticDigraph static_graph;
 	static_graph.build(my_graph, graph_nodes_to_static_graph_nodes, graph_arcs_to_static_graph_arcs);
 	
+	cout << "a: " << static_graph.id(graph_nodes_to_static_graph_nodes[a]) << endl;
+	cout << "b: " << static_graph.id(graph_nodes_to_static_graph_nodes[b]) << endl;
+	cout << "c: " << static_graph.id(graph_nodes_to_static_graph_nodes[c]) << endl;
+	cout << "d: " << static_graph.id(graph_nodes_to_static_graph_nodes[d]) << endl;
+	/*
 	cout << "a: " << my_graph.id(a) << endl;
 	cout << "b: " << my_graph.id(b) << endl;
 	cout << "c: " << my_graph.id(c) << endl;
 	cout << "d: " << my_graph.id(d) << endl;
-	
+	*/
 	vector<vector<int>> result = get_node_covering_reconstruction(static_graph, true);
 	
 	for (const vector<int>& cycle : result)
