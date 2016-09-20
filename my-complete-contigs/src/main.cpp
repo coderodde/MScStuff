@@ -141,10 +141,10 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	NetworkSimplex<ListDigraph, int64_t> ns(subdivided_graph);
 	ns.lowerMap(lowerMap).upperMap(upperMap).costMap(costMap).supplyMap(supplyMap);
 	
-	NetworkSimplex<ListDigraph, int64_t>::ProblemType result =
+	NetworkSimplex<ListDigraph, int64_t>::ProblemType min_flow_result =
 	ns.run(NetworkSimplex<ListDigraph, int64_t>::CANDIDATE_LIST);
 	
-	if (result == NetworkSimplex<ListDigraph, int64_t>::OPTIMAL)
+	if (min_flow_result == NetworkSimplex<ListDigraph, int64_t>::OPTIMAL)
 	{
 		cout << "[ALEXANDRU](get_node_covering_reconstruction) The min-cost flow is optimal!" << endl;
 	}
