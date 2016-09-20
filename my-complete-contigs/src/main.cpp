@@ -21,6 +21,15 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		cout << "[ALEXANDRU](get_node_covering_reconstruction) Computing the node covering reconstruction...\n";
 	}
 	
+	unordered_map<int, unordered_map<int, StaticDigraph::Arc>> id_pair_to_static_graph_arc;
+	
+	for (StaticDigraph::ArcIt arcit(graph); arcit != INVALID; ++arcit)
+	{
+		StaticDigraph::Node tail = graph.source(arcit);
+		StaticDigraph::Node head = graph.target(arcit);
+		id_pair_to_static_graph_arc[graph.id(tail)][graph.id(head)] = arcit;
+	}
+	
 	int nodes = graph.nodeNum();
 	
 	//// Subdivide the input graph:
@@ -268,6 +277,10 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	//// Next, convert the cycles in the subdivided graph into cycles in the input graph:
 	vector<vector<int>> graph_cycles;
 	
+	
+	vector<pair<vector<StaticDigraph::Node>,
+	            vector<StaticDigraph::Arc>>> result;
+	
 	for (vector<int>& cycle : cycles)
 	{
 		vector<int> graph_cycle;
@@ -279,12 +292,41 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 				ListDigraph::Node tmp_node = subdivided_graph.nodeFromId(node_id);
 				StaticDigraph::Node static_tmp_node = list_to_static_graph_node_map[tmp_node];
 				graph_cycle.push_back(graph.id(static_tmp_node));
-				//graph_cycle.push_back(list_node_id_to_static_node_id[node_id]);
 			}
 		}
 		
-		graph_cycles.push_back(graph_cycle);
+		// 1. Simply convert the node IDs to StaticDigraph::Node's.
+		vector<StaticDigraph::Node> walk_as_node_vector;
+		
+		for (int id : graph_cycle)
+		{
+			walk_as_node_vector.push_back(graph.nodeFromId(id));
+		}
+		
+		// 2. Convert to the list of StaticDigraph::Arc's.
+		vector<StaticDigraph::Arc> walk_as_arc_vector;
+		
+		for (size_t i = 0; i < walk_as_node_vector.size(); ++i)
+		{
+			StaticDigraph::Node tail = walk_as_node_vector[i];
+			StaticDigraph::Node head = walk_as_node_vector[(i + 1) % walk_as_node_vector];
+			
+			int tail_id = graph.id(tail);
+			int head_id = graph.id(head);
+			
+			walk_as_arc_vector = id_pair_to_static_graph_arc[tail_id][head_id];
+		}
+		
+		// Make a pair of the cycle (node version + arc version):
+		result.push_back(pair<vector<StaticDigraph::Node>,
+				      vector<StaticDigraph::Arc>>(walk_as_node_vector,
+								  walk_as_arc_vector));
+		//graph_cycles.push_back(graph_cycle);
 	}
+	
+	// 
+	
+	cout << "RESULT CYCLES: " << result.size() << endl;
 	
 	uint64_t end_time = milliseconds();
 	cout << "[ALEXANDRU](get_node_covering_reconstruction) in "
@@ -758,13 +800,13 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		
 	vector<StaticDigraph::Node> main_walk = walk_data.first;
 	vector<StaticDigraph::Arc>  main_walk_arcs = walk_data.second;
-	
+	/*
 	cout << "First walk node ID: " << graph.id(main_walk[0]) << endl;
 	cout << "Last  walk node ID: " << graph.id(main_walk.back()) << endl;
 	cout << "First arc tail ID:  " << graph.id(graph.source(main_walk_arcs[0])) << endl;
 	cout << "Last arc tail ID:   " << graph.id(graph.source(main_walk_arcs.back())) << endl;
 	cout << "Last arc head ID:   " << graph.id(graph.target(main_walk_arcs.back())) << endl;
-	abort();
+	abort();*/
   	
 	    ////////////////////////////////////////////////////
 	  //// Computing node certificate sets! Lemma 5.1 ////
