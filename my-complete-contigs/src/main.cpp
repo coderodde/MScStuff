@@ -21,6 +21,11 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		cout << "[ALEXANDRU](get_node_covering_reconstruction) Computing the node covering reconstruction...\n";
 	}
 	
+	for (StaticDigraph::NodeIt nodeit(graph); nodeit != INVALID; ++nodeit)
+	{
+		cout << "ID " << graph.id(nodeit) << endl;
+	}
+	
 	int nodes = graph.nodeNum();
 	
 	//// Subdivide the input graph:
