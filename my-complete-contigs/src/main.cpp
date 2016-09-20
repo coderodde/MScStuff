@@ -762,6 +762,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	cout << "First walk node ID: " << graph.id(main_walk[0]) << endl;
 	cout << "Last  walk node ID: " << graph.id(main_walk.back()) << endl;
 	cout << "First arc tail ID:  " << graph.id(graph.source(main_walk_arcs[0])) << endl;
+	cout << "Last arc tail ID:   " << graph.id(graph.source(main_walk_arcs.back())) << endl;
 	cout << "Last arc head ID:   " << graph.id(graph.target(main_walk_arcs.back())) << endl;
 	abort();
   	
