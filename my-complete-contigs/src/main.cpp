@@ -25,7 +25,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	for (StaticDigraph::NodeIt nodeit(graph); nodeit != INVALID; ++nodeit)
 	{
 		cout << "ID " << graph.id(nodeit) << endl;
-	}*
+	}*/
 	
 	int nodes = graph.nodeNum();
 	
