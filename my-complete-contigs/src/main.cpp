@@ -12,7 +12,10 @@ using rodde::current_time::milliseconds;
 
 int N_THREADS;
 
-vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
+//vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
+vector<pair<vector<StaticGraph::Node>,
+	    vector<StaticGraph::Arc>>>
+get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 {
 	uint64_t start_time = milliseconds();
 	
@@ -355,7 +358,8 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	uint64_t end_time = milliseconds();
 	cout << "[ALEXANDRU](get_node_covering_reconstruction) in "
 	     << end_time - start_time << " milliseconds.\n";
-	return graph_cycles;
+	//return graph_cycles;
+	return result;
 }
 
 // This function returns a circular node-covering walk in the input graph.
