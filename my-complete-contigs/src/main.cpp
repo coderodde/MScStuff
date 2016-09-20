@@ -309,7 +309,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		for (size_t i = 0; i < walk_as_node_vector.size(); ++i)
 		{
 			StaticDigraph::Node tail = walk_as_node_vector[i];
-			StaticDigraph::Node head = walk_as_node_vector[(i + 1) % walk_as_node_vector];
+			StaticDigraph::Node head = walk_as_node_vector[(i + 1) % walk_as_node_vector.size()];
 			
 			int tail_id = graph.id(tail);
 			int head_id = graph.id(head);
