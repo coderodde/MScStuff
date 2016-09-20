@@ -28,11 +28,16 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	subdivided_graph.reserveNode(2 * nodes);
 	subdivided_graph.reserveArc(nodes + countArcs(graph));
 	
+	unordered_map<int, int> list_node_id_to_static_node_id;
+	
 	//// Create the nodes of the subdivided graph:
 	for (int id = 0; id < nodes; ++id)
 	{
-		subdivided_graph.addNode();
-		subdivided_graph.addNode();
+		ListDigraph::Node tail = subdivided_graph.addNode();
+		ListDigraph::Node head = subdivided_graph.addNode();
+		
+		list_node_id_to_static_node_id[subdivided_graph.id(tail)] = id;
+		list_node_id_to_static_node_id[subdivided_graph.id(head)] = id;
 	}
 	
 	if (debug_print)
@@ -264,7 +269,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		{
 			if (node_id < nodes)
 			{
-				graph_cycle.push_back(node_id);
+				graph_cycle.push_back(list_node_id_to_static_node_id[node_id]);
 			}
 		}
 		
@@ -272,7 +277,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	}
 	
 	uint64_t end_time = milliseconds();
-	cout << "[ALEXANDRU] get_node_covering_reconstruction() in "
+	cout << "[ALEXANDRU](get_node_covering_reconstruction) in "
 	     << end_time - start_time << " milliseconds.\n";
 	return graph_cycles;
 }
