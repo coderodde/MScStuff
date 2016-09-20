@@ -817,14 +817,19 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		//cout << "[CODERODDE] Input file name: " << inputFileName << endl;
 	}
 	
+	
+	
+	vector<pair<vector<StaticDigraph::Node>,
+	            vector<StaticDigraph::Arc>>> cycle_vector = get_node_covering_reconstruction(graph, debug_print)
+	
 	    ////////////////////////////////////////////////////
 	  //// Computing a node-covering circular walk C. ////
 	////////////////////////////////////////////////////
-	pair<vector<StaticDigraph::Node>,
+	/*pair<vector<StaticDigraph::Node>,
 	     vector<StaticDigraph::Arc>> walk_data = get_circular_walk(graph, debug_print);
 		
 	vector<StaticDigraph::Node> main_walk = walk_data.first;
-	vector<StaticDigraph::Arc>  main_walk_arcs = walk_data.second;
+	vector<StaticDigraph::Arc>  main_walk_arcs = walk_data.second;*/
 	/*
 	cout << "First walk node ID: " << graph.id(main_walk[0]) << endl;
 	cout << "Last  walk node ID: " << graph.id(main_walk.back()) << endl;
@@ -852,6 +857,11 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	if (debug_print)
 	{
 		cout << "[ALEXANDRU] Number of strong bridges is " << strong_bridge_id_set.size() << endl;
+	}
+	
+	for (pair<vector<StaticDigraph::Node>, vector<StaticDigraph::Arc>>& pair : cycle_vector)
+	{
+		
 	}
 	
 	    /////////////////////////////////////
