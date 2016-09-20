@@ -40,6 +40,11 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		list_node_id_to_static_node_id[subdivided_graph.id(head)] = id;
 	}
 	
+	for (auto p : list_node_id_to_static_node_id)
+	{
+		cout << p.first << ":" << p.second << endl;
+	}
+	
 	if (debug_print)
 	{
 		cout << "[ALEXANDRU](get_node_covering_reconstruction) The size of the subdivided graph is "
