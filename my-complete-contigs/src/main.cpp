@@ -160,11 +160,10 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 	ListDigraph::ArcMap<int64_t> resultFlowMap(subdivided_graph);
 	ns.flowMap(resultFlowMap);
 	
-	//////////
+	//cout << "GRAPH:" << endl;
+	//cout << "Nodes: " << endl;
 	
-	cout << "GRAPH:" << endl;
-	cout << "Nodes: " << endl;
-	
+	/*
 	for (ListDigraph::NodeIt nodeit(subdivided_graph); nodeit != INVALID; ++nodeit)
 	{
 		cout << subdivided_graph.id(nodeit) << endl;
@@ -176,7 +175,7 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 		     << subdivided_graph.id(subdivided_graph.target(arcit))
 		     << ": " << resultFlowMap[arcit] 
 		     << endl;
-	}
+	}*/
 	
 	//// Reconstruct the cycles:
 	vector<vector<int>> cycles;
@@ -241,7 +240,7 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 		{
 			pruned_cycle.push_back(cycle[idx]);
 		}
-		
+		/*
 		cout << "Pruned: ";
 		
 		for (int i : pruned_cycle)
@@ -249,7 +248,7 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 			cout << i << " ";
 		}
 		
-		cout << endl;
+		cout << endl;*/
 		
 		// Remove one unit of flow from each arc in the currently found cycle:
 		for (size_t i = 0; i < pruned_cycle.size(); ++i)
@@ -257,10 +256,10 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 			int tail_node_id = pruned_cycle[i];
 			int head_node_id = pruned_cycle[(i + 1) % pruned_cycle.size()];
 			ListDigraph::Arc arc = arc_matrix[tail_node_id][head_node_id];
-			cout << "arcId: " << subdivided_graph.id(arc) << " Reducing (" << tail_node_id << ", " << head_node_id << ")" << endl;
+			//cout << "arcId: " << subdivided_graph.id(arc) << " Reducing (" << tail_node_id << ", " << head_node_id << ")" << endl;
 			resultFlowMap[arc]--;
 		}
-		
+		/*
 		cout << "Arcs (count == " << count << "): " << endl;
 		for (ListDigraph::ArcIt arcit(subdivided_graph); arcit != INVALID; ++arcit)
 		{
@@ -273,7 +272,7 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 		}
 		
 		cout << "Pushing a cycle of length " << pruned_cycle.size() << endl;
-		
+		*/
 		cycles.push_back(pruned_cycle);
 	}
 	
@@ -327,10 +326,8 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 		//graph_cycles.push_back(graph_cycle);
 	}
 	
-	// 
-	
-	cout << "RESULT CYCLES: " << result.size() << endl;
-	
+	//cout << "RESULT CYCLES: " << result.size() << endl;
+	/*
 	for (pair<vector<StaticDigraph::Node>, vector<StaticDigraph::Arc>> walk : result)
 	{
 		cout << "WALK BEGIN" << endl;
@@ -353,7 +350,7 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 		}
 		
 		cout << endl << "WALK END" << endl;
-	}
+	}*/
 	
 	uint64_t end_time = milliseconds();
 	cout << "[ALEXANDRU](get_node_covering_reconstruction) in "
@@ -2440,7 +2437,7 @@ int main(int argc, char **argv)
 	//test_strong_bridges();
 	//test_a_matrix_algo();
 	//test_cycle_reconstruction();
-	test_cycle_reconstruction_2();
+	//test_cycle_reconstruction_2();
 	exit(0);
 	
 	//////////////////////////////////////////
