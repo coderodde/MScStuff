@@ -314,7 +314,7 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 			int tail_id = graph.id(tail);
 			int head_id = graph.id(head);
 			
-			walk_as_arc_vector = id_pair_to_static_graph_arc[tail_id][head_id];
+			walk_as_arc_vector.push_back(id_pair_to_static_graph_arc[tail_id][head_id]);
 		}
 		
 		// Make a pair of the cycle (node version + arc version):
