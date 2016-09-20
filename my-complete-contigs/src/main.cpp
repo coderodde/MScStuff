@@ -328,6 +328,30 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 	
 	cout << "RESULT CYCLES: " << result.size() << endl;
 	
+	for (pair<vector<StaticDigraph::Node>, vector<StaticDigraph::Arc>> walk : result)
+	{
+		cout << "WALK BEGIN" << endl;
+		cout << "Node walk: ";
+		
+		for (StaticDigraph::Node node : walk.first)
+		{
+			cout << graph.id(node) << " ";
+		}
+		
+		cout << endl;
+		
+		cout << "Arc walk:  ";
+		
+		for (StaticDigraph::Arc arc : walk.second)
+		{
+			StaticDigraph::Node tail = graph.source(arc);
+			StaticDigraph::Node head = graph.target(arc);
+			cout << "(" << graph.id(tail) << " -> " << graph.id(head) << ") ";
+		}
+		
+		cout << endl << "WALK END" << endl;
+	}
+	
 	uint64_t end_time = milliseconds();
 	cout << "[ALEXANDRU](get_node_covering_reconstruction) in "
 	     << end_time - start_time << " milliseconds.\n";
