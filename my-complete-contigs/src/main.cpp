@@ -13,8 +13,8 @@ using rodde::current_time::milliseconds;
 int N_THREADS;
 
 //vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
-vector<pair<vector<StaticGraph::Node>,
-	    vector<StaticGraph::Arc>>>
+vector<pair<vector<StaticDigraph::Node>,
+	    vector<StaticDigraph::Arc>>>
 get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 {
 	uint64_t start_time = milliseconds();
