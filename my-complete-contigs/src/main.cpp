@@ -1960,7 +1960,24 @@ static void test_cycle_reconstruction_2()
 	StaticDigraph static_graph;
 	static_graph.build(my_graph, graph_nodes_to_static_graph_nodes, graph_arcs_to_static_graph_arcs);
 	
+	cout << "a: " << static_graph.id(graph_nodes_to_static_graph_nodes[a]) << endl;
+	cout << "b: " << static_graph.id(graph_nodes_to_static_graph_nodes[b]) << endl;
+	cout << "c: " << static_graph.id(graph_nodes_to_static_graph_nodes[c]) << endl;
+	cout << "d: " << static_graph.id(graph_nodes_to_static_graph_nodes[d]) << endl;
+	cout << "e: " << static_graph.id(graph_nodes_to_static_graph_nodes[e]) << endl;
 	
+	vector<pair<vector<StaticDigraph::Node>,
+		    vector<StaticDigraph::Arc>>> result = get_node_covering_reconstruction(static_graph, true);
+		    
+	for (pair<vector<StaticDigraph::Node>, vector<StaticDigraph::Arc>>& pair : result)
+	{
+		for (StaticDigraph::Node& node : pair.first)
+		{
+			cout << static_graph.id(node) << " ";
+		}
+		
+		cout << endl;
+	}
 }
 
 static void test_strong_bridges()
@@ -2422,8 +2439,8 @@ int main(int argc, char **argv)
 	//test_list_digraph_node_ids();
 	//test_strong_bridges();
 	//test_a_matrix_algo();
-	test_cycle_reconstruction();
-	//test_cycle_reconstruction_2();
+	//test_cycle_reconstruction();
+	test_cycle_reconstruction_2();
 	exit(0);
 	
 	//////////////////////////////////////////
