@@ -36,14 +36,14 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		ListDigraph::Node tail = subdivided_graph.addNode();
 		ListDigraph::Node head = subdivided_graph.addNode();
 		
-		list_node_id_to_static_node_id[subdivided_graph.id(tail)] = id;
-		list_node_id_to_static_node_id[subdivided_graph.id(head)] = id;
+		//list_node_id_to_static_node_id[subdivided_graph.id(tail)] = id;
+		//list_node_id_to_static_node_id[subdivided_graph.id(head)] = id;
 	}
-	
+	/*
 	for (auto p : list_node_id_to_static_node_id)
 	{
 		cout << p.first << ":" << p.second << endl;
-	}
+	}*/
 	
 	if (debug_print)
 	{
@@ -77,6 +77,15 @@ vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph,
 		// Save the arc for further management. We will add the original
 		// arcs into this map in the next for-loop.
 		arc_matrix[id][id + nodes] = arc;
+		
+		// Map the ListDigraph node IDs to the input StaticDigraph node IDs:
+		list_node_id_to_static_node_id[subdivided_graph.id(tail)] = id;
+		list_node_id_to_static_node_id[subdivided_graph.id(head)] = id;
+	}
+	
+	for (auto p : list_node_id_to_static_node_id)
+	{
+		cout << p.first << ":" << p.second << endl;
 	}
 	
 	if (debug_print)
