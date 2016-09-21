@@ -817,8 +817,6 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		//cout << "[CODERODDE] Input file name: " << inputFileName << endl;
 	}
 	
-	
-	
 	vector<pair<vector<StaticDigraph::Node>,
 	            vector<StaticDigraph::Arc>>> cycle_vector = get_node_covering_reconstruction(graph, debug_print)
 	
@@ -861,9 +859,99 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	for (pair<vector<StaticDigraph::Node>, vector<StaticDigraph::Arc>>& pair : cycle_vector)
 	{
+		cout << "Processing a cycle!" << endl;
 		
+		vector<StaticDigraph::Node> main_walk = pair.first;
+		vector<StaticDigraph::Arc>  main_walk_arcs = pair.second;
+		
+		unordered_map<int, int> ell_map = compute_funky_ell_indidces(graph,
+									     main_walk,
+									     map_node_to_certificate_set);
+		
+		const int n = graph.nodeNum();
+		const int d = main_walk.size();
+		
+		vector<unordered_set<int>> S_k(n + 1);
+		
+		for (int k = 1; k <= n; ++k)
+		{
+			for (int i = 0; i < d; ++i)
+			{
+				if (k == 1)
+				{
+					StaticDigraph::Arc e_i = main_walk_arcs[i];
+					unordered_set<int>::const_iterator iter =
+						strong_bridge_id_set.find(graph.id(e_i));
+					
+					if (iter != strong_bridge_id_set.end())
+					{
+						int end_index = (i + 1) % d;
+						int start_index = i;
+						
+						if (ell_map[end_index] <= start_index)
+						{
+							S_k[1].insert(i);
+							contig_count++;
+						}
+					}
+				}
+				else /* (k > 1) */
+				{
+					// Checks that i \in S_{k - 1} and i + 1 \mod d \in S_{k - 1}:
+					unordered_set<int>::const_iterator iter1 = S_k[k - 1].find(i);
+					unordered_set<int>::const_iterator iter2 = S_k[k - 1].find((i + 1) % d);
+					
+					if (iter1 == S_k[k - 1].end() || iter2 == S_k[k - 1].end())
+					{
+						continue;
+					}
+					
+					//// Check there is no v_{i + k - 1 mode d} - v_{i + 1 mod d} path with
+					//// first edge different than e_{i + k - 1 mod d} and
+					//// last edge different than e_{i}:
+					
+					// Get the edge e_{i + k - 1 mod d}:
+					StaticDigraph::Arc first_arc  = main_walk_arcs[(i + k - 1) % d];
+					
+					// Get the edge e_i
+					StaticDigraph::Arc second_arc = main_walk_arcs[i];
+					
+					if (a_matrix[graph.id(first_arc)][graph.id(second_arc)])
+					{
+						continue;
+					}
+					
+					// Last check: Cert(v_i) \cap .. \cap Cert(v_{i + k mod d} not empty:
+					const int end_index = (i + k) % d;
+					const int start_index = i;
+					
+					if (ell_map[end_index] <= start_index)
+					{
+						S_k[k].insert(i);
+						contig_count++;
+					}
+				}
+			}
+		}
+		
+		for (int k = 0; k < S_k.size(); ++k)
+		{
+			for (const auto i : S_k[k])
+			{
+				contig current_contig;
+				
+				for (int j = 0; j <= k; ++j)
+				{
+					current_contig.nodes.push_back(graph.id(main_walk[(i + j) % main_walk.size()]));
+				}
+				
+				ret.push_back(current_contig);
+			}
+		}
 	}
 	
+	
+	/*
 	    /////////////////////////////////////
 	  //// Last preprocessing: O(n^3). ////
 	/////////////////////////////////////
@@ -907,7 +995,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					}
 				}
 			}
-			else /* (k > 1) */
+			else // (k > 1)
 			{
 				// Checks that i \in S_{k - 1} and i + 1 \mod d \in S_{k - 1}:
 				unordered_set<int>::const_iterator iter1 = S_k[k - 1].find(i);
@@ -1007,13 +1095,14 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		total_length += a.str.length();
 	}
 	
-	cout << "[ALEXANDRU] Total length: " << total_length << "\n";
+	cout << "[ALEXANDRU] Total length: " << total_length << "\n";*/
 	
 	cout << "[ALEXNADRU] Inner algorithm duration: " << (end_time - start_time_2) << " milliseconds.\n";
 	cout << "[ALEXANDRU] Total duration: " << (end_time - start_time) << " milliseconds.\n";
 	
 	//print_collection(unitigs, inputFileName + ".k" + std::to_string(kmersize) + "." + genome_type, ".unitigs");
 	
+	populate_with_strings_from_node_labels(sequence, kmersize, graph, nodeLabel, ret);
 	print_collection(ret, inputFileName + ".k" + std::to_string(kmersize), ".alexandru_omnitigs");
 	return ret;
 }
