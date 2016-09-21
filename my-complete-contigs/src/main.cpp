@@ -1104,8 +1104,11 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	//print_collection(unitigs, inputFileName + ".k" + std::to_string(kmersize) + "." + genome_type, ".unitigs");
 	
+	cout << "Populating strings..." << endl;
 	populate_with_strings_from_node_labels(sequence, kmersize, graph, nodeLabel, ret);
+	cout << "Populated! Printing to a file..." << endl;
 	print_collection(ret, inputFileName + ".k" + std::to_string(kmersize), ".alexandru_omnitigs");
+	cout << "Done!" << endl;
 	return ret;
 }
 
