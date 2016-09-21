@@ -942,7 +942,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 				}
 			}
 		}
-		
+		/*
 		for (int k = 0; k < S_k.size(); ++k)
 		{
 			for (const auto i : S_k[k])
@@ -956,9 +956,23 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 				
 				ret.push_back(current_contig);
 			}
+		}*/
+	}
+		
+	for (int k = 0; k < S_k.size(); ++k)
+	{
+		for (const auto i : S_k[k])
+		{
+			contig current_contig;
+			
+			for (int j = 0; j <= k; ++j)
+			{
+				current_contig.nodes.push_back(graph.id(main_walk[(i + j) % main_walk.size()]));
+			}
+			
+			ret.push_back(current_contig);
 		}
 	}
-	
 	
 	/*
 	    /////////////////////////////////////
