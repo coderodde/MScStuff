@@ -1104,6 +1104,16 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	//print_collection(unitigs, inputFileName + ".k" + std::to_string(kmersize) + "." + genome_type, ".unitigs");
 	cout << "ret.size() = " << ret.size() << endl;
+	
+	uint64_t sum = 0;
+	
+	for (contig& c : ret)
+	{
+		sum += c.nodes.size();
+	}
+	
+	cout << "Average nodes per conting: " << (1.0 * sum) / ret.size() << endl;
+	
 	cout << "Populating strings..." << endl;
 	populate_with_strings_from_node_labels(sequence, kmersize, graph, nodeLabel, ret);
 	cout << "Populated! Printing to a file..." << endl;
