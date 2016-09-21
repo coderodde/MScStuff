@@ -1103,7 +1103,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	cout << "[ALEXANDRU] Total duration: " << (end_time - start_time) << " milliseconds.\n";
 	
 	//print_collection(unitigs, inputFileName + ".k" + std::to_string(kmersize) + "." + genome_type, ".unitigs");
-	
+	cout << "ret.size() = " << ret.size() << endl;
 	cout << "Populating strings..." << endl;
 	populate_with_strings_from_node_labels(sequence, kmersize, graph, nodeLabel, ret);
 	cout << "Populated! Printing to a file..." << endl;
