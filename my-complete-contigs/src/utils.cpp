@@ -104,6 +104,10 @@ void populate_with_strings_from_node_labels(const string& sequence,
 {
 	for (size_t i = 0; i < collection.size(); i++)
 	{
+		if (i % 1000 == 0)
+		{
+		    cout << i << endl;
+		}
 		string contig = "";
 		for (list<int>::const_iterator itr = collection[i].nodes.begin(); itr != collection[i].nodes.end(); ++itr)
 		{	
