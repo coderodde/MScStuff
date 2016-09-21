@@ -928,7 +928,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					if (ell_map[end_index] <= start_index)
 					{
 						S_k[k].insert(i);
-						contig_count++;
+						//contig_count++;
 					}
 				}
 			}
