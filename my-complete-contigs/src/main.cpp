@@ -865,6 +865,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	}
 	
 	uint64_t start_time_2 = milliseconds();
+	const int n = graph.nodeNum();
 	vector<unordered_set<int>> S_k(n + 1);
 	
 	for (pair<vector<StaticDigraph::Node>, vector<StaticDigraph::Arc>>& pair : cycle_vector)
@@ -876,7 +877,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		
 		unordered_map<int, int> ell_map = compute_funky_ell_indices(graph, main_walk, map_node_to_certificate_set);
 		
-		const int n = graph.nodeNum();
+		//const int n = graph.nodeNum();
 		const int d = main_walk.size();
 		
 		//vector<unordered_set<int>> S_k(n + 1);
