@@ -857,6 +857,8 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		cout << "[ALEXANDRU] Number of strong bridges is " << strong_bridge_id_set.size() << endl;
 	}
 	
+	uint64_t start_time_2 = milliseconds();
+	
 	for (pair<vector<StaticDigraph::Node>, vector<StaticDigraph::Arc>>& pair : cycle_vector)
 	{
 		cout << "Processing a cycle!" << endl;
@@ -889,7 +891,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 						if (ell_map[end_index] <= start_index)
 						{
 							S_k[1].insert(i);
-							contig_count++;
+							//contig_count++;
 						}
 					}
 				}
@@ -1094,6 +1096,8 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	}
 	
 	cout << "[ALEXANDRU] Total length: " << total_length << "\n";*/
+	
+	uint64_t end_time = milliseconds();
 	
 	cout << "[ALEXNADRU] Inner algorithm duration: " << (end_time - start_time_2) << " milliseconds.\n";
 	cout << "[ALEXANDRU] Total duration: " << (end_time - start_time) << " milliseconds.\n";
