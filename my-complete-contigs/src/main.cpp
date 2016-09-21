@@ -818,7 +818,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	}
 	
 	vector<pair<vector<StaticDigraph::Node>,
-	            vector<StaticDigraph::Arc>>> cycle_vector = get_node_covering_reconstruction(graph, debug_print)
+	            vector<StaticDigraph::Arc>>> cycle_vector = get_node_covering_reconstruction(graph, debug_print);
 	
 	    ////////////////////////////////////////////////////
 	  //// Computing a node-covering circular walk C. ////
