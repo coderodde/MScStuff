@@ -825,7 +825,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		    
 		    cycle_vector.push_back(get_circular_walk(graph, debug_print));
 
-	cout << "CYCLES: " << cycle_vector << endl;
+	cout << "CYCLES: " << cycle_vector.size() << endl;
 	
 	    ////////////////////////////////////////////////////
 	  //// Computing a node-covering circular walk C. ////
