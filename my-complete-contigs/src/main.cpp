@@ -865,6 +865,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	}
 	
 	uint64_t start_time_2 = milliseconds();
+	vector<unordered_set<int>> S_k(n + 1);
 	
 	for (pair<vector<StaticDigraph::Node>, vector<StaticDigraph::Arc>>& pair : cycle_vector)
 	{
@@ -878,7 +879,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		const int n = graph.nodeNum();
 		const int d = main_walk.size();
 		
-		vector<unordered_set<int>> S_k(n + 1);
+		//vector<unordered_set<int>> S_k(n + 1);
 		
 		for (int k = 1; k <= n; ++k)
 		{
