@@ -772,7 +772,7 @@ unordered_map<int, int> compute_funky_ell_indices(const StaticDigraph& graph,
 	
 	uint64_t end_time = milliseconds();
 	
-	cout << "[ALEXANDRU] compute_funky_ell_indices() in " << (end_time - start_time) << " milliseconds.\n";
+	//cout << "[ALEXANDRU] compute_funky_ell_indices() in " << (end_time - start_time) << " milliseconds.\n";
 	
 	return ell_map;
 }
