@@ -864,9 +864,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		vector<StaticDigraph::Node> main_walk = pair.first;
 		vector<StaticDigraph::Arc>  main_walk_arcs = pair.second;
 		
-		unordered_map<int, int> ell_map = compute_funky_ell_indidces(graph,
-									     main_walk,
-									     map_node_to_certificate_set);
+		unordered_map<int, int> ell_map = compute_funky_ell_indices(graph, main_walk, map_node_to_certificate_set);
 		
 		const int n = graph.nodeNum();
 		const int d = main_walk.size();
