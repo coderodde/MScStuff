@@ -905,7 +905,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	    }
 	};
 	
-	unordered_set<unordered_set<int
+	unordered_set<unordered_set<int>, MyHash, MyKeyEqual> filter;
 	
 	for (pair<vector<StaticDigraph::Node>, vector<StaticDigraph::Arc>>& pair : cycle_vector)
 	{
@@ -986,18 +986,28 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		{
 			for (const auto i : S_k[k])
 			{
-				contig current_contig;
+				unordered_set<int> pre_contig;
+				
+				for (int j = 0; j <= k; ++j)
+				{
+					pre_contig.insert(graph.id(main_walk[(i + j) % main_walk.size()]));
+				}
+				/*contig current_contig;
 				
 				for (int j = 0; j <= k; ++j)
 				{
 					current_contig.nodes.push_back(graph.id(main_walk[(i + j) % main_walk.size()]));
 				}
 				
-				ret.push_back(current_contig);
+				ret.push_back(current_contig);*/
+				
+				filter.insert(pre_contig);
 			}
 		}
 	}
 	
+	cout << "[ALEXANDRU] FILTER SIZE: " << filter.size() << endl;
+	exit(0);
 	
 	/*
 	    /////////////////////////////////////
