@@ -1009,7 +1009,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	size_t count = 0;
 	
-	for (vector<int>& vec : filter)
+	for (const vector<int>& vec : filter)
 	{
 		count += vec.size();
 	}
