@@ -868,6 +868,40 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	const int n = graph.nodeNum();
 	vector<unordered_set<int>> S_k(n + 1);
 	
+	struct MyHash {
+		size_t operator() (const unordered_set<int> &set) const {
+			size_t hash = 0;
+			size_t i = 0;
+	    
+			for (int elem : set)
+			{
+				hash += ++i * elem;
+			}
+	    
+			return hash;
+		}
+	};
+    
+	struct MyKeyEqual {
+		bool operator()(unordered_set<int>& lhs, unordered_set<int>& rhs)
+		{
+			if (lhs.size() != rhs.size())
+			{
+				return false;
+			}
+	    
+			for (int i : lhs)
+			{
+				if (rhs.find(i) == rhs.end())
+				{
+					return false;
+				}
+			}
+		
+			return true;
+		}
+	};
+	
 	for (pair<vector<StaticDigraph::Node>, vector<StaticDigraph::Arc>>& pair : cycle_vector)
 	{
 		//cout << "Processing a cycle!" << endl;
