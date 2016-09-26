@@ -867,40 +867,45 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	uint64_t start_time_2 = milliseconds();
 	const int n = graph.nodeNum();
 	vector<unordered_set<int>> S_k(n + 1);
-	
-	struct MyHash {
-		size_t operator() (const unordered_set<int> &set) const {
-			size_t hash = 0;
-			size_t i = 0;
-	    
-			for (int elem : set)
-			{
-				hash += ++i * elem;
-			}
-	    
-			return hash;
-		}
-	};
-    
-	struct MyKeyEqual {
-		bool operator()(unordered_set<int>& lhs, unordered_set<int>& rhs)
-		{
-			if (lhs.size() != rhs.size())
-			{
-				return false;
-			}
-	    
-			for (int i : lhs)
-			{
-				if (rhs.find(i) == rhs.end())
-				{
-					return false;
-				}
-			}
 		
-			return true;
+	struct MyHash {
+	    size_t operator() (const unordered_set<int> &set) const {
+		size_t hash = 0;
+		size_t i = 0;
+		
+		for (int elem : set)
+		{
+		    hash += ++i * elem;
 		}
+		
+		return hash;
+	    }
 	};
+	
+	struct MyKeyEqual {
+	    bool operator()(unordered_set<int> const& lhs, unordered_set<int> const& rhs) const
+	    {
+		if (lhs.size() != rhs.size())
+		{
+		    cout << "not equal size" << endl;
+		    return false;
+		}
+		
+		for (int i : lhs)
+		{
+		    if (rhs.find(i) == rhs.end())
+		    {
+			cout << "not equal" << endl;
+			return false;
+		    }
+		}
+		
+		cout << "equal" << endl;
+		return true;
+	    }
+	};
+	
+	unordered_set<unordered_set<int
 	
 	for (pair<vector<StaticDigraph::Node>, vector<StaticDigraph::Arc>>& pair : cycle_vector)
 	{
