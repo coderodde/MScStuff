@@ -904,11 +904,11 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		}
 	};
 	
-	unordered_set<vector<int>, MyHash, MyKeyEqual> filter;
+	unordered_set<vector<int>, MyHashVector, MyKeyEqualVector> filter;
 	
 	for (pair<vector<StaticDigraph::Node>, vector<StaticDigraph::Arc>>& pair : cycle_vector)
 	{
-		//cout << "Processing a cycle!" << endl;
+		cout << "Processing a cycle!" << endl;
 		
 		vector<StaticDigraph::Node> main_walk = pair.first;
 		vector<StaticDigraph::Arc>  main_walk_arcs = pair.second;
