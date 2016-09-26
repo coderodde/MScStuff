@@ -868,12 +868,12 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	const int n = graph.nodeNum();
 	vector<unordered_set<int>> S_k(n + 1);
 		
-	struct MyHash {
-		size_t operator() (const unordered_set<int> &set) const {
+	struct MyHashVector {
+		size_t operator() (const vector<int> &vec) const {
 			size_t hash = 0;
 			size_t i = 0;
 		
-			for (int elem : set)
+			for (int elem : vec)
 			{
 				hash += ++i * elem;
 			}
@@ -882,17 +882,19 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		}
 	};
 	
-	struct MyKeyEqual {
-		bool operator()(unordered_set<int> const& lhs, unordered_set<int> const& rhs) const
+	struct MyKeyEqualVector {
+		bool operator()(vector<int> const& lhs, vector<int> const& rhs) const
 		{
-			if (lhs.size() != rhs.size())
+			size_t sz = lhs.size();
+			
+			if (sz != rhs.size())
 			{
 				return false;
 			}
 		
-			for (int i : lhs)
+			for (size_t i = 0; i != sz; ++i)
 			{
-				if (rhs.find(i) == rhs.end())
+				if (lhs[i] != rhs[i])
 				{
 					return false;
 				}
@@ -902,11 +904,11 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		}
 	};
 	
-	unordered_set<unordered_set<int>, MyHash, MyKeyEqual> filter;
+	unordered_set<vector<int>, MyHash, MyKeyEqual> filter;
 	
 	for (pair<vector<StaticDigraph::Node>, vector<StaticDigraph::Arc>>& pair : cycle_vector)
 	{
-		cout << "Processing a cycle!" << endl;
+		//cout << "Processing a cycle!" << endl;
 		
 		vector<StaticDigraph::Node> main_walk = pair.first;
 		vector<StaticDigraph::Arc>  main_walk_arcs = pair.second;
@@ -983,11 +985,11 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		{
 			for (const auto i : S_k[k])
 			{
-				unordered_set<int> pre_contig;
+				vector<int> pre_contig;
 				
 				for (int j = 0; j <= k; ++j)
 				{
-					pre_contig.insert(graph.id(main_walk[(i + j) % main_walk.size()]));
+					pre_contig.push_back(graph.id(main_walk[(i + j) % main_walk.size()]));
 				}
 				/*contig current_contig;
 				
