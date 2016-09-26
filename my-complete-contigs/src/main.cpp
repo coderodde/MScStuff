@@ -908,7 +908,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	for (pair<vector<StaticDigraph::Node>, vector<StaticDigraph::Arc>>& pair : cycle_vector)
 	{
-		cout << "Processing a cycle!" << endl;
+		//cout << "Processing a cycle!" << endl;
 		
 		vector<StaticDigraph::Node> main_walk = pair.first;
 		vector<StaticDigraph::Arc>  main_walk_arcs = pair.second;
@@ -1006,7 +1006,19 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	}
 	
 	cout << "[ALEXANDRU] FILTER SIZE: " << filter.size() << endl;
+	
+	size_t count = 0;
+	
+	for (vector<int>& vec : filter)
+	{
+		count += vec.size();
+	}
+	
+	cout << "Average nodes per pre contig: " << 1.0 * count / filter.size() << endl;
+	
 	exit(0);
+	
+	//for (vector<int> pre_contig : )
 	
 	/*
 	    /////////////////////////////////////
