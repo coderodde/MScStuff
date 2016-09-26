@@ -887,7 +887,6 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	    {
 		if (lhs.size() != rhs.size())
 		{
-		    cout << "not equal size" << endl;
 		    return false;
 		}
 		
@@ -895,12 +894,10 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		{
 		    if (rhs.find(i) == rhs.end())
 		    {
-			cout << "not equal" << endl;
 			return false;
 		    }
 		}
 		
-		cout << "equal" << endl;
 		return true;
 	    }
 	};
