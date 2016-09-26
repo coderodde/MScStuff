@@ -777,24 +777,6 @@ unordered_map<int, int> compute_funky_ell_indices(const StaticDigraph& graph,
 	return ell_map;
 }
 
-struct omnitig_descriptor {
-	int i;
-	size_t k;
-	
-	omnitig_descriptor(int i_, size_t k_) : i(i_), k(k_) {}
-	
-	bool includes(const omnitig_descriptor& other) const
-	{
-		if (other.k > k)
-		{
-			return false;
-		}
-		
-		const size_t size_difference = k - other.k;
-		return i <= other.i && other.i <= i + size_difference;
-	}
-};
-
 vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					   const StaticDigraph::NodeMap<string>& nodeLabel,
 					   const string& inputFileName,
@@ -1016,8 +998,6 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	cout << "Average nodes per pre contig: " << 1.0 * count / filter.size() << endl;
 	
-	exit(0);
-	
 	//for (vector<int> pre_contig : )
 	
 	/*
@@ -1165,6 +1145,18 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	}
 	
 	cout << "[ALEXANDRU] Total length: " << total_length << "\n";*/
+	
+	for (const vector<int>& pre_contig : filter)
+	{
+		contig current_contig;
+				
+		for (int id : pre_contig)
+		{
+			current_contig.nodes.push_back(id);
+		}
+				
+		ret.push_back(current_contig);
+	}
 	
 	uint64_t end_time = milliseconds();
 	
