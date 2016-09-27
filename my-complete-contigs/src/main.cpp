@@ -716,8 +716,7 @@ unordered_map<int, int> compute_funky_ell_indices(const StaticDigraph& graph,
 	int ell = 0;
 	int index = 0;
 	
-	const int stop_index = 2 * main_walk.size();
-	//const int stop_index = main_walk.size() + countNodes(graph);
+	const int stop_index = main_walk.size() + countNodes(graph);
 	
 	while (index < stop_index)
 	{
@@ -808,7 +807,15 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		    
 		    cycle_vector.push_back(get_circular_walk(graph, debug_print));*/
 
+	size_t c = 0;
 	cout << "CYCLES: " << cycle_vector.size() << endl;
+	
+	for (pair<vector<StaticDigraph::Node>, vector<StaticDigraph::Arc>> p : cycle_vector)
+	{
+		c += p.first.size();
+	}
+	
+	cout << "AVERAGE CYCLE LENGTH: " << 1.0 * c / cycle_vector.size() << endl;
 	
 	    ////////////////////////////////////////////////////
 	  //// Computing a node-covering circular walk C. ////
