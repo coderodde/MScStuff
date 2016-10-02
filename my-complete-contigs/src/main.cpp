@@ -998,7 +998,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					{
 						S_k[k].insert(i);
 						//contig_count++;
-						cout << "Adding k = " << k << endl;
+						//cout << "Adding k = " << k << endl;
 					}
 				}
 			}
