@@ -716,7 +716,8 @@ unordered_map<int, int> compute_funky_ell_indices(const StaticDigraph& graph,
 	int ell = 0;
 	int index = 0;
 	
-	const int stop_index = main_walk.size() + countNodes(graph);
+	//const int stop_index = main_walk.size() + countNodes(graph);
+	const int stop_index = main_walk.size() * 2;
 	
 	while (index < stop_index)
 	{
