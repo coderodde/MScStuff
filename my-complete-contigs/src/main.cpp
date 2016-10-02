@@ -896,10 +896,10 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	unordered_set<vector<int>, MyHashVector, MyKeyEqualVector> filter;
 	
+	uint64_t main_alg_start_time = milliseconds();
+	
 	for (pair<vector<StaticDigraph::Node>, vector<StaticDigraph::Arc>>& pair : cycle_vector)
 	{
-		//cout << "Processing a cycle!" << endl;
-		
 		vector<StaticDigraph::Node> main_walk = pair.first;
 		vector<StaticDigraph::Arc>  main_walk_arcs = pair.second;
 		
@@ -994,6 +994,9 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 			}
 		}
 	}
+	
+	uint64_t main_alg_end_time = milliseconds();
+	cout << "[CODERODDE] The main algorithm duration: " << (main_alg_end_time - main_alg_start_time) << " milliseconds." << endl;
 	
 	cout << "[ALEXANDRU] FILTER SIZE: " << filter.size() << endl;
 	
