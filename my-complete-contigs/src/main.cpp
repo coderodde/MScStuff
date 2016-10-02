@@ -936,7 +936,8 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		
 		unordered_map<int, int> ell_map = compute_funky_ell_indices(graph, main_walk, map_node_to_certificate_set);
 		
-		const int n = graph.nodeNum();
+		//const int n = graph.nodeNum();
+		const int n = main_walk.size();
 		const int d = main_walk.size();
 		
 		vector<unordered_set<int>> S_k(n + 1);
