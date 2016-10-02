@@ -12,6 +12,36 @@ using rodde::current_time::milliseconds;
 
 int N_THREADS;
 
+/**************************************************************************
+ * Rotates the input vector such that the smallest element is at index 0. *
+ *************************************************************************/ 
+template<typename T>
+void min_rotate(std::vector<T>& vec)
+{
+    typename std::vector<T>::const_iterator iter =
+        std::min_element(vec.cbegin(),
+                         vec.cend());
+    
+    
+    if (iter == vec.cend())
+    {
+        return;
+    }
+    
+    size_t len = vec.size();
+    size_t index = iter - vec.cbegin();
+    std::vector<T> aux(vec.cbegin(), iter);
+    
+    for (size_t i = index; i < len; ++i) {
+        vec[i - index] = vec[i];
+    }
+    
+    for (size_t i = 0; i < index; ++i)
+    {
+        vec[len - index + i] = aux[i];
+    }
+}
+
 //vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 vector<pair<vector<StaticDigraph::Node>,
 	    vector<StaticDigraph::Arc>>>
@@ -982,6 +1012,9 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 				{
 					pre_contig.push_back(graph.id(main_walk[(i + j) % main_walk.size()]));
 				}
+				
+				min_rotate(pre_contig);
+				
 				/*contig current_contig;
 				
 				for (int j = 0; j <= k; ++j)
@@ -990,6 +1023,11 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 				}
 				
 				ret.push_back(current_contig);*/
+				
+				if (filter.find(pre_contig) != filter.end())
+				{
+					cout << "FOUND IT FUCK YEAH >>>>" << endl;
+				}
 				
 				filter.insert(pre_contig);
 			}
