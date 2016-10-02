@@ -1024,10 +1024,10 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 				
 				ret.push_back(current_contig);*/
 				
-				if (filter.find(pre_contig) != filter.end())
+				/*if (filter.find(pre_contig) != filter.end())
 				{
 					cout << "FOUND IT FUCK YEAH >>>>" << endl;
-				}
+				}*/
 				
 				filter.insert(pre_contig);
 			}
