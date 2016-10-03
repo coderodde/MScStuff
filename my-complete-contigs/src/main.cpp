@@ -1015,7 +1015,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					pre_contig.push_back(graph.id(main_walk[(i + j) % main_walk.size()]));
 				}
 				
-				min_rotate(pre_contig);
+				//min_rotate(pre_contig);
 				
 				/*contig current_contig;
 				
