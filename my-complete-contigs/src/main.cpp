@@ -827,7 +827,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 		cout << "[ALEXANDRU] k-mer size: " << kmersize << endl;
 		cout << "[ALEXANDRU] Sequence length: " << sequence.length() << endl;
-		//cout << "[CODERODDE] Input file name: " << inputFileName << endl;
+		cout << "[ALEXANDRU] Input file name: " << inputFileName << endl;
 	}
 	
 	vector<pair<vector<StaticDigraph::Node>,
@@ -852,18 +852,8 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	  //// Computing a node-covering circular walk C. ////
 	////////////////////////////////////////////////////
 	/*pair<vector<StaticDigraph::Node>,
-	     vector<StaticDigraph::Arc>> walk_data = get_circular_walk(graph, debug_print);
-		
-	vector<StaticDigraph::Node> main_walk = walk_data.first;
-	vector<StaticDigraph::Arc>  main_walk_arcs = walk_data.second;*/
-	/*
-	cout << "First walk node ID: " << graph.id(main_walk[0]) << endl;
-	cout << "Last  walk node ID: " << graph.id(main_walk.back()) << endl;
-	cout << "First arc tail ID:  " << graph.id(graph.source(main_walk_arcs[0])) << endl;
-	cout << "Last arc tail ID:   " << graph.id(graph.source(main_walk_arcs.back())) << endl;
-	cout << "Last arc head ID:   " << graph.id(graph.target(main_walk_arcs.back())) << endl;
-	abort();*/
-  	
+	     vector<StaticDigraph::Arc>> walk_data = get_circular_walk(graph, debug_print);*/
+		  	
 	    ////////////////////////////////////////////////////
 	  //// Computing node certificate sets! Lemma 5.1 ////
 	////////////////////////////////////////////////////
@@ -887,7 +877,6 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	uint64_t start_time_2 = milliseconds();
 	const int n = graph.nodeNum();
-	//vector<unordered_set<int>> S_k(n + 1);
 		
 	struct MyHashVector {
 		size_t operator() (const vector<int> &vec) const {
@@ -936,7 +925,6 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		
 		unordered_map<int, int> ell_map = compute_funky_ell_indices(graph, main_walk, map_node_to_certificate_set);
 		
-		//const int n = graph.nodeNum();
 		const int n = main_walk.size();
 		const int d = main_walk.size();
 		
@@ -960,7 +948,6 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 						if (ell_map[end_index] <= start_index)
 						{
 							S_k[1].insert(i);
-							//contig_count++;
 						}
 					}
 				}
@@ -997,8 +984,6 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					if (ell_map[end_index] <= start_index)
 					{
 						S_k[k].insert(i);
-						//contig_count++;
-						//cout << "Adding k = " << k << endl;
 					}
 				}
 			}
@@ -1014,22 +999,6 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 				{
 					pre_contig.push_back(graph.id(main_walk[(i + j) % main_walk.size()]));
 				}
-				
-				//min_rotate(pre_contig);
-				
-				/*contig current_contig;
-				
-				for (int j = 0; j <= k; ++j)
-				{
-					current_contig.nodes.push_back(graph.id(main_walk[(i + j) % main_walk.size()]));
-				}
-				
-				ret.push_back(current_contig);*/
-				
-				/*if (filter.find(pre_contig) != filter.end())
-				{
-					cout << "FOUND IT FUCK YEAH >>>>" << endl;
-				}*/
 				
 				filter.insert(pre_contig);
 			}
@@ -1050,154 +1019,6 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	cout << "Average nodes per pre contig: " << 1.0 * count / filter.size() << endl;
 	
-	//for (vector<int> pre_contig : )
-	
-	/*
-	    /////////////////////////////////////
-	  //// Last preprocessing: O(n^3). ////
-	/////////////////////////////////////
-	unordered_map<int, int> ell_map = compute_funky_ell_indices(graph,
-								    main_walk,
-								    map_node_to_certificate_set);
-	if (debug_print)
-	{
-		cout << "[ALEXANDRU] ell_map size: " << ell_map.size() << "\n";	
-	}
-	    /////////////////////
-	  //// Algorithm 1 ////
-	/////////////////////
-	uint64_t start_time_2 = milliseconds();
-	
-	const int n = graph.nodeNum();
-	const int d = main_walk.size();
-	size_t contig_count = 0;
-	
-	vector<unordered_set<int>> S_k(n + 1);
-	
-	for (int k = 1; k <= n; ++k)
-	{
-		for (int i = 0; i < d; ++i)
-		{
-			if (k == 1)
-			{
-				StaticDigraph::Arc e_i = main_walk_arcs[i];
-				unordered_set<int>::const_iterator iter =
-					strong_bridge_id_set.find(graph.id(e_i));
-				
-				if (iter != strong_bridge_id_set.end())
-				{
-					int end_index = (i + 1) % d;
-					int start_index = i;
-					
-					if (ell_map[end_index] <= start_index)
-					{
-						S_k[1].insert(i);
-						contig_count++;
-					}
-				}
-			}
-			else // (k > 1)
-			{
-				// Checks that i \in S_{k - 1} and i + 1 \mod d \in S_{k - 1}:
-				unordered_set<int>::const_iterator iter1 = S_k[k - 1].find(i);
-				unordered_set<int>::const_iterator iter2 = S_k[k - 1].find((i + 1) % d);
-				
-				if (iter1 == S_k[k - 1].end() || iter2 == S_k[k - 1].end())
-				{
-					continue;
-				}
-				
-				//// Check there is no v_{i + k - 1 mode d} - v_{i + 1 mod d} path with
-				//// first edge different than e_{i + k - 1 mod d} and
-				//// last edge different than e_{i}:
-				
-				// Get the edge e_{i + k - 1 mod d}:
-				StaticDigraph::Arc first_arc  = main_walk_arcs[(i + k - 1) % d];
-				
-				// Get the edge e_i
-				StaticDigraph::Arc second_arc = main_walk_arcs[i];
-				
-				if (a_matrix[graph.id(first_arc)][graph.id(second_arc)])
-				{
-					continue;
-				}
-				
-				// Last check: Cert(v_i) \cap .. \cap Cert(v_{i + k mod d} not empty:
-				const int end_index = (i + k) % d;
-				const int start_index = i;
-				
-				if (ell_map[end_index] <= start_index)
-				{
-					S_k[k].insert(i);
-					contig_count++;
-				}
-			}
-		}
-	}
-	
-	for (int k = 0; k < S_k.size(); ++k)
-	{
-		for (const auto i : S_k[k])
-		{
-			contig current_contig;
-			
-			for (int j = 0; j <= k; ++j)
-			{
-				current_contig.nodes.push_back(graph.id(main_walk[(i + j) % main_walk.size()]));
-			}
-			
-			ret.push_back(current_contig);
-		}
-	}
-	
-	cout << "[ALEXANDRU] Number of contigs: " << contig_count << "\n";
-	cout << "[ALEXANDRU] Number of contigs before pruning: " << contig_count << "\n";
-	
-	size_t sz = 0;
-	
-	for (unordered_set<int>& set : S_k)
-	{
-		sz += set.size();
-	}
-	
-	cout << "[ALEXANDRU] Number of contigs after pruning:  " << sz << "\n";
-	
-	
-	//// Compute and print the average size of omnitigs:
-	size_t sum = 0;
-	
-	cout << "[FORMAT FOR BELOW TOKENS] k(frequency of omnitigs with the given k):\n";
-	
-	for (size_t k = 0; k < S_k.size(); ++k)
-	{
-		sum += k * S_k[k].size();
-		
-		if (S_k[k].size() > 0)
-		{
-			cout << k << "(" << S_k[k].size() << ")\n";	
-		}
-	}
-	
-	cout << "[ALEXANDRU] Average number of nodes per omnitig: " << sum / sz << "\n";
-	
-	populate_with_strings_from_node_labels(sequence, kmersize, graph, nodeLabel, ret);
-			
-	if (debug_print)
-	{
-		cout << "[ALEXANDRU] Exiting 'coderodde_project_algorithm'.\n";
-	}
-	
-	uint64_t end_time = milliseconds();
-	
-	size_t total_length = 0;
-	
-	for (auto& a : ret)
-	{
-		total_length += a.str.length();
-	}
-	
-	cout << "[ALEXANDRU] Total length: " << total_length << "\n";*/
-	
 	for (const vector<int>& pre_contig : filter)
 	{
 		contig current_contig;
@@ -1214,9 +1035,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	
 	cout << "[ALEXNADRU] Inner algorithm duration: " << (end_time - start_time_2) << " milliseconds.\n";
 	cout << "[ALEXANDRU] Total duration: " << (end_time - start_time) << " milliseconds.\n";
-	
-	//print_collection(unitigs, inputFileName + ".k" + std::to_string(kmersize) + "." + genome_type, ".unitigs");
-	cout << "ret.size() = " << ret.size() << endl;
+	cout << "[ALEXANDRU] Total number of contigs: " << ret.size() << endl;
 	
 	uint64_t sum = 0;
 	
@@ -1225,13 +1044,16 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		sum += c.nodes.size();
 	}
 	
-	cout << "Average nodes per conting: " << (1.0 * sum) / ret.size() << endl;
+	cout << "[ALEXANDRU] Average nodes per contig: " << (1.0 * sum) / ret.size() << endl;
+	cout << "[ALEXANDRU] Populating strings..." << endl;
 	
-	cout << "Populating strings..." << endl;
 	populate_with_strings_from_node_labels(sequence, kmersize, graph, nodeLabel, ret);
-	cout << "Populated! Printing to a file..." << endl;
+	
+	cout << "[ALEXANDRU] Populated! Printing to a file..." << endl;
+	
 	print_collection(ret, inputFileName + ".k" + std::to_string(kmersize), ".alexandru_omnitigs");
-	cout << "Done!" << endl;
+	
+	cout << "[ALEXANDRU] Done!" << endl;
 	return ret;
 }
 
