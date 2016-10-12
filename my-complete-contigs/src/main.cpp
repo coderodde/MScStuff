@@ -195,16 +195,16 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 	{
 		vector<int> cycle;
 		
-		if (arc_id_set_with_nonzero_flows.empty())
+		/*if (arc_id_set_with_nonzero_flows.empty())
 		{
 			break;
-		}
+		}*/
 		
-		auto iter = arc_id_set_with_nonzero_flows.begin();
-		ListDigraph::Arc target_arc = subdivided_graph.arcFromId(*iter);
+		/*auto iter = arc_id_set_with_nonzero_flows.begin();
+		ListDigraph::Arc target_arc = subdivided_graph.arcFromId(*iter);*/
 		
 		// First find any arc with non-zero flow:
-		/*for (ListDigraph::ArcIt arcit(subdivided_graph); arcit != INVALID; ++arcit)
+		for (ListDigraph::ArcIt arcit(subdivided_graph); arcit != INVALID; ++arcit)
 		{
 			if (resultFlowMap[arcit] > 0)
 			{
@@ -212,15 +212,15 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 				start_arc_found = true;
 				break;
 			}
-		}*/
+		}
 		
 		
 		
-		/*if (!start_arc_found)
+		if (!start_arc_found)
 		{
 			// We are done with constructing cycles:
 			break;
-		}*/
+		}
 		
 		unordered_set<int> filter;
 		
