@@ -800,13 +800,13 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 		cout << "[ALEXANDRU] Input file name: " << inputFileName << endl;
 	}
 	
-	/*vector<pair<vector<StaticDigraph::Node>,
-	            vector<StaticDigraph::Arc>>> cycle_vector = get_node_covering_reconstruction(graph, debug_print);*/
-
 	vector<pair<vector<StaticDigraph::Node>,
+	            vector<StaticDigraph::Arc>>> cycle_vector = get_node_covering_reconstruction(graph, debug_print);
+
+	/*vector<pair<vector<StaticDigraph::Node>,
 		    vector<StaticDigraph::Arc>>> cycle_vector;
 		    
-		    cycle_vector.push_back(get_circular_walk(graph, debug_print));
+		    cycle_vector.push_back(get_circular_walk(graph, debug_print));*/
 
 	size_t c = 0;
 	cout << "[ALEXANDRU] Number of cycles: " << cycle_vector.size() << endl;
