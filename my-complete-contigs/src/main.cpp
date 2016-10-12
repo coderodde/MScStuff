@@ -203,7 +203,7 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 		}
 		
 		auto iter = arc_id_set_with_nonzero_flows.begin();
-		target_arc = subdivided_graph.arcFromId(*iter);
+		target_arc = subdivided_graph.arcFromId(iter);
 		// First find any arc with non-zero flow:
 		/*for (ListDigraph::ArcIt arcit(subdivided_graph); arcit != INVALID; ++arcit)
 		{
