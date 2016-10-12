@@ -194,7 +194,8 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 	while (true)
 	{
 		vector<int> cycle;
-		
+		ListDigraph::ArcIt target_arc;
+		bool start_arc_found = false;
 		/*if (arc_id_set_with_nonzero_flows.empty())
 		{
 			break;
