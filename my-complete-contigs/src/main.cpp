@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <limits>
 #include <lemon/network_simplex.h>
+#include <unordered_set>
 
 using std::runtime_error;
 using namespace std;
@@ -178,6 +179,19 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 	}*/
 	
 	//// Reconstruct the cycles:
+	unordered_set<int> arc_id_set_with_nonzero_flows;
+	
+	for (ListDigraph::ArcIt arcit(subdivided_graph); arcit != INVALID; ++arcit)
+	{
+		if (resultFlowMap[arcit] > 0)
+		{
+			arc_id_set_with_nonzero_flows.insert(subdivided_graph.id(arcit));
+		}
+	}
+	
+	cout << "TEST: subdivided_graph arcs: " << countArcs(subdivided_graph) << endl;
+	cout << "TEST: nonzero arcs:          " << arc_id_set_with_nonzero_flows.size() << endl;
+	
 	vector<vector<int>> cycles;
 	int count = 0;
 	while (true)
