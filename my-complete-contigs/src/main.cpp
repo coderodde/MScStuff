@@ -194,8 +194,6 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 	while (true)
 	{
 		vector<int> cycle;
-		ListDigraph::ArcIt target_arc;
-		bool start_arc_found = false;
 		
 		if (arc_id_set_with_nonzero_flows.empty())
 		{
@@ -203,7 +201,8 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 		}
 		
 		auto iter = arc_id_set_with_nonzero_flows.begin();
-		target_arc = subdivided_graph.arcFromId(*iter);
+		ListDigraph::Arc target_arc = subdivided_graph.arcFromId(*iter);
+		
 		// First find any arc with non-zero flow:
 		/*for (ListDigraph::ArcIt arcit(subdivided_graph); arcit != INVALID; ++arcit)
 		{
@@ -282,8 +281,10 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 			if (resultFlowMap[arc] == 0)
 			{
 				// Remove the arc by ID from the set 'arc_id_set_with_nonzero_flows':
+				arc_id_set_with_nonzero_flows.erase(subdivided_graph.id(arc));
+				/*
 				auto iter = arc_id_set_with_nonzero_flows.find(subdivided_graph.id(arc));
-				arc_id_set_with_nonzero_flows.erase(iter);
+				arc_id_set_with_nonzero_flows.erase(iter);*/
 			}
 		}
 		/*
