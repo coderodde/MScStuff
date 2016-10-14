@@ -20,6 +20,21 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 {
 	uint64_t start_time = milliseconds();
 	
+	int self_loop_count = 0;
+	
+	for (StaticDigraph::ArcIt arcit(graph); arcit != INVALID; ++arcit)
+	{
+		int tailNodeId = graph.id(graph.source(arcit));
+		int headNodeId = graph.id(graph.target(arcit));
+		
+		if (tailNodeId == headNodeId)
+		{
+			self_loop_count++;
+		}
+	}
+	
+	cout << "[SANITY CHECK] Number of self-loops: " << self_loop_count << endl;
+	
 	if (debug_print)
 	{
 		cout << "[ALEXANDRU](get_node_covering_reconstruction) Computing the node covering reconstruction...\n";
