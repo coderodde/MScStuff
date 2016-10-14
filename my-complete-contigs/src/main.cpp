@@ -404,7 +404,7 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 	****************************************************/ 
 	
 	for (pair<vector<StaticDigraph::Node>,
-		  vector<StaticDigraph::Arc> p : result)
+		  vector<StaticDigraph::Arc>> p : result)
 	{
 		if (p.first.size() != p.second.size())
 		{
