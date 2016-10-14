@@ -373,7 +373,7 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 	
 	unordered_set<int> unvisited_graph_node_id_set;
 	
-	for (StaticDigraph::Node nodeit(graph); nodeit != INVALID; ++nodeit)
+	for (StaticDigraph::NodeIt nodeit(graph); nodeit != INVALID; ++nodeit)
 	{
 		unvisited_graph_node_id_set.insert(graph.id(nodeit));
 	}
