@@ -33,7 +33,7 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 		}
 	}
 	
-	cout << "[SANITY CHECK] Number of self-loops: " << self_loop_count << endl;
+	cout << "[ALEXANDRU] Number of self-loops: " << self_loop_count << endl;
 	
 	if (debug_print)
 	{
@@ -278,6 +278,7 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 		}
 		
 		// Remove one unit of flow from each arc in the currently found cycle:
+		
 		for (size_t i = 0; i < pruned_cycle.size(); ++i)
 		{
 			int tail_node_id = pruned_cycle[i];
@@ -369,6 +370,30 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 		
 		cout << endl << "WALK END" << endl;
 	}*/
+	
+	unordered_set<int> unvisited_graph_node_id_set;
+	
+	for (StaticDigraph::Node nodeit(graph); nodeit != INVALID; ++nodeit)
+	{
+		unvisited_graph_node_id_set.insert(graph.id(nodeit));
+	}
+	
+	for (pair<vector<StaticDigraph::Node>,
+	          vector<StaticDigraph::Arc>> p : result)
+	{
+		for (StaticDigraph::Node node : p.first)
+		{
+			int id = graph.id(node);
+			auto iterator = unvisited_graph_node_id_set.find(id);
+			
+			if (iterator != unvisited_graph_node_id_set.end())
+			{
+				unvisited_graph_node_id_set.erase(iterator);
+			}
+		}
+	}
+	
+	cout << "[SANITY CHECK] Number of unvisited input graph nodes: " << unvisited_graph_node_id_set.size() << endl;
 	
 	uint64_t end_time = milliseconds();
 	cout << "[ALEXANDRU](get_node_covering_reconstruction) in "
