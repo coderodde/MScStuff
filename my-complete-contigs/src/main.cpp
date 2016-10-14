@@ -371,6 +371,10 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 		cout << endl << "WALK END" << endl;
 	}*/
 	
+	
+	/*****************************************************************
+	* Here we check that all input graph nodes belong to some cycle: *
+	*****************************************************************/ 
 	unordered_set<int> unvisited_graph_node_id_set;
 	
 	for (StaticDigraph::NodeIt nodeit(graph); nodeit != INVALID; ++nodeit)
@@ -394,6 +398,20 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 	}
 	
 	cout << "[SANITY CHECK] Number of unvisited input graph nodes: " << unvisited_graph_node_id_set.size() << endl;
+	
+	/****************************************************
+	* Here we check that all cycles are in fact cycles: *
+	****************************************************/ 
+	
+	for (pair<vector<StaticDigraph::Node>,
+		  vector<StaticDigraph::Arc> p : result)
+	{
+		if (p.first.size() != p.second.size())
+		{
+			cerr << "[ERROR] Bad cycle." << endl;
+			exit(1);
+		}
+	}
 	
 	uint64_t end_time = milliseconds();
 	cout << "[ALEXANDRU](get_node_covering_reconstruction) in "
