@@ -402,7 +402,6 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 	/****************************************************
 	* Here we check that all cycles are in fact cycles: *
 	****************************************************/ 
-	
 	for (pair<vector<StaticDigraph::Node>,
 		  vector<StaticDigraph::Arc>> p : result)
 	{
@@ -411,7 +410,30 @@ get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
 			cerr << "[ERROR] Bad cycle." << endl;
 			exit(1);
 		}
+		
+		for (int i = 0; i < p.first.size(); ++i)
+		{
+			StaticDigraph::Node tailNode = p.first[i];
+			StaticDigraph::Node headNode = p.first[(i + 1) % p.first.size()];
+			
+			StaticDigraph::Arc arc = p.second[i];
+			
+			int tailNodeId = graph.id(tailNode);
+			int headNodeId = graph.id(headNode);
+			
+			if (tailNodeId != graph.id(graph.source(arc)))
+			{
+				cerr << "[ERROR] Cycle mismatch. (1)" << endl;
+			}
+			
+			if (headNodeId != graph.id(graph.target(arc)))
+			{
+				cerr << "[ERROR] Cycle mismatch. (2)" << endl;
+			}
+		}
 	}
+	
+	//// id_pair_to_static_graph_arc
 	
 	uint64_t end_time = milliseconds();
 	cout << "[ALEXANDRU](get_node_covering_reconstruction) in "
