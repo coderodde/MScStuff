@@ -158,8 +158,28 @@ void test_construct_graph_from_genomes()
 {
 	vector<string> genome_vector {"CGATATAG"};
 	graph_result result = construct_graph_from_genomes(genome_vector, 3);
+	StaticDigraph* p_graph = result.p_graph;
+	StaticDigraph::NodeMap<string>* p_nodeLabels = result.p_nodeLabels;
 	
-	cout << "Yeah!" << endl;
+	for (StaticDigraph::NodeIt nodeit(*p_graph); nodeit != INVALID; ++nodeit)
+	{
+		cout << "Node [" << (*p_nodeLabels)[nodeit] << "]: ";
+		cout << "incoming: ";
+		
+		for (StaticDigraph::InArcIt arcit(*p_graph, nodeit); arcit != INVALID; ++arcit)
+		{
+			
+		}
+		
+		cout << ", outgoing: ";
+		
+		for (StaticDigraph::OutArcIt arcit(*p_graph, nodeit); arcit != INVALID; ++arcit)
+		{
+			
+		}
+		
+		cout << endl;
+	}
 }
 
 int N_THREADS;
