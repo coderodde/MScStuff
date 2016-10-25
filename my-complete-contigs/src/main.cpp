@@ -57,6 +57,7 @@ bool node_map_contains_kmer(map<string, ListDigraph::Node>& node_map,
 }
 
 void process_genome(ListDigraph& graph,
+		    ListDigraph::NodeMap<string>& nodes_to_kmers_map,
 		    map<string, ListDigraph::Node>& node_map,
 		    map<int, map<int, bool>>& arc_matrix,
 		    string& genome_string,
@@ -66,7 +67,9 @@ void process_genome(ListDigraph& graph,
 	
 	if (!node_map_contains_kmer(node_map, previous_kmer))
 	{
-		node_map[previous_kmer] = graph.addNode();
+		ListDigraph::Node new_node = graph.addNode();
+		node_map[previous_kmer] = new_node;
+		nodes_to_kmers_map[new_node] = previous_kmer;
 	}
 	
 	for (int start_index = 0; start_index < genome_string.size(); ++start_index)
@@ -77,6 +80,7 @@ void process_genome(ListDigraph& graph,
 		if (!node_map_contains_kmer(node_map, current_kmer))
 		{
 			current_node = graph.addNode();
+			nodes_to_kmers_map[current_node] = current_node;
 		}
 		else
 		{
@@ -100,7 +104,10 @@ void process_genome(ListDigraph& graph,
 	}
 }
 
-StaticDigraph construct_graph_from_genomes(vector<string>& genome_vector, int k)
+// StaticDigraph::NodeMap<string>& nodeLabel
+
+pair<StaticDigraph, StaticDigraph::NodeMap<string>>
+construct_graph_from_genomes(vector<string>& genome_vector, int k)
 {
 	if (k < 2)
 	{
@@ -108,12 +115,14 @@ StaticDigraph construct_graph_from_genomes(vector<string>& genome_vector, int k)
 	}
 	
 	ListDigraph work_digraph;
+	ListDigraph::NodeMap<string> nodes_to_kmers_map(work_digraph);	
 	map<string, ListDigraph::Node> node_map;
-	map<int, map<int, bool>> arc_matrix;
+	map<int, map<int, bool>> arc_matrix;	
 	
 	for (string& genome_string : genome_vector)
 	{
 		process_genome(work_digraph,
+			       nodes_to_kmers_map,
 			       node_map,
 			       arc_matrix,
 			       genome_string,
@@ -123,7 +132,16 @@ StaticDigraph construct_graph_from_genomes(vector<string>& genome_vector, int k)
 	StaticDigraph output_graph;
 	DigraphCopy<ListDigraph, StaticDigraph> copy(work_digraph, output_graph);
 	copy.run();
-	return output_graph;
+	StaticDigraph::NodeMap<string> static_nodes_to_kmers_map(output_graph);
+	
+	// Convert ListDigraph::NodeMap<string> to StaticDigraph::NodeMap<string>:
+	return make_pair(output_graph, static_nodes_to_kmers_map);
+}
+
+void test_construct_graph_from_genomes()
+{
+	vector<string> genome_vector {"CGATATAG"};
+	StaticDigraph graph;
 }
 
 int N_THREADS;
