@@ -35,6 +35,7 @@ void test_build_kmer()
 	
 	for (const auto& s : kmers)
 	{
+		cout << s << endl;
 	}
 }
 
