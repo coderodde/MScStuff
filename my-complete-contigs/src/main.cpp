@@ -11,6 +11,64 @@ using namespace std;
 using namespace lemon;
 using rodde::current_time::milliseconds;
 
+string build_kmer(string genome_string, int start_index, int k)
+{
+	string ret;
+	
+	for (int i = 0; i < k; ++i)
+	{
+		ret.push_back(genome_string[(start_index + i) % genome_string.size()]);
+	}
+	
+	return ret;
+}
+
+void test_build_kmer()
+{
+	string genome_string = "CGATATAG";
+	vector<string> kmers;
+	
+	for (int start_index = 0; start_index < genome_string.size(); ++start_index)
+	{
+		kmers.push_back(build_kmer(genome_string, start_index, 3));
+	}
+	
+	for (const auto& s : kmers)
+	{
+	}
+}
+
+void process_genome(ListDigraph& graph, map<string, ListDigraph::Node>& node_map, string& genome_string, int k)
+{
+	string previous_kmer = build_kmer(genome_string, genome_string.size() - 1; k);
+	
+	for (int start_index = 0; start_index < genome_string.size(); ++start_index)
+	{
+		string current_kmer = build_kmer(genome_string, start_index, k);
+	}
+}
+
+StaticDigraph construct_graph_from_genomes(vector<string>& genome_vector, int k)
+{
+	if (k < 2)
+	{
+		throw runtime_error{"'k' is less than 2."};	
+	}
+	
+	ListDigraph work_digraph;
+	map<string, ListDigraph::Node> node_map;
+	
+	for (string& genome_string : genome_vector)
+	{
+		process_genome(work_digraph, node_map, genome_string, k);
+	}
+	
+	StaticDigraph output_graph;
+	DigraphCopy<ListDigraph, StaticDigraph> copy(work_digraph, output_graph);
+	copy.run();
+	return output_graph;
+}
+
 int N_THREADS;
 
 //vector<vector<int>> get_node_covering_reconstruction(const StaticDigraph& graph, bool debug_print)
@@ -2538,9 +2596,12 @@ int main(int argc, char **argv)
 	//test_list_digraph_node_ids();
 	//test_strong_bridges();
 	//test_a_matrix_algo();
-	test_cycle_reconstruction();
-	test_cycle_reconstruction_2();
-	//exit(0);
+	//test_cycle_reconstruction();
+	//test_cycle_reconstruction_2();
+	
+	test_build_kmer();
+	
+	exit(0);
 	
 	//////////////////////////////////////////
 	//////////////////////////////////////////
