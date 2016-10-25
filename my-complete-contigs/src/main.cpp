@@ -109,10 +109,15 @@ StaticDigraph construct_graph_from_genomes(vector<string>& genome_vector, int k)
 	
 	ListDigraph work_digraph;
 	map<string, ListDigraph::Node> node_map;
+	map<int, map<int, bool>> arc_matrix;
 	
 	for (string& genome_string : genome_vector)
 	{
-		process_genome(work_digraph, node_map, genome_string, k);
+		process_genome(work_digraph,
+			       node_map,
+			       arc_matrix,
+			       genome_string,
+			       k);
 	}
 	
 	StaticDigraph output_graph;
