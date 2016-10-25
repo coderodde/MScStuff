@@ -116,14 +116,14 @@ StaticDigraph construct_graph_from_genomes(vector<string>& genome_vector,
 		throw runtime_error{"'k' is less than 2."};	
 	}
 	
-	ListDigraph work_digraph;
-	ListDigraph::NodeMap<string> nodes_to_kmers_map(work_digraph);	
+	ListDigraph work_graph;
+	ListDigraph::NodeMap<string> nodes_to_kmers_map(work_graph);	
 	map<string, ListDigraph::Node> node_map;
 	map<int, map<int, bool>> arc_matrix;	
 	
 	for (string& genome_string : genome_vector)
 	{
-		process_genome(work_digraph,
+		process_genome(work_graph,
 			       nodes_to_kmers_map,
 			       node_map,
 			       arc_matrix,
@@ -134,7 +134,7 @@ StaticDigraph construct_graph_from_genomes(vector<string>& genome_vector,
 	// We need to map each ListDigraph::Node to its respective StaticDigraph::Node!
 	StaticDigraph output_graph;
 	ListDigraph::NodeMap<StaticDigraph::Node> list_nodes_to_static_nodes_map(work_graph);
-	DigraphCopy<ListDigraph, StaticDigraph> copy(work_digraph, output_graph);
+	DigraphCopy<ListDigraph, StaticDigraph> copy(work_graph, output_graph);
 	copy.nodeRef(list_nodes_to_static_nodes_map);
 	copy.run();
 	
