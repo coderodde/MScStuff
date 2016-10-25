@@ -141,7 +141,7 @@ StaticDigraph construct_graph_from_genomes(vector<string>& genome_vector,
 	for (ListDigraph::NodeIt nodeit(work_graph); nodeit != INVALID; ++nodeit)
 	{
 		StaticDigraph::Node node = list_nodes_to_static_nodes_map[nodeit];
-		nodeLabels[node] = nodes_to_kmers_map[node];
+		nodeLabels[node] = nodes_to_kmers_map[nodeit];
 	}
 	
 	return output_graph;
