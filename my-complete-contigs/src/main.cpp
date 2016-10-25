@@ -76,7 +76,7 @@ void process_genome(ListDigraph& graph, map<string, ListDigraph::Node>& node_map
 			current_node = node_map[current_kmer];
 		}
 		
-		previous_node = node_map[previous_kmer];
+		ListDigraph::Node previous_node = node_map[previous_kmer];
 		graph.addArc(previous_node, current_node);
 		previous_kmer = current_kmer;
 	}
