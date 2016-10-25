@@ -136,7 +136,7 @@ graph_result construct_graph_from_genomes(vector<string>& genome_vector, int k)
 	// We need to map each ListDigraph::Node to its respective StaticDigraph::Node!
 	StaticDigraph* p_output_graph = new StaticDigraph;
 	ListDigraph::NodeMap<StaticDigraph::Node> list_nodes_to_static_nodes_map(work_graph);
-	DigraphCopy<ListDigraph, StaticDigraph> copy(work_graph, output_graph);
+	DigraphCopy<ListDigraph, StaticDigraph> copy(work_graph, *p_output_graph);
 	copy.nodeRef(list_nodes_to_static_nodes_map);
 	copy.run();
 	
@@ -150,7 +150,7 @@ graph_result construct_graph_from_genomes(vector<string>& genome_vector, int k)
 	
 	graph_result result;
 	result.p_graph = p_output_graph;
-	result.p_nodeLabels = ;
+	result.p_nodeLabels = p_nodeLabels;
 	return result;
 }
 
