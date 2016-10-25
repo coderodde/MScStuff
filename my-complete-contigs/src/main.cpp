@@ -131,10 +131,18 @@ StaticDigraph construct_graph_from_genomes(vector<string>& genome_vector,
 			       k);
 	}
 	
+	// We need to map each ListDigraph::Node to its respective StaticDigraph::Node!
 	StaticDigraph output_graph;
+	ListDigraph::NodeMap<StaticDigraph::Node> list_nodes_to_static_nodes_map(work_graph);
 	DigraphCopy<ListDigraph, StaticDigraph> copy(work_digraph, output_graph);
+	copy.nodeRef(list_nodes_to_static_nodes_map);
 	copy.run();
-	StaticDigraph::NodeMap<string> static_nodes_to_kmers_map(output_graph);
+	
+	for (ListDigraph::NodeIt nodeit(work_graph); nodeit != INVALID; ++nodeit)
+	{
+		StaticDigraph::Node node = list_nodes_to_static_nodes_map[nodeit];
+		nodeLabels[node] = nodes_to_kmers_map[node];
+	}
 	
 	return output_graph;
 }
