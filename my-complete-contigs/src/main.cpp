@@ -107,7 +107,13 @@ void process_genome(ListDigraph& graph,
 
 // StaticDigraph::NodeMap<string>& nodeLabel
 
-pair<StaticDigraph, StaticDigraph::NodeMap<string>>
+// Could not make make_pair to work.
+struct construct_graph_from_genomes_result {
+	StaticDigraph graph;
+	StaticDigraph::NodeMap<string> nodeLabels;
+};
+
+construct_graph_from_genomes_result
 construct_graph_from_genomes(vector<string>& genome_vector, int k)
 {
 	if (k < 2)
@@ -134,15 +140,11 @@ construct_graph_from_genomes(vector<string>& genome_vector, int k)
 	DigraphCopy<ListDigraph, StaticDigraph> copy(work_digraph, output_graph);
 	copy.run();
 	StaticDigraph::NodeMap<string> static_nodes_to_kmers_map(output_graph);
-	/*
-	pair<StaticDigraph,
-	     StaticDigraph::NodeMap<string>> ret_pair = make_pair(output_graph,
-								  static_nodes_to_kmers_map);*/
-	pair<StaticDigraph, StaticDigraph::NodeMap<string>> ret_pair = make_pair<StaticDigraph, StaticDigraph::NodeMap<string>>(output_graph, static_nodes_to_kmers_map);
 	
-	// Convert ListDigraph::NodeMap<string> to StaticDigraph::NodeMap<string>:
-	//return make_pair(output_graph, static_nodes_to_kmers_map);
-	return ret_pair;	
+	construct_graph_from_genomes_result result;
+	result.graph = output_graph;
+	result.nodeLabels = static_nodes_to_kmers_map;
+	return result;
 }
 
 void test_construct_graph_from_genomes()
