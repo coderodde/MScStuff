@@ -5,6 +5,7 @@
 #include <limits>
 #include <lemon/network_simplex.h>
 #include <unordered_set>
+#include <utility>
 
 using std::runtime_error;
 using namespace std;
@@ -106,7 +107,7 @@ void process_genome(ListDigraph& graph,
 
 // StaticDigraph::NodeMap<string>& nodeLabel
 
-//pair<StaticDigraph, StaticDigraph::NodeMap<string>>
+pair<StaticDigraph, StaticDigraph::NodeMap<string>>
 void construct_graph_from_genomes(vector<string>& genome_vector, int k)
 {
 	if (k < 2)
@@ -134,8 +135,13 @@ void construct_graph_from_genomes(vector<string>& genome_vector, int k)
 	copy.run();
 	StaticDigraph::NodeMap<string> static_nodes_to_kmers_map(output_graph);
 	
+	pair<StaticDigraph,
+	     StaticDigraph::NodeMap<string>> ret_pair = make_pair(output_graph,
+								  static_nodes_to_kmers_map);
+	
 	// Convert ListDigraph::NodeMap<string> to StaticDigraph::NodeMap<string>:
 	//return make_pair(output_graph, static_nodes_to_kmers_map);
+	return ret_pair;
 }
 
 void test_construct_graph_from_genomes()
