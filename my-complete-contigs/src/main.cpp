@@ -39,21 +39,28 @@ void test_build_kmer()
 		cout << s << endl;
 	}
 	
+	/*
 	ListDigraph tmp;
 	ListDigraph::Node n1 = tmp.addNode();
 	ListDigraph::Node n2 = tmp.addNode();
 	tmp.addArc(n1, n2);
 	tmp.addArc(n1, n2);
 	tmp.addArc(n1, n2);
-	cout << "Arcs: " << countArcs(tmp) << endl;	
+	cout << "Arcs: " << countArcs(tmp) << endl;
+	*/
 }
 
-bool node_map_contains_kmer(map<string, ListDigraph::Node>& node_map, string& kmer)
+bool node_map_contains_kmer(map<string, ListDigraph::Node>& node_map,
+			    string& kmer)
 {
 	return node_map.find(kmer) != node_map.end();
 }
 
-void process_genome(ListDigraph& graph, map<string, ListDigraph::Node>& node_map, string& genome_string, int k)
+void process_genome(ListDigraph& graph,
+		    map<string, ListDigraph::Node>& node_map,
+		    map<int, map<int, bool>>& arc_matrix,
+		    string& genome_string,
+		    int k)
 {
 	string previous_kmer = build_kmer(genome_string, genome_string.size() - 1, k);
 	
@@ -77,7 +84,18 @@ void process_genome(ListDigraph& graph, map<string, ListDigraph::Node>& node_map
 		}
 		
 		ListDigraph::Node previous_node = node_map[previous_kmer];
-		graph.addArc(previous_node, current_node);
+		
+		int previous_node_id = graph.id(previous_node);
+		int current_node_id = graph.id(current_node);
+		
+		if (!arc_matrix[previous_node_id][current_node_id])
+		{
+			// The problem I wish to avoid is the fact that a
+			// ListDigraph allows multiple arcs (in the same direction) for each pair of nodes.
+			arc_matrix[previous_node_id][current_node_id] = true;
+			graph.addArc(previous_node, current_node);
+		}
+		
 		previous_kmer = current_kmer;
 	}
 }
