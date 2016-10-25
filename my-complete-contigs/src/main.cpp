@@ -45,12 +45,12 @@ void test_build_kmer()
 	tmp.addArc(n1, n2);
 	tmp.addArc(n1, n2);
 	tmp.addArc(n1, n2);
-	cout << "Arcs: " << countArcs(tmp) << endl;
+	cout << "Arcs: " << countArcs(tmp) << endl;	
 }
 
 bool node_map_contains_kmer(map<string, ListDigraph::Node>& node_map, string& kmer)
 {
-	return map.find(kmer) != map.end();
+	return node_map.find(kmer) != node_map.end();
 }
 
 void process_genome(ListDigraph& graph, map<string, ListDigraph::Node>& node_map, string& genome_string, int k)
