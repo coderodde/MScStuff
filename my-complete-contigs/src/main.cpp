@@ -134,10 +134,11 @@ construct_graph_from_genomes(vector<string>& genome_vector, int k)
 	DigraphCopy<ListDigraph, StaticDigraph> copy(work_digraph, output_graph);
 	copy.run();
 	StaticDigraph::NodeMap<string> static_nodes_to_kmers_map(output_graph);
-	
+	/*
 	pair<StaticDigraph,
 	     StaticDigraph::NodeMap<string>> ret_pair = make_pair(output_graph,
-								  static_nodes_to_kmers_map);
+								  static_nodes_to_kmers_map);*/
+	auto ret_pair = make_pair(output_graph, static_nodes_to_kmers_map);
 	
 	// Convert ListDigraph::NodeMap<string> to StaticDigraph::NodeMap<string>:
 	//return make_pair(output_graph, static_nodes_to_kmers_map);
