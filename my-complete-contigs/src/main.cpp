@@ -106,8 +106,8 @@ void process_genome(ListDigraph& graph,
 
 // StaticDigraph::NodeMap<string>& nodeLabel
 
-pair<StaticDigraph, StaticDigraph::NodeMap<string>>
-construct_graph_from_genomes(vector<string>& genome_vector, int k)
+//pair<StaticDigraph, StaticDigraph::NodeMap<string>>
+void construct_graph_from_genomes(vector<string>& genome_vector, int k)
 {
 	if (k < 2)
 	{
@@ -135,7 +135,7 @@ construct_graph_from_genomes(vector<string>& genome_vector, int k)
 	StaticDigraph::NodeMap<string> static_nodes_to_kmers_map(output_graph);
 	
 	// Convert ListDigraph::NodeMap<string> to StaticDigraph::NodeMap<string>:
-	return make_pair(output_graph, static_nodes_to_kmers_map);
+	//return make_pair(output_graph, static_nodes_to_kmers_map);
 }
 
 void test_construct_graph_from_genomes()
