@@ -111,6 +111,13 @@ void process_genome(ListDigraph& graph,
 struct construct_graph_from_genomes_result {
 	StaticDigraph graph;
 	StaticDigraph::NodeMap<string> nodeLabels;
+	
+	construct_graph_from_genomes_result(StaticDigraph& graph_,
+					    StaticDigraph::NodeMap<string>& nodeLabels_)
+	:
+	graph{graph_},
+	nodeLabels{nodeLabels_}
+	{}
 };
 
 construct_graph_from_genomes_result
