@@ -40,7 +40,7 @@ void test_build_kmer()
 
 void process_genome(ListDigraph& graph, map<string, ListDigraph::Node>& node_map, string& genome_string, int k)
 {
-	string previous_kmer = build_kmer(genome_string, genome_string.size() - 1; k);
+	string previous_kmer = build_kmer(genome_string, genome_string.size() - 1, k);
 	
 	for (int start_index = 0; start_index < genome_string.size(); ++start_index)
 	{
