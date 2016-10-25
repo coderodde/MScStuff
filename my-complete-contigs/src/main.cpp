@@ -164,18 +164,20 @@ void test_construct_graph_from_genomes()
 	for (StaticDigraph::NodeIt nodeit(*p_graph); nodeit != INVALID; ++nodeit)
 	{
 		cout << "Node [" << (*p_nodeLabels)[nodeit] << "]: ";
-		cout << "incoming: ";
+		cout << "incoming:";
 		
 		for (StaticDigraph::InArcIt arcit(*p_graph, nodeit); arcit != INVALID; ++arcit)
 		{
-			
+			StaticDigraph::Node parent = p_graph->source(arcit);
+			cout << " " << (*p_nodeLabels)[parent];
 		}
 		
-		cout << ", outgoing: ";
+		cout << ", outgoing:";
 		
 		for (StaticDigraph::OutArcIt arcit(*p_graph, nodeit); arcit != INVALID; ++arcit)
 		{
-			
+			StaticDigraph::Node child = p_graph->target(arcit);
+			cout << " " << (*p_nodeLabels)[parent];
 		}
 		
 		cout << endl;
