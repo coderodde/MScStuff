@@ -23,6 +23,7 @@ string build_kmer(string genome_string, int start_index, int k)
 	return ret;
 }
 
+// Passes the test!
 void test_build_kmer()
 {
 	string genome_string = "CGATATAG";
@@ -37,15 +38,47 @@ void test_build_kmer()
 	{
 		cout << s << endl;
 	}
+	
+	ListDigraph tmp;
+	ListDigraph::Node n1 = tmp.addNode();
+	ListDigraph::Node n2 = tmp.addNode();
+	tmp.addArc(n1, n2);
+	tmp.addArc(n1, n2);
+	tmp.addArc(n1, n2);
+	cout << "Arcs: " << countArcs(tmp) << endl;
+}
+
+bool node_map_contains_kmer(map<string, ListDigraph::Node>& node_map, string& kmer)
+{
+	return map.find(kmer) != map.end();
 }
 
 void process_genome(ListDigraph& graph, map<string, ListDigraph::Node>& node_map, string& genome_string, int k)
 {
 	string previous_kmer = build_kmer(genome_string, genome_string.size() - 1, k);
 	
+	if (!node_map_contains_kmer(node_map, previous_kmer))
+	{
+		node_map[previous_kmer] = graph.addNode();
+	}
+	
 	for (int start_index = 0; start_index < genome_string.size(); ++start_index)
 	{
 		string current_kmer = build_kmer(genome_string, start_index, k);
+		ListDigraph::Node current_node;
+		
+		if (!node_map_contains_kmer(node_map, current_kmer))
+		{
+			current_node = graph.addNode();
+		}
+		else
+		{
+			current_node = node_map[current_kmer];
+		}
+		
+		previous_node = node_map[previous_kmer];
+		graph.addArc(previous_node, current_node);
+		previous_kmer = current_kmer;
 	}
 }
 
