@@ -41,6 +41,7 @@ void test_build_kmer()
 	}
 	
 	/*
+	 // Lemon allows parallel arcs. :-(
 	ListDigraph tmp;
 	ListDigraph::Node n1 = tmp.addNode();
 	ListDigraph::Node n2 = tmp.addNode();
@@ -105,8 +106,6 @@ void process_genome(ListDigraph& graph,
 	}
 }
 
-// StaticDigraph::NodeMap<string>& nodeLabel
-
 StaticDigraph construct_graph_from_genomes(vector<string>& genome_vector,
 					   int k,
 					   StaticDigraph::NodeMap<string>& nodeLabels)
@@ -150,7 +149,9 @@ StaticDigraph construct_graph_from_genomes(vector<string>& genome_vector,
 void test_construct_graph_from_genomes()
 {
 	vector<string> genome_vector {"CGATATAG"};
-	StaticDigraph graph;
+	StaticDigraph::NodeMap<string> nodeLabels;
+	StaticDigraph graph = construct_graph_from_genomes(genome_vector, 3, nodeLabels);
+	cout << "Yeah!" << endl;
 }
 
 int N_THREADS;
@@ -2682,7 +2683,7 @@ int main(int argc, char **argv)
 	//test_a_matrix_algo();
 	//test_cycle_reconstruction();
 	//test_cycle_reconstruction_2();
-	
+	test_construct_graph_from_genomes();
 	test_build_kmer();
 	
 	exit(0);
