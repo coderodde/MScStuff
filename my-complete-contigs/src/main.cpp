@@ -161,8 +161,6 @@ void test_construct_graph_from_genomes()
 	StaticDigraph* p_graph = result.p_graph;
 	StaticDigraph::NodeMap<string>* p_nodeLabels = result.p_nodeLabels;
 	
-	cout << "Mappings: " << p_nodeLabels->size() << endl;
-	
 	for (StaticDigraph::NodeIt nodeit(*p_graph); nodeit != INVALID; ++nodeit)
 	{
 		cout << "Node [" << (*p_nodeLabels)[nodeit] << "]: ";
