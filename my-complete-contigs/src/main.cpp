@@ -80,7 +80,7 @@ void process_genome(ListDigraph& graph,
 		if (!node_map_contains_kmer(node_map, current_kmer))
 		{
 			current_node = graph.addNode();
-			nodes_to_kmers_map[current_node] = current_node;
+			nodes_to_kmers_map[current_node] = current_kmer;
 		}
 		else
 		{
