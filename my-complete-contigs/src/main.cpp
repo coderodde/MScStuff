@@ -157,7 +157,7 @@ graph_result construct_graph_from_genomes(vector<string>& genome_vector, int k)
 void test_construct_graph_from_genomes()
 {
 	vector<string> genome_vector {"CGATATAG"};
-	graph_result result = StaticDigraph graph = construct_graph_from_genomes(genome_vector, 3);
+	graph_result result = construct_graph_from_genomes(genome_vector, 3);
 	
 	cout << "Yeah!" << endl;
 }
