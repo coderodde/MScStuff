@@ -177,7 +177,7 @@ void test_construct_graph_from_genomes()
 		for (StaticDigraph::OutArcIt arcit(*p_graph, nodeit); arcit != INVALID; ++arcit)
 		{
 			StaticDigraph::Node child = p_graph->target(arcit);
-			cout << " " << (*p_nodeLabels)[parent];
+			cout << " " << (*p_nodeLabels)[child];
 		}
 		
 		cout << endl;
