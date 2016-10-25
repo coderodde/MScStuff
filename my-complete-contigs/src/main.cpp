@@ -106,9 +106,12 @@ void process_genome(ListDigraph& graph,
 	}
 }
 
-StaticDigraph construct_graph_from_genomes(vector<string>& genome_vector,
-					   int k,
-					   StaticDigraph::NodeMap<string>& nodeLabels)
+struct graph_result {
+	StaticDigraph* p_graph;
+	StaticDigraph::NodeMap<string>* p_nodeLabels;
+};
+
+graph_result construct_graph_from_genomes(vector<string>& genome_vector, int k)
 {
 	if (k < 2)
 	{
@@ -131,26 +134,31 @@ StaticDigraph construct_graph_from_genomes(vector<string>& genome_vector,
 	}
 	
 	// We need to map each ListDigraph::Node to its respective StaticDigraph::Node!
-	StaticDigraph output_graph;
+	StaticDigraph* p_output_graph = new StaticDigraph;
 	ListDigraph::NodeMap<StaticDigraph::Node> list_nodes_to_static_nodes_map(work_graph);
 	DigraphCopy<ListDigraph, StaticDigraph> copy(work_graph, output_graph);
 	copy.nodeRef(list_nodes_to_static_nodes_map);
 	copy.run();
 	
+	StaticDigraph::NodeMap<string>* p_nodeLabels = new StaticDigraph::NodeMap<string>(*p_output_graph);
+	
 	for (ListDigraph::NodeIt nodeit(work_graph); nodeit != INVALID; ++nodeit)
 	{
 		StaticDigraph::Node node = list_nodes_to_static_nodes_map[nodeit];
-		nodeLabels[node] = nodes_to_kmers_map[nodeit];
+		(*p_nodeLabels)[node] = nodes_to_kmers_map[nodeit];
 	}
 	
-	return output_graph;
+	graph_result result;
+	result.p_graph = p_output_graph;
+	result.p_nodeLabels = ;
+	return result;
 }
 
 void test_construct_graph_from_genomes()
 {
 	vector<string> genome_vector {"CGATATAG"};
-	StaticDigraph::NodeMap<string> nodeLabels;
-	StaticDigraph graph = construct_graph_from_genomes(genome_vector, 3, nodeLabels);
+	graph_result result = StaticDigraph graph = construct_graph_from_genomes(genome_vector, 3);
+	
 	cout << "Yeah!" << endl;
 }
 
