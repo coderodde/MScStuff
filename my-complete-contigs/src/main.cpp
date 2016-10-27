@@ -178,6 +178,33 @@ graph_result construct_graph_from_genomes(vector<string>& genome_vector, int k)
 		}
 	}
 	
+	unordered_map<int, unordered_map<int, bool>> arc_filter;
+	
+	// Create all the arcs:
+	for (const string& genome_string : genome_vector)
+	{
+		string previous_label = build_kmer(genome_string, genome_string.length() - 1, k);
+		
+		for (int start_index = 0; start_index < geome_string.length(); ++start_index)
+		{
+			string current_label = build_kmer(genome_string, start_index, k);
+			
+			ListDigraph::Node tail_node = node_labels_to_list_digraph_nodes[previous_label];
+			ListDigraph::Node head_node = node_labels_to_list_digraph_nodes[current_label];
+			
+			int tail_node_id = list_digraph->id(tail_node);
+			int head_node_id = list_digraph->id(head_node);
+			
+			if (!arc_filter[tail_node_id][head_node_id])
+			{
+				arc_filter[tail_node_id][head_node_id] = true;
+				list_digraph->addArc(tail_node, head_node);
+			}
+			
+			previous_label = current_label;
+		}
+	}
+	
 	StaticDigraph* output_digraph = new StaticDigraph;
 	StaticDigraph::NodeMap<string>* output_digraph_node_labels =
 		new StaticDigraph::NodeMap<string>(*output_digraph);
@@ -189,7 +216,7 @@ graph_result construct_graph_from_genomes(vector<string>& genome_vector, int k)
 	graph_result result = { output_digraph, output_digraph_node_labels };
 	return result;
 }
-
+	
 void test_unnamed_1()
 {
 	vector<string> genome_string_vector { "CGATATAG" };
