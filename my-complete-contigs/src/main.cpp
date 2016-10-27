@@ -227,7 +227,24 @@ void test_unnamed_1()
 	
 	for (StaticDigraph::NodeIt nodeit(*graph); nodeit != INVALID; ++nodeit)
 	{
-		cout << graph->id(nodeit) << ": " << (*labels)[nodeit] << endl;
+		cout << graph->id(nodeit) << ": " << (*labels)[nodeit];
+		cout << "; incoming labels:";
+		
+		for (StaticDigraph::InArcIt arcit(*graph); arcit != INVALID; ++arcit)
+		{
+			StaticDigraph::Node source = graph->source(arcit);
+			cout << " " << (*labels)[source];
+		}
+		
+		cout << "; outgoing labels:";
+		
+		for (StaticDigraph::OutArcIt arcit(*graph); arcit != INVALID; ++arcit)
+		{
+			StaticDigraph::Node target = graph->target(arcit);
+			cout << " " << (*labels)[target];
+		}
+		
+		cout << endl;
 	}
 }
 
