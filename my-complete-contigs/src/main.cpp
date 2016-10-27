@@ -19,7 +19,7 @@ vector<string> get_vector_of_genome_file_names(string genome_list_file_name)
 	vector<string> genome_file_name_vector;
 	char line[1024];
 	
-	while (genome_list_file.good())
+	while (genome_list_file.good() && !genome_list_file.eof())
 	{
 		genome_list_file.getline(line, sizeof(line));
 		genome_file_name_vector.push_back(string(line));
