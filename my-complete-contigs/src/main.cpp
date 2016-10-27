@@ -6,11 +6,27 @@
 #include <lemon/network_simplex.h>
 #include <unordered_set>
 #include <utility>
+#include <fstream>
 
 using std::runtime_error;
 using namespace std;
 using namespace lemon;
 using rodde::current_time::milliseconds;
+
+vector<string> get_vector_of_genome_file_names(string genome_list_file_name)
+{
+	istream genome_list_file{genome_list_file_name};
+	vector<string> genome_file_name_vector;
+	char line[1024];
+	
+	while (genome_list_file.good())
+	{
+		genome_list_file.getline(line, sizeof(line));
+		genome_file_name_vector.push_back(string(line));
+	}
+	
+	return genome_file_name_vector;
+}
 
 string build_kmer(string genome_string, int start_index, int k)
 {
