@@ -230,7 +230,7 @@ void test_unnamed_1()
 		cout << graph->id(nodeit) << ": " << (*labels)[nodeit];
 		cout << "; incoming labels:";
 		
-		for (StaticDigraph::InArcIt arcit(*graph); arcit != INVALID; ++arcit)
+		for (StaticDigraph::InArcIt arcit(*graph, nodeit); arcit != INVALID; ++arcit)
 		{
 			StaticDigraph::Node source = graph->source(arcit);
 			cout << " " << (*labels)[source];
@@ -238,7 +238,7 @@ void test_unnamed_1()
 		
 		cout << "; outgoing labels:";
 		
-		for (StaticDigraph::OutArcIt arcit(*graph); arcit != INVALID; ++arcit)
+		for (StaticDigraph::OutArcIt arcit(*graph, nodeit); arcit != INVALID; ++arcit)
 		{
 			StaticDigraph::Node target = graph->target(arcit);
 			cout << " " << (*labels)[target];
