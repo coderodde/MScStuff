@@ -2715,9 +2715,7 @@ int main(int argc, char **argv)
 	//////////////////////////////////////////
 	//////////////////////////////////////////
 	//////////////////////////////////////////
-	
-	fds
-	
+
 	StaticDigraph graph;
 	StaticDigraph::NodeMap<size_t> length(graph);
 	StaticDigraph::NodeMap<size_t> seqStart(graph);
