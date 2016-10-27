@@ -2700,12 +2700,23 @@ int main(int argc, char **argv)
 	//test_construct_graph_from_genomes();
 	//test_build_kmer();
 	
-	//exit(0);
+	
+	vector<string> genome_file_name_vector =
+	get_vector_of_genome_file_names(TARGET_LIST);
+	
+	for (const auto& s : genome_file_name_vector)
+	{
+		cout << s << endl;
+	}
+	
+	exit(0);
 	
 	//////////////////////////////////////////
 	//////////////////////////////////////////
 	//////////////////////////////////////////
 	//////////////////////////////////////////
+	
+	fds
 	
 	StaticDigraph graph;
 	StaticDigraph::NodeMap<size_t> length(graph);
