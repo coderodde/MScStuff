@@ -187,6 +187,7 @@ graph_result construct_graph_from_genomes(vector<string>& genome_vector, int k)
 	copy.run();
 	
 	graph_result result = { output_digraph, output_digraph_node_labels };
+	return result;
 }
 
 void test_unnamed_1()
