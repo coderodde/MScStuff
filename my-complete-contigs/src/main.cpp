@@ -2680,10 +2680,10 @@ int main(int argc, char **argv)
 	//test_a_matrix_algo();
 	//test_cycle_reconstruction();
 	//test_cycle_reconstruction_2();
-	test_construct_graph_from_genomes();
+	//test_construct_graph_from_genomes();
 	//test_build_kmer();
 	
-	exit(0);
+	//exit(0);
 	
 	//////////////////////////////////////////
 	//////////////////////////////////////////
