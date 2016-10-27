@@ -1,2 +1,2 @@
-cd my-complete-contigs
-./run
+#echo Running the complete-contigs with Arcobacter_nitrofigilis.fna
+./my-complete-contigs/bin/complete-contigs data/Arcobacter_nitrofigilis.fna
