@@ -1,2 +1,2 @@
-#echo Running the complete-contigs with Arcobacter_nitrofigilis.fna
-./my-complete-contigs/bin/complete-contigs -i data/Arcobacter_nitrofigilis.fna
+#echo Running the complete-contigs for TARGET_LIST
+./my-complete-contigs/bin/complete-contigs --list-file TARGET_LIST
