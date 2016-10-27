@@ -111,7 +111,7 @@ struct graph_result {
 	StaticDigraph::NodeMap<string>* p_nodeLabels;
 };
 
-graph_result construct_graph_from_genomes(vector<string>& genome_vector, int k)
+graph_result construct_graph_from_genomes_old(vector<string>& genome_vector, int k)
 {
 	if (k < 2)
 	{
@@ -154,6 +154,48 @@ graph_result construct_graph_from_genomes(vector<string>& genome_vector, int k)
 	return result;
 }
 
+graph_result construct_graph_from_genomes(vector<string>& genome_vector, int k)
+{
+	ListDigraph* list_digraph = new ListDigraph;
+	ListDigraph::NodeMap<string>* list_digraph_node_labels = new ListDigraph::NodeMap<string>(*list_digraph);
+	
+	unordered_map<string, ListDigraph::Node> node_labels_to_list_digraph_nodes;
+	
+	// Create all the nodes:
+	for (const string& genome_string : genome_vector)
+	{
+		for (int start_index = 0; start_index < genome_string.length(); ++start_index)
+		{
+			string node_label = build_kmer(genome_string, start_index, k);
+			
+			if (node_labels_to_list_digraph_nodes.find(node_label) ==
+			    node_labels_to_list_digraph_nodes.end())
+			{
+				ListDigraph::Node new_node = list_digraph.addNode();
+				node_labels_to_list_digraph_nodes[node_label] = new_node;
+				list_digraph_node_labels[new_node] = node_label;
+			}
+		}
+	}
+	
+	StaticDigraph* output_digraph = new StaticDigraph;
+	StaticDigraph::NodeMap<string>* output_digraph_node_labels =
+		new StaticDigraph::NodeMap<string>(*output_digraph);
+		
+	DigraphCopy<ListDigraph, StaticDigraph> copy(*list_digraph, *output_digraph);
+	copy.nodeMap(*list_digraph_node_labels, *output_digraph_node_labels);
+	copy.run();
+	
+	graph_result result = { output_digraph, list_digraph_node_labels };
+}
+
+void test_unnamed_1()
+{
+	vector<string> genome_string_vector { "CGATATAG" };
+	graph_result result = construct_graph_genomes(genome_string_vector, 3);
+	
+}
+
 void test_construct_graph_from_genomes()
 {
 	vector<string> genome_vector {"CGATATAG"};
@@ -183,6 +225,8 @@ void test_construct_graph_from_genomes()
 		cout << endl;
 	}
 }
+
+
 
 int N_THREADS;
 
@@ -2713,8 +2757,9 @@ int main(int argc, char **argv)
 	//test_a_matrix_algo();
 	//test_cycle_reconstruction();
 	//test_cycle_reconstruction_2();
-	test_construct_graph_from_genomes();
-	test_build_kmer();
+	test_unnamed_1();
+	//test_construct_graph_from_genomes();
+	//test_build_kmer();
 	
 	exit(0);
 	
