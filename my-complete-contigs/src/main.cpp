@@ -171,9 +171,9 @@ graph_result construct_graph_from_genomes(vector<string>& genome_vector, int k)
 			if (node_labels_to_list_digraph_nodes.find(node_label) ==
 			    node_labels_to_list_digraph_nodes.end())
 			{
-				ListDigraph::Node new_node = list_digraph.addNode();
+				ListDigraph::Node new_node = list_digraph->addNode();
 				node_labels_to_list_digraph_nodes[node_label] = new_node;
-				list_digraph_node_labels[new_node] = node_label;
+				(*list_digraph_node_labels)[new_node] = node_label;
 			}
 		}
 	}
@@ -186,13 +186,13 @@ graph_result construct_graph_from_genomes(vector<string>& genome_vector, int k)
 	copy.nodeMap(*list_digraph_node_labels, *output_digraph_node_labels);
 	copy.run();
 	
-	graph_result result = { output_digraph, list_digraph_node_labels };
+	graph_result result = { output_digraph, output_digraph_node_labels };
 }
 
 void test_unnamed_1()
 {
 	vector<string> genome_string_vector { "CGATATAG" };
-	graph_result result = construct_graph_genomes(genome_string_vector, 3);
+	graph_result result = construct_graph_from_genomes(genome_string_vector, 3);
 	
 }
 
