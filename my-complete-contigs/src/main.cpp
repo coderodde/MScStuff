@@ -194,6 +194,13 @@ void test_unnamed_1()
 	vector<string> genome_string_vector { "CGATATAG" };
 	graph_result result = construct_graph_from_genomes(genome_string_vector, 3);
 	
+	StaticDigraph* graph = result->p_graph;
+	StaticDigraph::NodeMap<string>* labels = result->p_nodeLabels;
+	
+	for (StaticDigraph::NodeIt nodeit(*graph); nodeit != INVALID; ++nodeit)
+	{
+		cout << graph->id(nodeit) << ": " << (*labels)[nodeit] << endl;
+	}
 }
 
 void test_construct_graph_from_genomes()
