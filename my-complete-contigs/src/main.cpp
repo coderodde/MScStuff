@@ -15,7 +15,7 @@ using rodde::current_time::milliseconds;
 
 vector<string> get_vector_of_genome_file_names(string genome_list_file_name)
 {
-	istream genome_list_file{genome_list_file_name};
+	ifstream genome_list_file(genome_list_file_name);
 	vector<string> genome_file_name_vector;
 	char line[1024];
 	
@@ -25,6 +25,7 @@ vector<string> get_vector_of_genome_file_names(string genome_list_file_name)
 		genome_file_name_vector.push_back(string(line));
 	}
 	
+	genome_list_file.close();
 	return genome_file_name_vector;
 }
 
