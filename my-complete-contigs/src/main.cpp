@@ -2702,7 +2702,7 @@ int main(int argc, char **argv)
 	
 	
 	vector<string> genome_file_name_vector =
-	get_vector_of_genome_file_names(TARGET_LIST);
+	get_vector_of_genome_file_names("TARGET_LIST");
 	
 	for (const auto& s : genome_file_name_vector)
 	{
