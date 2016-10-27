@@ -185,7 +185,7 @@ graph_result construct_graph_from_genomes(vector<string>& genome_vector, int k)
 	{
 		string previous_label = build_kmer(genome_string, genome_string.length() - 1, k);
 		
-		for (int start_index = 0; start_index < geome_string.length(); ++start_index)
+		for (int start_index = 0; start_index < genome_string.length(); ++start_index)
 		{
 			string current_label = build_kmer(genome_string, start_index, k);
 			
