@@ -52,107 +52,10 @@ void test_build_kmer()
 	*/
 }
 
-bool node_map_contains_kmer(map<string, ListDigraph::Node>& node_map,
-			    string& kmer)
-{
-	return node_map.find(kmer) != node_map.end();
-}
-
-void process_genome(ListDigraph& graph,
-		    ListDigraph::NodeMap<string>& nodes_to_kmers_map,
-		    map<string, ListDigraph::Node>& node_map,
-		    map<int, map<int, bool>>& arc_matrix,
-		    string& genome_string,
-		    int k)
-{
-	string previous_kmer = build_kmer(genome_string, genome_string.size() - 1, k);
-	
-	if (!node_map_contains_kmer(node_map, previous_kmer))
-	{
-		ListDigraph::Node new_node = graph.addNode();
-		node_map[previous_kmer] = new_node;
-		nodes_to_kmers_map[new_node] = previous_kmer;
-	}
-	
-	for (int start_index = 0; start_index < genome_string.size(); ++start_index)
-	{
-		string current_kmer = build_kmer(genome_string, start_index, k);
-		ListDigraph::Node current_node;
-		
-		if (!node_map_contains_kmer(node_map, current_kmer))
-		{
-			current_node = graph.addNode();
-			nodes_to_kmers_map[current_node] = current_kmer;
-		}
-		else
-		{
-			current_node = node_map[current_kmer];
-		}
-		
-		ListDigraph::Node previous_node = node_map[previous_kmer];
-		
-		int previous_node_id = graph.id(previous_node);
-		int current_node_id = graph.id(current_node);
-		
-		if (!arc_matrix[previous_node_id][current_node_id])
-		{
-			// The problem I wish to avoid is the fact that a
-			// ListDigraph allows multiple arcs (in the same direction) for each pair of nodes.
-			arc_matrix[previous_node_id][current_node_id] = true;
-			graph.addArc(previous_node, current_node);
-		}
-		
-		previous_kmer = current_kmer;
-	}
-}
-
 struct graph_result {
 	StaticDigraph* p_graph;
 	StaticDigraph::NodeMap<string>* p_nodeLabels;
 };
-
-graph_result construct_graph_from_genomes_old(vector<string>& genome_vector, int k)
-{
-	if (k < 2)
-	{
-		throw runtime_error{"'k' is less than 2."};	
-	}
-	
-	ListDigraph work_graph;
-	ListDigraph::NodeMap<string> nodes_to_kmers_map(work_graph);	
-	map<string, ListDigraph::Node> node_map;
-	map<int, map<int, bool>> arc_matrix;	
-	
-	for (string& genome_string : genome_vector)
-	{
-		process_genome(work_graph,
-			       nodes_to_kmers_map,
-			       node_map,
-			       arc_matrix,
-			       genome_string,
-			       k);
-	}
-	
-	// We need to map each ListDigraph::Node to its respective StaticDigraph::Node!
-	StaticDigraph* p_output_graph = new StaticDigraph;
-	ListDigraph::NodeMap<StaticDigraph::Node> list_nodes_to_static_nodes_map(work_graph);
-	DigraphCopy<ListDigraph, StaticDigraph> copy(work_graph, *p_output_graph);
-	copy.nodeRef(list_nodes_to_static_nodes_map);
-	copy.run();
-	
-	StaticDigraph::NodeMap<string>* p_nodeLabels = new StaticDigraph::NodeMap<string>(*p_output_graph);
-	
-	for (ListDigraph::NodeIt nodeit(work_graph); nodeit != INVALID; ++nodeit)
-	{
-		StaticDigraph::Node node = list_nodes_to_static_nodes_map[nodeit];
-		(*p_nodeLabels)[node] = nodes_to_kmers_map[nodeit];
-	}
-	
-	graph_result result;
-	result.p_graph = p_output_graph;
-	result.p_nodeLabels = p_nodeLabels;
-	return result;
-}
 
 graph_result construct_graph_from_genomes(vector<string>& genome_vector, int k)
 {
@@ -217,7 +120,7 @@ graph_result construct_graph_from_genomes(vector<string>& genome_vector, int k)
 	return result;
 }
 	
-void test_unnamed_1()
+void test_construct_graph_from_genomes()
 {
 	vector<string> genome_string_vector { "CGATATAG", "AGC" };
 	graph_result result = construct_graph_from_genomes(genome_string_vector, 3);
@@ -247,38 +150,6 @@ void test_unnamed_1()
 		cout << endl;
 	}
 }
-
-void test_construct_graph_from_genomes()
-{
-	vector<string> genome_vector {"CGATATAG"};
-	graph_result result = construct_graph_from_genomes(genome_vector, 3);
-	StaticDigraph* p_graph = result.p_graph;
-	StaticDigraph::NodeMap<string>* p_nodeLabels = result.p_nodeLabels;
-	
-	for (StaticDigraph::NodeIt nodeit(*p_graph); nodeit != INVALID; ++nodeit)
-	{
-		cout << "Node [" << (*p_nodeLabels)[nodeit] << "]: ";
-		cout << "incoming:";
-		
-		for (StaticDigraph::InArcIt arcit(*p_graph, nodeit); arcit != INVALID; ++arcit)
-		{
-			StaticDigraph::Node parent = p_graph->source(arcit);
-			cout << " " << (*p_nodeLabels)[parent];
-		}
-		
-		cout << ", outgoing:";
-		
-		for (StaticDigraph::OutArcIt arcit(*p_graph, nodeit); arcit != INVALID; ++arcit)
-		{
-			StaticDigraph::Node child = p_graph->target(arcit);
-			cout << " " << (*p_nodeLabels)[child];
-		}
-		
-		cout << endl;
-	}
-}
-
-
 
 int N_THREADS;
 
@@ -2809,8 +2680,7 @@ int main(int argc, char **argv)
 	//test_a_matrix_algo();
 	//test_cycle_reconstruction();
 	//test_cycle_reconstruction_2();
-	test_unnamed_1();
-	//test_construct_graph_from_genomes();
+	test_construct_graph_from_genomes();
 	//test_build_kmer();
 	
 	exit(0);
