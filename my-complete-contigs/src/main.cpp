@@ -94,6 +94,7 @@ string read_genome_file(const string& file_name)
 		}
 	}
 	
+	file.close();
 	return genome_string;
 }
 
