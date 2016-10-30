@@ -74,6 +74,41 @@ void test_build_kmer()
 	*/
 }
 
+string read_genome_file(string& file_name)
+{
+	ifstream file(file_name);
+	string genome_string;
+	char line[1024];
+	
+	while (file.good())
+	{
+		file.getline(line, sizeof(line));
+		
+		if (line[0] == '>')
+		{
+			cout << "comment!" << endl;
+		}
+		else
+		{
+			genome_string += line;
+		}
+	}
+	
+	return genome_string;
+}
+
+vector<string> read_genome_files(vector<string>& file_name_vector)
+{
+	vector<string> ret;
+	
+	for (const string& file_name : file_name_vector)
+	{
+		ret.push_back(read_genome_file(file_name));
+	}
+	
+	return ret;
+}
+
 struct graph_result {
 	StaticDigraph* p_graph;
 	StaticDigraph::NodeMap<string>* p_nodeLabels;
@@ -2704,6 +2739,8 @@ void coderodde_processing(string& genome_list_file_name, size_t kmersize)
 	}
 	
 	cout << kmersize << endl;
+	
+	vector<string> genome_string_vector = read_genome_files(genome_file_name_vector);
 }
 
 
