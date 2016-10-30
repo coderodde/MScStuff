@@ -74,7 +74,7 @@ void test_build_kmer()
 	*/
 }
 
-string read_genome_file(string& file_name)
+string read_genome_file(const string& file_name)
 {
 	ifstream file(file_name);
 	string genome_string;
