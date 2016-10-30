@@ -123,8 +123,13 @@ graph_result construct_graph_from_genomes(vector<string>& genome_vector, int k)
 	// Create all the nodes:
 	for (const string& genome_string : genome_vector)
 	{
+		cout << "NEW GENOME OF LENGTH " << genome_string.length() << endl;
+		
 		for (int start_index = 0; start_index < genome_string.length(); ++start_index)
 		{
+			cout << start_index << endl;
+			
+			
 			string node_label = build_kmer(genome_string, start_index, k);
 			
 			if (node_labels_to_list_digraph_nodes.find(node_label) ==
