@@ -84,11 +84,7 @@ string read_genome_file(const string& file_name)
 	{
 		file.getline(line, sizeof(line));
 		
-		if (line[0] == '>')
-		{
-			cout << "comment!" << endl;
-		}
-		else
+		if (line[0] != '>') // Comment lines begin with '>' Ignore them.
 		{
 			genome_string += line;
 		}
@@ -2742,6 +2738,13 @@ void coderodde_processing(string& genome_list_file_name, size_t kmersize)
 	cout << kmersize << endl;
 	
 	vector<string> genome_string_vector = read_genome_files(genome_file_name_vector);
+	
+	graph_result g_r = construct_graph_from_genomes(genome_string_vector, kmersize);
+	
+	StaticDigraph& graph = *g_r.p_graph;
+	StaticDigraph::NodeMap<string>& nodeLabels = *g_r.p_nodeLabels;
+	
+	cout << "[INFO] The result graph has " << countNodes(graph) << " and " << countArcs(graph)  << endl;
 }
 
 
