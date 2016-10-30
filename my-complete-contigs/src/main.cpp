@@ -2729,6 +2729,7 @@ static void test_a_matrix_algo()
 void coderodde_processing(string& genome_list_file_name, size_t kmersize)
 {
 	vector<string> genome_file_name_vector = get_vector_of_genome_file_names(genome_list_file_name);
+	cout << "[INFO] Number of genome files in the list: " << genome_file_name_vector.size() << endl;
 	/*
 	for (string& s : genome_file_name_vector)
 	{
