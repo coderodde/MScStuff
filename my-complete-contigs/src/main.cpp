@@ -2694,6 +2694,19 @@ static void test_a_matrix_algo()
 	}
 }
 
+void coderodde_processing(string& genome_list_file_name, size_t kmersize)
+{
+	vector<string> genome_file_name_vector = get_vector_of_genome_file_names(genome_list_file_name);
+	
+	for (string& s : genome_file_name_vector)
+	{
+		cout << s << endl;
+	}
+	
+	cout << kmersize << endl;
+}
+
+
 int main(int argc, char **argv)
 {
 	//test_certificate_preprocessing();
@@ -2773,10 +2786,6 @@ int main(int argc, char **argv)
 	parser.add_option("-l", "--list-file").type("string").dest("l").set_default("").help("genome list file");
 
 	optparse::Values& options = parser.parse_args(argc, argv);
-	
-	string genome_list_file = (string) options.get("l");
-	
-	cout << "GENOME INPUT FILE NAME: " << genome_list_file << endl;
 
 	inputFileName = (string) options.get("i");
 	input_from_reads = (inputFileName.substr(inputFileName.find_last_of(".") + 1) == "fastq") ? true : false;
@@ -2789,6 +2798,16 @@ int main(int argc, char **argv)
 	do_not_contract_arcs = (options.get("nocontract") ? true : false);
 	do_not_compute_omnitigs = (options.get("noomnitigs") ? true : false);
 	genome_type = (string) options.get("g");
+	
+	// If a genome file list is given, call coderodde_processing and then exit:
+	string genome_list_file_name = (string) options.get("l");
+	
+	if (!genome_list_file_name.empty())
+	{
+		cout << "[INFO]: Genome list file name = " << genome_list_file_name << endl;
+		coderodde_processing(genome_list_file_name, kmersize);
+		return;
+	}
 
 	if (inputFileName == "")
 	{
