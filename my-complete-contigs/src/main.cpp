@@ -118,6 +118,8 @@ graph_result construct_graph_from_genomes(vector<string>& genome_vector, int k)
 	
 	unordered_map<string, ListDigraph::Node> node_labels_to_list_digraph_nodes;
 	
+	cout << "SHIT: creating nodes" << endl;
+	
 	// Create all the nodes:
 	for (const string& genome_string : genome_vector)
 	{
@@ -136,6 +138,8 @@ graph_result construct_graph_from_genomes(vector<string>& genome_vector, int k)
 	}
 	
 	unordered_map<int, unordered_map<int, bool>> arc_filter;
+	
+	cout << "SHIT: creating arcs" << endl;
 	
 	// Create all the arcs:
 	for (const string& genome_string : genome_vector)
@@ -2730,6 +2734,7 @@ void coderodde_processing(string& genome_list_file_name, size_t kmersize)
 {
 	vector<string> genome_file_name_vector = get_vector_of_genome_file_names(genome_list_file_name);
 	cout << "[INFO] Number of genome files in the list: " << genome_file_name_vector.size() << endl;
+
 	/*
 	for (string& s : genome_file_name_vector)
 	{
