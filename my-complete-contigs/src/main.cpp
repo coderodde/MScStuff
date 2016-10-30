@@ -2705,7 +2705,7 @@ int main(int argc, char **argv)
 	//test_construct_graph_from_genomes();
 	//test_build_kmer();
 	
-	
+	/*
 	vector<string> genome_file_name_vector =
 	get_vector_of_genome_file_names("TARGET_LIST");
 	cout << "Total files: " << genome_file_name_vector.size() << endl;
@@ -2715,7 +2715,7 @@ int main(int argc, char **argv)
 		cout << s << endl;
 	}
 	
-	exit(0);
+	exit(0);*/
 	
 	//////////////////////////////////////////
 	//////////////////////////////////////////
@@ -2770,7 +2770,13 @@ int main(int argc, char **argv)
 	parser.add_option("-c", "--nocontract") .action("store_true") .set_default(false) .dest("nocontract") .help("do not contract arcs");
 	parser.add_option("-x", "--noomnitigs") .action("store_true") .set_default(false) .dest("noomnitigs") .help("do not compute omnitigs");
 
+	parser.add_option("-l", "--list-file").type("string").dest("l").set_default("").help("genome list file");
+
 	optparse::Values& options = parser.parse_args(argc, argv);
+	
+	string genome_list_file = (string) options.get("l");
+	
+	cout << "GENOME INPUT FILE NAME: " << genome_list_file << endl;
 
 	inputFileName = (string) options.get("i");
 	input_from_reads = (inputFileName.substr(inputFileName.find_last_of(".") + 1) == "fastq") ? true : false;
