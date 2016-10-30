@@ -2806,7 +2806,7 @@ int main(int argc, char **argv)
 	{
 		cout << "[INFO]: Genome list file name = " << genome_list_file_name << endl;
 		coderodde_processing(genome_list_file_name, kmersize);
-		return;
+		return 0;
 	}
 
 	if (inputFileName == "")
