@@ -2844,6 +2844,7 @@ int main(int argc, char **argv)
 	{
 		cout << "[INFO]: Genome list file name = " << genome_list_file_name << endl;
 		coderodde_processing(genome_list_file_name, kmersize);
+		cout << "[INFO] Done dealing this the file list." << endl;
 		return 0;
 	}
 
