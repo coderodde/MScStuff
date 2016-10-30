@@ -2729,16 +2729,17 @@ static void test_a_matrix_algo()
 void coderodde_processing(string& genome_list_file_name, size_t kmersize)
 {
 	vector<string> genome_file_name_vector = get_vector_of_genome_file_names(genome_list_file_name);
-	
+	/*
 	for (string& s : genome_file_name_vector)
 	{
 		cout << s << endl;
 	}
 	
-	cout << kmersize << endl;
+	cout << kmersize << endl;*/
 	
+	cout << "[INFO] Reading the genome files..." << endl;
 	vector<string> genome_string_vector = read_genome_files(genome_file_name_vector);
-	
+	cout << "[INFO] Constructing the graph..." << endl;
 	graph_result g_r = construct_graph_from_genomes(genome_string_vector, kmersize);
 	
 	StaticDigraph& graph = *g_r.p_graph;
