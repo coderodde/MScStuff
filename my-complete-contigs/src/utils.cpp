@@ -562,7 +562,7 @@ int load_data(string& sequence,
 
 	if (! is_readable(inputFileName + ".k" + std::to_string(kmersize) + "." + genome_type + ".lgf"))
 	{
-		cout << "[DEBUG] !is_readable"
+		cout << "[DEBUG] !is_readable" << endl;
 		ListDigraph temporary_graph;
 		ListDigraph::NodeMap<size_t> temporary_length(temporary_graph);
 		ListDigraph::NodeMap<size_t> temporary_seqStart(temporary_graph);
@@ -603,7 +603,7 @@ int load_data(string& sequence,
 	// THERE IS SOME BUG WHEN NOT LOADING THE GRAPH FROM FILE
 	// SO WE ALWAYS LOAD IT FROM FILE
 	{
-		cout << "[DEBUG] is_readable"
+		cout << "[DEBUG] is_readable" << endl;
 		try 
 		{
 			ListDigraph temporary_graph;
