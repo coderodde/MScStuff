@@ -514,11 +514,11 @@ int my_load_data(vector<string>& sequences,
 	      StaticDigraph& graph,
 	      const string& input_file_name)
 {
-    for (string& sequence : sequences)
-    {
-	cout << "Sequence: " << sequence << endl;
-    }
+    cout << "[DEBUG] my_load_data entered." << endl;
     
+    
+    
+    cout << "[DEBUG] my_load_data exiting." << endl;
     return EXIT_SUCCESS;
 }
 
