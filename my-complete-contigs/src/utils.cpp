@@ -633,7 +633,11 @@ int load_data(string& sequence,
 			// copy temporary_graph into graph
 			ListDigraph::NodeMap<StaticDigraph::Node> nodeRef(temporary_graph);
 			ListDigraph::ArcMap<StaticDigraph::Arc> arcRef(temporary_graph);
+			
+			cout << "[DEBUG] StaticGraph size: " << countNodes(graph) << endl;
 			graph.build(temporary_graph, nodeRef, arcRef);
+			cout << "[DEBUG] StaticGraph size: " << countNodes(graph) << endl;
+			
 			// copy lists
 			for (ListDigraph::NodeIt node(temporary_graph); node != INVALID; ++node)
 			{
