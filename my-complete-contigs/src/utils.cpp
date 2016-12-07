@@ -518,7 +518,7 @@ int my_load_data(vector<string>& sequence_file_vector,
 	         StaticDigraph& graph)
 {
     cout << "[DEBUG] my_load_data entered." << endl;
-    
+    cout << "[DEBUG] kmersize: " << kmersize << endl;
     vector<string> sequence_vector;
     
     for (string& sequence_file_name : sequence_file_vector)
