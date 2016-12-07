@@ -510,7 +510,7 @@ void construct_graph(ListDigraph& graph,
 
 }
 
-int load_data(vector<string>& sequences,
+int my_load_data(vector<string>& sequences,
 	      StaticDigraph& graph,
 	      const string& input_file_name)
 {
