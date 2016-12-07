@@ -2788,8 +2788,13 @@ int main(int argc, char **argv)
 	//////////////////////////////////////////
 	//////////////////////////////////////////
 	StaticDigraph sd;
-	vector<string> vs = {string("hello"), string("and"), string("world")};
-	load_data(vs, sd, string("fds"));
+	vector<string> vs;
+	
+	vs.push_back(string("hello"));
+	vs.push_back(string("and"));
+	vs.push_back(string("world"));
+	
+	my_load_data(vs, sd, string("fds"));
 	exit(0);
 
 	StaticDigraph graph;
