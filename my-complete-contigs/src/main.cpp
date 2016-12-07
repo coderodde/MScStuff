@@ -2787,7 +2787,7 @@ int main(int argc, char **argv)
 	//////////////////////////////////////////
 	//////////////////////////////////////////
 	//////////////////////////////////////////
-	StaticDigraph sd;
+	/*StaticDigraph sd;
 	vector<string> vs;
 	
 	vs.push_back(string("hello"));
@@ -2795,7 +2795,7 @@ int main(int argc, char **argv)
 	vs.push_back(string("world"));
 	
 	my_load_data(vs, sd, string("fds"));
-	exit(0);
+	exit(0);*/
 
 	StaticDigraph graph;
 	StaticDigraph::NodeMap<size_t> length(graph);
