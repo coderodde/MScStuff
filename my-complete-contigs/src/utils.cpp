@@ -510,8 +510,14 @@ void construct_graph(ListDigraph& graph,
 
 }
 
-int load_data(vector<string>& sequences)
+int load_data(vector<string>& sequences,
+	      StaticDigraph& graph,
+	      const string& input_file_name)
 {
+    for (string& sequence : sequences)
+    {
+	cout << "Sequence: " << sequence << endl;
+    }
     
     return EXIT_SUCCESS;
 }
@@ -620,7 +626,7 @@ int load_data(string& sequence,
 				nodeMap("length", temporary_length).
 				nodeMap("seqStart", temporary_seqStart).
 				run();
-			cout << "hello" << endl;
+				
 			// copy temporary_graph into graph
 			ListDigraph::NodeMap<StaticDigraph::Node> nodeRef(temporary_graph);
 			ListDigraph::ArcMap<StaticDigraph::Arc> arcRef(temporary_graph);

@@ -2787,6 +2787,10 @@ int main(int argc, char **argv)
 	//////////////////////////////////////////
 	//////////////////////////////////////////
 	//////////////////////////////////////////
+	StaticDigraph sd;
+	vector<string> vs = {"hello", "and", "world"};
+	load_data(vs, sd, "fds")
+	exit(0);
 
 	StaticDigraph graph;
 	StaticDigraph::NodeMap<size_t> length(graph);
