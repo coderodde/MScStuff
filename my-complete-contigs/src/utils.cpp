@@ -525,6 +525,7 @@ int my_load_data(vector<string>& sequence_file_vector,
     {
 	ifstream sequence_file_stream;
 	string line;
+	string sequence;
 	
 	sequence_file_stream.open(sequence_file_name);
 	getline(sequence_file_stream, line); // Omit the header.
