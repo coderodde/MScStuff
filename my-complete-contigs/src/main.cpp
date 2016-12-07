@@ -2788,7 +2788,7 @@ int main(int argc, char **argv)
 	//////////////////////////////////////////
 	//////////////////////////////////////////
 	StaticDigraph sd;
-	vector<string> vs = {"hello", "and", "world"};
+	vector<string> vs = {string("hello"), string("and"), string("world")};
 	load_data(vs, sd, "fds");
 	exit(0);
 
