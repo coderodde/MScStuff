@@ -2789,7 +2789,7 @@ int main(int argc, char **argv)
 	//////////////////////////////////////////
 	StaticDigraph sd;
 	vector<string> vs = {string("hello"), string("and"), string("world")};
-	load_data(vs, sd, "fds");
+	load_data(vs, sd, string("fds"));
 	exit(0);
 
 	StaticDigraph graph;
