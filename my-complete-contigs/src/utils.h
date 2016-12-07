@@ -129,6 +129,7 @@ void print_graph_in_dot(StaticDigraph& graph,
 	const string genome_type);
 
 int my_load_data(vector<string>& sequence_file_vector,
+		 vector<string>& output_sequence_vector,
 		 const size_t kmersize,
 	         StaticDigraph& graph);
 

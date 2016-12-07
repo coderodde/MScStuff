@@ -514,12 +514,12 @@ void construct_graph(ListDigraph& graph,
 * Loads the files and constructs a graph over all k-mers in those files. *
 *************************************************************************/ 
 int my_load_data(vector<string>& sequence_file_vector,
+		 vector<string>& output_sequence_vector,
 		 const size_t kmersize,
 	         StaticDigraph& graph)
 {
     cout << "[DEBUG] my_load_data entered." << endl;
     cout << "[DEBUG] kmersize: " << kmersize << endl;
-    vector<string> sequence_vector;
     
     for (string& sequence_file_name : sequence_file_vector)
     {
@@ -539,9 +539,7 @@ int my_load_data(vector<string>& sequence_file_vector,
 	make_upper_case(sequence);
 	sequence = sequence + sequence.substr(0, kmersize - 1);
 	cout << "Seg length after:  " << sequence.length() << endl;
-	sequence_vector.push_back(sequence);
-	
-	
+	output_sequence_vector.push_back(sequence);
     }
     
     cout << "[DEBUG] my_load_data exiting." << endl;

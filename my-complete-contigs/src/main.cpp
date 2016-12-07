@@ -2863,10 +2863,16 @@ int main(int argc, char **argv)
 		
 		
 		StaticDigraph gg;
-		
+		vector<string> sequence_vector;
 		my_load_data(genome_file_names,
+			     sequence_vector,
 			     kmersize,
 			     gg);
+		
+		for (string& s : sequence_vector)
+		{
+			cout << s.length() << endl;
+		}
 		
 		cout << "[INFO] Done dealing with this file list." << endl;
 		return 0;
