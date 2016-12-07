@@ -510,13 +510,38 @@ void construct_graph(ListDigraph& graph,
 
 }
 
-int my_load_data(vector<string>& sequences,
-	      StaticDigraph& graph,
-	      const string& input_file_name)
+/*************************************************************************
+* Loads the files and constructs a graph over all k-mers in those files. *
+*************************************************************************/ 
+int my_load_data(vector<string>& sequence_file_vector,
+		 const size_t kmersize,
+	         StaticDigraph& graph)
 {
     cout << "[DEBUG] my_load_data entered." << endl;
     
+    vector<string> sequence_vector;
     
+    for (string& sequence_file_name : sequence_file_vector)
+    {
+	ifstream sequence_file_stream;
+	string line;
+	
+	sequence_file_stream.open(sequence_file_name);
+	getline(sequence_file_stream, line); // Omit the header.
+	
+	while (getline(sequence_file_stream, line))
+	{
+	    sequence += line;
+	}
+	
+	cout << "Seq length before: " << sequence.length() << endl;
+	make_upper_case(sequence);
+	sequence = sequence + sequence.substr(0, kmersize);
+	cout << "Seg length after:  " << sequence.length() << endl;
+	sequence_vector.push_back(sequence);
+	
+	
+    }
     
     cout << "[DEBUG] my_load_data exiting." << endl;
     return EXIT_SUCCESS;

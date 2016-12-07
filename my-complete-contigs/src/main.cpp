@@ -2787,15 +2787,6 @@ int main(int argc, char **argv)
 	//////////////////////////////////////////
 	//////////////////////////////////////////
 	//////////////////////////////////////////
-	/*StaticDigraph sd;
-	vector<string> vs;
-	
-	vs.push_back(string("hello"));
-	vs.push_back(string("and"));
-	vs.push_back(string("world"));
-	
-	my_load_data(vs, sd, string("fds"));
-	exit(0);*/
 
 	StaticDigraph graph;
 	StaticDigraph::NodeMap<size_t> length(graph);
@@ -2867,6 +2858,16 @@ int main(int argc, char **argv)
 	if (!genome_list_file_name.empty())
 	{
 		cout << "[INFO]: Genome list file name = " << genome_list_file_name << endl;
+		vector<string> genome_file_names = get_vector_of_genome_file_names(genome_list_file_name);
+		
+		
+		
+		StaticDigraph gg;
+		
+		my_load_data(genome_file_names,
+			     kmersize,
+			     gg);
+		
 		coderodde_processing(genome_list_file_name, kmersize);
 		cout << "[INFO] Done dealing with this file list." << endl;
 		return 0;
