@@ -620,6 +620,7 @@ int load_data(string& sequence,
 		cout << "[DEBUG] is_readable" << endl;
 		try 
 		{
+			cout << "[DEBUG] sequence.length(): " << sequence.length() << endl;
 			ListDigraph temporary_graph;
 			ListDigraph::NodeMap<size_t> temporary_length(temporary_graph);
 			ListDigraph::NodeMap<size_t> temporary_seqStart(temporary_graph);
@@ -653,6 +654,8 @@ int load_data(string& sequence,
 			return EXIT_FAILURE;
 		}
 	}
+	
+	cout << "[DEBUG] sequence.length(): " << sequence.length() << endl;
 
 	if (is_readable(inputFileName + ".k" + std::to_string(kmersize) + "." + genome_type + ".safepairs"))
 	{
