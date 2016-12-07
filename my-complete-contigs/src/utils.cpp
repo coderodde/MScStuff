@@ -510,6 +510,12 @@ void construct_graph(ListDigraph& graph,
 
 }
 
+int load_data(vector<string>& sequences)
+{
+    
+    return EXIT_SUCCESS;
+}
+
 
 int load_data(string& sequence, 
 	size_t& seqLength, 
@@ -609,12 +615,12 @@ int load_data(string& sequence,
 			ListDigraph temporary_graph;
 			ListDigraph::NodeMap<size_t> temporary_length(temporary_graph);
 			ListDigraph::NodeMap<size_t> temporary_seqStart(temporary_graph);
-
+    
 			digraphReader(temporary_graph, inputFileName + ".k" + std::to_string(kmersize) + "." + genome_type + ".lgf").
 				nodeMap("length", temporary_length).
 				nodeMap("seqStart", temporary_seqStart).
 				run();
-
+			cout << "hello" << endl;
 			// copy temporary_graph into graph
 			ListDigraph::NodeMap<StaticDigraph::Node> nodeRef(temporary_graph);
 			ListDigraph::ArcMap<StaticDigraph::Arc> arcRef(temporary_graph);
