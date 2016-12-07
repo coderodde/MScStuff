@@ -537,7 +537,7 @@ int my_load_data(vector<string>& sequence_file_vector,
 	
 	cout << "Seq length before: " << sequence.length() << endl;
 	make_upper_case(sequence);
-	sequence = sequence + sequence.substr(0, kmersize);
+	sequence = sequence + sequence.substr(0, kmersize - 1);
 	cout << "Seg length after:  " << sequence.length() << endl;
 	sequence_vector.push_back(sequence);
 	
