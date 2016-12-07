@@ -536,13 +536,15 @@ int load_data(string& sequence,
 	set_of_pairs& safe_pairs
 )
 {
+	cout << "[DEBUG] sequence.length(): " << sequence.length() << endl;
 	cout << "[DEBUG] load_data() is here!" << endl;
     
 	string genome_type;
 	if (circular_genome)
 	{
 		genome_type = "circular";
-	} else
+	}
+	else
 	{
 		genome_type = "linear";
 	}
