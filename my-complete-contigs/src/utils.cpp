@@ -411,6 +411,7 @@ void construct_graph(ListDigraph& graph,
 	const size_t seqLength,
 	const int abundance)
 {
+	cout << "[DEBUG] construct_graph is here!" << endl;
 	unordered_map<std::string,int> kmersToNodes;
 	unordered_map<int,int> nodeAbundance;
 	unordered_map<std::string,unordered_set<int>> in_nbrs;
@@ -523,6 +524,8 @@ int load_data(string& sequence,
 	set_of_pairs& safe_pairs
 )
 {
+	cout << "[DEBUG] load_data() is here!" << endl;
+    
 	string genome_type;
 	if (circular_genome)
 	{
@@ -665,6 +668,8 @@ int load_data_from_reads(string& sequence,
 	set_of_pairs& safe_pairs
 )
 {
+	cout << "[DEBUG] load_data_from_reads is here!" << endl;
+    
 	string genome_type;
 	if (circular_genome)
 	{
