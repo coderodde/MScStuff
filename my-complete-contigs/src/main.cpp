@@ -2868,7 +2868,6 @@ int main(int argc, char **argv)
 			     kmersize,
 			     gg);
 		
-		coderodde_processing(genome_list_file_name, kmersize);
 		cout << "[INFO] Done dealing with this file list." << endl;
 		return 0;
 	}
