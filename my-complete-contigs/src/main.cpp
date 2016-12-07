@@ -2914,7 +2914,8 @@ int main(int argc, char **argv)
 		if (EXIT_SUCCESS != load_data(sequence, seqLength, inputFileName, kmersize, circular_genome, do_not_contract_arcs, graph, length, seqStart, nodeLabel, safe_pairs))
 		{
 			return EXIT_FAILURE;
-		}		
+		}
+		cout << "[CHECK2] Graph has " << countNodes(graph) << " nodes." << endl;
 	}
 
 
