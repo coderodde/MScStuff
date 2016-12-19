@@ -429,7 +429,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	// Maybe i <= kmers_limit??
 	for (size_t i = 0; i < kmers_limit; ++i)
 	{
-	    string current_kmer = sequences.substr(i, kmersize);
+	    string current_kmer = sequence.substr(i, kmersize);
 	    
 	    if (current_kmer.find("#") != std::string::npos)
 	    {
@@ -456,7 +456,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 		    if (in_neighbors[current_kmer].count(graph.id(previous_node)) == 0)
 		    {
 			graph.addArc(previous_node, current_node);
-			in_neighbors[current_kmer].insert(graph.id(previousNode));
+			in_neighbors[current_kmer].insert(graph.id(previous_node));
 		    }
 		}
 		
