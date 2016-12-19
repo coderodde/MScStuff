@@ -411,8 +411,12 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
     unordered_map<string, int> kmers_to_nodes;
     unordered_map<string, unordered_set<int>> in_neighbors;
     
+    // This map maps the ID of a node to the set of IDs of its children:
+    unordered_map<int, unordered_set<int>> node_id_to_child_ids;
+    
     ListDigraph::Node current_node, previous_node = INVALID;
     string current_kmer;
+    
     
     for (string& sequence : sequence_vector)
     {
@@ -424,8 +428,33 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	for (size_t i = 0; i != kmers_limit; ++i)
 	{
 	    current_kmer = sequence.substr(i, kmersize);
+	    auto node_id_iter = kmers_to_nodes.find(current_kmer);
 	    
-	    if (current_kmer.find("#") != std::string::npos)
+	    if (node_id_iter == kmers_to_nodes.end())
+	    {
+		ListDigraph::Node new_node = graph.addNode();
+		int new_node_id = graph.id(new_node);
+		kmers_to_nodes[current_kmer] = new_node_id;
+		
+		if (previous_node != INVALID)
+		{
+		    int prev_node_id = graph.id(previous_node);
+		    
+		    if (node_id_to_child_ids[prev_node_id].find(new_node_id) ==
+			node_id_to_child_ids[prev_node_id].end())
+		    {
+			node_id_to_child_ids[prev_node_id].insert(current_node_id);
+			graph.addArc(previous_node, new_node);
+		    }
+		}
+	    }
+	    else
+	    {
+		
+	    }
+	    
+	    previous_node = current_node;
+	    /*if (current_kmer.find("#") != std::string::npos)
 	    {
 		cout << "# shit happened" << endl;
 		previous_node = INVALID;
@@ -455,7 +484,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 		    }
 		}
 		
-		previous_node = current_node;
+		previous_node = current_node;*/
 	    }
 	}
     }
