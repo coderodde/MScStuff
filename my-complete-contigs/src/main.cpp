@@ -2862,8 +2862,8 @@ int main(int argc, char **argv)
 		vector<string> genome_sequences = read_genome_files(genome_file_names);
 		
 		ListDigraph temporary_graph;
-		ListDigraph::NodeMap<size_t> temporary_graph_length;
-		ListDigraph::NodeMap<size_t> temporary_graph_seq_start;
+		ListDigraph::NodeMap<size_t> temporary_graph_length(temporary_graph);
+		ListDigraph::NodeMap<size_t> temporary_graph_seq_start(temporary_graph);
 		
 		construct_graph_from_multiple_sequences(temporary_graph,
 							temporary_graph_length,
