@@ -2859,15 +2859,27 @@ int main(int argc, char **argv)
 	{
 		cout << "[INFO]: Genome list file name = " << genome_list_file_name << endl;
 		vector<string> genome_file_names = get_vector_of_genome_file_names(genome_list_file_name);
+		vector<string> genome_sequences = read_genome_files(genome_file_names);
 		
-		StaticDigraph gg;
+		ListDigraph temporary_graph;
+		ListDigraph::NodeMap<size_t> temporary_graph_length;
+		ListDigraph::NodeMap<size_t> temporary_graph_seq_start;
+		
+		construct_graph_from_multiple_sequences(temporary_graph,
+							temporary_graph_length,
+							temporary_graph_seq_start,
+							kmersize,
+							genome_sequences);
+							
+		
+		/*StaticDigraph gg;
 		vector<string> sequence_vector;
 		
 		my_load_data(genome_file_names,
 			     sequence_vector,
 			     kmersize,
 			     gg);
-		
+		*/
 		// Here, 'sequence_vector' is a vector holding DNA sequences from which to
 		// construct the graph.
 		

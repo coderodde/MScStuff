@@ -401,6 +401,26 @@ void contract_arcs_from_reads(ListDigraph& graph,
 
 }
 
+void construct_graph_from_multiple_sequences(ListDigraph& graph,
+					     ListDigraph::NodeMap<size_t>& length,
+					     ListDigraph::NodeMap<size_t>& seqStart,
+					     const size_t kmersize,
+					     vector<string> sequence_vector)
+{
+    cout << "[DEBUG] construct_graph_from_multiple_sequences is here!" << endl;
+    unordered_map<string, int> kmers_to_nodes;
+    unordered_map<string, unordered_set<int>> in_neighbors;
+    
+    ListDigraph::Node current_node, previous_node = INVALID;
+    string current_kmer;
+    
+    for (string& sequence : sequence_vector)
+    {
+	sequence = sequence + sequence.substr(0, kmersize - 1);
+    }
+    
+    cout << "[DEBUG] construct_graph_from_multiple_sequences is done!" << endl;
+}
 
 void construct_graph(ListDigraph& graph, 
 	ListDigraph::NodeMap<size_t>& length, 
