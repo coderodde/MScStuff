@@ -416,19 +416,14 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
     
     for (string& sequence : sequence_vector)
     {
-	size_t a = sequence.length();
+	size_t kmers_limit = sequence.length();
 	sequence = sequence + sequence.substr(0, kmersize - 1);
-	size_t b = sequence.length();
-    }
-    
-    for (string& sequence : sequence_vector)
-    {
-	size_t kmers_limit = sequence.length() - kmersize + 1;
+	string current_kmer;
 	
 	// Maybe i <= kmers_limit??
-	for (size_t i = 0; i < kmers_limit; ++i)
+	for (size_t i = 0; i != kmers_limit; ++i)
 	{
-	    string current_kmer = sequence.substr(i, kmersize);
+	    current_kmer = sequence.substr(i, kmersize);
 	    
 	    if (current_kmer.find("#") != std::string::npos)
 	    {
