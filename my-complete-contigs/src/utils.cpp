@@ -419,7 +419,6 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	size_t a = sequence.length();
 	sequence = sequence + sequence.substr(0, kmersize - 1);
 	size_t b = sequence.length();
-	cout << "yeah " << a << ": " << b << endl;
     }
     
     for (string& sequence : sequence_vector)
@@ -465,8 +464,8 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	}
     }
     
-    cout << "[DEBUG] The result graph has " << countNodes(graph) << endl;
-    cout << "[DEBUG] The reuslt graph has " << countArcs(graph) << endl;
+    cout << "[DEBUG] The result graph has " << countNodes(graph) << " nodes." << endl;
+    cout << "[DEBUG] The reuslt graph has " << countArcs(graph) << " arcs." << endl;
     cout << "[DEBUG] construct_graph_from_multiple_sequences is done!" << endl;
 }
 
