@@ -416,9 +416,57 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
     
     for (string& sequence : sequence_vector)
     {
+	size_t a = sequence.length();
 	sequence = sequence + sequence.substr(0, kmersize - 1);
+	size_t b = sequence.length();
+	cout << "yeah " << a << ": " << b << endl;
     }
     
+    for (string& sequence : sequence_vector)
+    {
+	size_t kmers_limit = sequence.length() - kmersize + 1;
+	
+	// Maybe i <= kmers_limit??
+	for (size_t i = 0; i < kmers_limit; ++i)
+	{
+	    string current_kmer = sequences.substr(i, kmersize);
+	    
+	    if (current_kmer.find("#") != std::string::npos)
+	    {
+		previous_node = INVALID;
+	    }
+	    else
+	    {
+		// Maybe use find()??
+		if (kmers_to_nodes.count(current_kmer) > 0)
+		{
+		    current_node = graph.nodeFromId(kmers_to_nodes[current_kmer]);
+		}
+		else
+		{
+		    current_node = graph.addNode();
+		    kmers_to_nodes[current_kmer] = graph.id(current_node);
+		    length[current_node] = kmersize;
+		    seqStart[current_node] = i;
+		}
+		
+		if (previous_node != INVALID)
+		{
+		    // Maybe found()?
+		    if (in_neighbors[current_kmer].count(graph.id(previous_node)) == 0)
+		    {
+			graph.addArc(previous_node, current_node);
+			in_neighbors[current_kmer].insert(graph.id(previousNode));
+		    }
+		}
+		
+		previous_node = current_node;
+	    }
+	}
+    }
+    
+    cout << "[DEBUG] The result graph has " << countNodes(graph) << endl;
+    cout << "[DEBUG] The reuslt graph has " << countArcs(graph) << endl;
     cout << "[DEBUG] construct_graph_from_multiple_sequences is done!" << endl;
 }
 
