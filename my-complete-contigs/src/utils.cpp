@@ -405,7 +405,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 					     ListDigraph::NodeMap<size_t>& length,
 					     ListDigraph::NodeMap<size_t>& seqStart,
 					     const size_t kmersize,
-					     vector<string> sequence_vector)
+					     vector<string>& sequence_vector)
 {
     cout << "[DEBUG] construct_graph_from_multiple_sequences is here!" << endl;
     unordered_map<string, int> kmers_to_nodes;

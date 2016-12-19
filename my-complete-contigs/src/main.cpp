@@ -2870,18 +2870,6 @@ int main(int argc, char **argv)
 							temporary_graph_seq_start,
 							kmersize,
 							genome_sequences);
-							
-		
-		/*StaticDigraph gg;
-		vector<string> sequence_vector;
-		
-		my_load_data(genome_file_names,
-			     sequence_vector,
-			     kmersize,
-			     gg);
-		*/
-		// Here, 'sequence_vector' is a vector holding DNA sequences from which to
-		// construct the graph.
 		
 		cout << "[INFO] Done dealing with this file list." << endl;
 		return 0;
