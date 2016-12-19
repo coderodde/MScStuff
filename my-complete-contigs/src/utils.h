@@ -172,4 +172,10 @@ inline string currentDateTime() {
     return buf;
 }
 
+void construct_graph_from_multiple_sequences(ListDigraph& graph,
+					     ListDigraph::NodeMap<size_t>& length,
+					     ListDigraph::NodeMap<size_t>& seqStart,
+					     const size_t kmersize,
+					     vector<string>& sequence_vector);
+
 #endif // UTILS_H_INCLUDED
