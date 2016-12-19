@@ -1,0 +1,2 @@
+1. Arcobacter produces first graph with 1843 nodes, and then magically reduces in size to 1002. Where?
+2. 

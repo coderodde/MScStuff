@@ -542,6 +542,8 @@ int my_load_data(vector<string>& sequence_file_vector,
 	output_sequence_vector.push_back(sequence);
     }
     
+    
+    
     cout << "[DEBUG] my_load_data exiting." << endl;
     return EXIT_SUCCESS;
 }
@@ -562,7 +564,7 @@ int load_data(string& sequence,
 {
 	cout << "[DEBUG] sequence.length(): " << sequence.length() << endl;
 	cout << "[DEBUG] load_data() is here!" << endl;
-    
+	
 	string genome_type;
 	if (circular_genome)
 	{
@@ -598,6 +600,7 @@ int load_data(string& sequence,
 		return EXIT_FAILURE;
 	}
 
+	// NOTE: Program control continues to else branch.
 	if (! is_readable(inputFileName + ".k" + std::to_string(kmersize) + "." + genome_type + ".lgf"))
 	{
 		cout << "[DEBUG] !is_readable" << endl;
@@ -641,6 +644,7 @@ int load_data(string& sequence,
 	// THERE IS SOME BUG WHEN NOT LOADING THE GRAPH FROM FILE
 	// SO WE ALWAYS LOAD IT FROM FILE
 	{
+		// NOTE: Always entered branch.
 		cout << "[DEBUG] is_readable" << endl;
 		try 
 		{
@@ -649,10 +653,12 @@ int load_data(string& sequence,
 			ListDigraph::NodeMap<size_t> temporary_length(temporary_graph);
 			ListDigraph::NodeMap<size_t> temporary_seqStart(temporary_graph);
     
+			cout << "[DEBUG] Temporary graph size before: " << countNodes(temporary_graph) << endl;
 			digraphReader(temporary_graph, inputFileName + ".k" + std::to_string(kmersize) + "." + genome_type + ".lgf").
 				nodeMap("length", temporary_length).
 				nodeMap("seqStart", temporary_seqStart).
 				run();
+			cout << "[DEBUG] Temporary graph size after:  " << countNodes(temporary_graph) << endl;
 				
 			// copy temporary_graph into graph
 			ListDigraph::NodeMap<StaticDigraph::Node> nodeRef(temporary_graph);

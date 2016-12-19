@@ -2860,19 +2860,16 @@ int main(int argc, char **argv)
 		cout << "[INFO]: Genome list file name = " << genome_list_file_name << endl;
 		vector<string> genome_file_names = get_vector_of_genome_file_names(genome_list_file_name);
 		
-		
-		
 		StaticDigraph gg;
 		vector<string> sequence_vector;
+		
 		my_load_data(genome_file_names,
 			     sequence_vector,
 			     kmersize,
 			     gg);
 		
-		for (string& s : sequence_vector)
-		{
-			cout << s.length() << endl;
-		}
+		// Here, 'sequence_vector' is a vector holding DNA sequences from which to
+		// construct the graph.
 		
 		cout << "[INFO] Done dealing with this file list." << endl;
 		return 0;
