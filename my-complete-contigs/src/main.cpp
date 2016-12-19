@@ -2861,10 +2861,11 @@ int main(int argc, char **argv)
 		vector<string> genome_file_names = get_vector_of_genome_file_names(genome_list_file_name);
 		vector<string> genome_sequences = read_genome_files(genome_file_names);
 		
-		cout << "Dealing with the following files: ";
+		cout << "Dealing with the following files: " << genome_file_names[0] << endl;
 		        
-		for (const string& name : genome_file_names)
+		for (size_t i = 1; i != genome_file_names.size(); ++i)
 		{
+			string& name = genome_file_names[i];
 			cout << "                                  " << name << endl;
 		}
 		
