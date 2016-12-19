@@ -427,6 +427,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	    
 	    if (current_kmer.find("#") != std::string::npos)
 	    {
+		cout << "# shit happened" << endl;
 		previous_node = INVALID;
 	    }
 	    else
