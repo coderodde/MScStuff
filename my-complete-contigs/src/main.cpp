@@ -2861,6 +2861,13 @@ int main(int argc, char **argv)
 		vector<string> genome_file_names = get_vector_of_genome_file_names(genome_list_file_name);
 		vector<string> genome_sequences = read_genome_files(genome_file_names);
 		
+		cout << "Dealing with the following files: ";
+		        
+		for (const string& name : genome_file_names)
+		{
+			cout << "                                  " << name << endl;
+		}
+		
 		ListDigraph temporary_graph;
 		ListDigraph::NodeMap<size_t> temporary_graph_length(temporary_graph);
 		ListDigraph::NodeMap<size_t> temporary_graph_seq_start(temporary_graph);
