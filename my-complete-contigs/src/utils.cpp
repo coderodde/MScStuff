@@ -436,6 +436,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 		}
 		else
 		{
+		    cout << "shit" << endl;
 		    current_node = graph.addNode();
 		    node_map[current_kmer] = graph.id(current_node);
 		    length[current_node] = kmersize;
