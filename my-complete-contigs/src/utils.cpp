@@ -429,7 +429,8 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	    }
 	    else
 	    {
-		if (node_map.find(current_kmer) != node_map.end())
+		if (node_map.count(current_kmer) > 0)
+		//if (node_map.find(current_kmer) != node_map.end())
 		{
 		    current_node = graph.nodeFromId(node_map[current_kmer]);
 		}
@@ -443,7 +444,8 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 		
 		if (previous_node != INVALID)
 		{
-		    if (arc_map[current_kmer].find(graph.id(previous_node)) == arc_map[current_kmer].end())
+		    if (arc_map[current_kmer].count(graph.id(previous_node)) == 0)
+		    //if (arc_map[current_kmer].find(graph.id(previous_node)) == arc_map[current_kmer].end())
 		    {
 			graph.addArc(previous_node, current_node);
 			arc_map[current_kmer].insert(graph.id(previous_node));
