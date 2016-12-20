@@ -243,19 +243,11 @@ void contract_arcs(ListDigraph& graph,
 	vector<ListDigraph::Arc> arcsToContract;
 
 
-	size_t progress = 0;
 	size_t n_arcs = countArcs(graph);
 	arcsToContract.reserve(n_arcs);
 
 	for (ListDigraph::ArcIt a(graph); a != INVALID; ++a)
 	{
-		if (progress % 100000 == 0)
-		{
-			cout << "Compacting phase, arc : #" << progress << "/" << n_arcs << " ";
-		  	cout << "Time: " << currentDateTime();
-		}
-		progress++;
-
 		ListDigraph::Node u,v;
 		u = graph.source(a);
 		v = graph.target(a);
@@ -269,21 +261,12 @@ void contract_arcs(ListDigraph& graph,
 		}
 	}
 
-	cout << "arcsToContract has size: " << arcsToContract.size() << endl;
-	cout << "count_unary_arcs gives: " << count_unary_arcs_ld(graph) << endl;
-
 	for (auto arc : arcsToContract)
 	{
-		if (progress % 100000 == 0)
-		{
-			cout << "Compacting phase 2, arc : #" << progress << "/" << arcsToContract.size() << " ";
-		  	cout << "Time: " << currentDateTime();
-		}
-		progress++;
 
 		if (not graph.valid(arc))
 		{
-			cout << "arc not valid" << endl;
+		    
 		}
 
 		ListDigraph::Node u,v;
@@ -302,11 +285,6 @@ void contract_arcs(ListDigraph& graph,
 		graph.erase(v);
 
 	}
-
-	cout << "after compacting, count_unary_arcs gives: " << count_unary_arcs_ld(graph) << endl;
-
-	cout << "Compacted the graph" << endl;
-
 }
 
 void contract_arcs_from_reads(ListDigraph& graph, 
