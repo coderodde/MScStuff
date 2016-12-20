@@ -2837,12 +2837,19 @@ int main(int argc, char **argv)
 		vector<string> genome_file_names = get_vector_of_genome_file_names(genome_list_file_name);
 		vector<string> genome_sequences = read_genome_files(genome_file_names);
 		
-		cout << "[INFO] Dealing with the following files: " << genome_file_names[0] << endl;
+		cout << "[INFO]: Dealing with the following files: " << genome_file_names[0] << endl;
 		        
 		for (size_t i = 1; i != genome_file_names.size(); ++i)
 		{
 			string& name = genome_file_names[i];
-			cout << "                                         " << name << endl;
+			cout << "                                          " << name << endl;
+		}
+		
+		cout << "[INFO]: Genome sequence length: " << genome_sequences[0].length() << endl;
+		        
+		for (size_t i = 1; i != genome_sequences.size(); ++i)
+		{
+			cout << "                                " << genome_sequences[i].length() << endl;
 		}
 		
 		ListDigraph temporary_graph;
@@ -2868,6 +2875,7 @@ int main(int argc, char **argv)
 			    graph_arcs_to_static_graph_arcs);
 		
 		cout << "[INFO] The static graph has " << countNodes(graph) << " and " << countArcs(graph) << " arcs." << endl;
+		cout << "[INFO] The entire sequence is of length " << entire_sequence.length() << endl;
 		
 		/*vector<contig> conting_vector =
 		coderodde_project_algorithm(graph,
