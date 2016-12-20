@@ -452,6 +452,8 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 		previous_node = current_node;
 	    }    
 	}
+	
+	previous_node = INVALID;
     }
 	    /*auto kmer_node_iter = node_map.find(current_kmer);
 	    
