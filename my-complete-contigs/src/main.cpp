@@ -2855,6 +2855,28 @@ int main(int argc, char **argv)
 							kmersize,
 							genome_sequences);
 		
+		StaticDigraph graph;
+		
+		ListDigraph::NodeMap<StaticDigraph::Node> graph_nodes_to_static_graph_nodes(temporary_graph);
+		ListDigraph::ArcMap <StaticDigraph::Arc>  graph_arcs_to_static_graph_arcs  (temporary_graph);
+		
+		graph.build(temporary_graph,
+			    graph_nodes_to_static_graph_nodes,
+			    graph_arcs_to_static_graph_arcs);
+		
+		cout << "[INFO] The static graph has " << countNodes(graph) << " and " << countArcs(graph) << " arcs." << endl;
+		
+		/*vector<contig> conting_vector =
+		coderodde_project_algorithm(graph,
+					    )
+		
+		vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
+					   const StaticDigraph::NodeMap<string>& nodeLabel,
+					   const string& inputFileName,
+					   const size_t kmersize,
+					   const string& sequence,
+					   const bool debug_print)*/
+		
 		cout << "[INFO] Done dealing with this file list." << endl;
 		return 0;
 	}
@@ -2886,8 +2908,6 @@ int main(int argc, char **argv)
 		cerr << "The number of threads must be between 1 and 16" << endl;
 		return EXIT_FAILURE;
 	}
-
-	cout << "StaticDigraph nodes: " << countNodes(graph) << endl;
 
 	if (input_from_reads)
 	{

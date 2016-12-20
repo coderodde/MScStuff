@@ -407,7 +407,6 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	    }
 	    else
 	    {
-		//if (node_map.count(current_kmer) > 0)
 		if (node_map.find(current_kmer) != node_map.end())
 		{
 		    current_node = graph.nodeFromId(node_map[current_kmer]);
@@ -422,7 +421,6 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 		
 		if (previous_node != INVALID)
 		{
-		    //if (arc_map[current_kmer].count(graph.id(previous_node)) == 0)
 		    if (arc_map[current_kmer].find(graph.id(previous_node)) == arc_map[current_kmer].end())
 		    {
 			graph.addArc(previous_node, current_node);
@@ -596,7 +594,7 @@ void construct_graph(ListDigraph& graph,
 /*************************************************************************
 * Loads the files and constructs a graph over all k-mers in those files. *
 *************************************************************************/ 
-int my_load_data(vector<string>& sequence_file_vector,
+/*int my_load_data(vector<string>& sequence_file_vector,
 		 vector<string>& output_sequence_vector,
 		 const size_t kmersize,
 	         StaticDigraph& graph)
@@ -629,7 +627,9 @@ int my_load_data(vector<string>& sequence_file_vector,
     
     cout << "[DEBUG] my_load_data exiting." << endl;
     return EXIT_SUCCESS;
-}
+}*/
+
+int my_load_data()
 
 
 int load_data(string& sequence, 
