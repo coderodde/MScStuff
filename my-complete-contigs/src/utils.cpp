@@ -411,8 +411,8 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
     
     ListDigraph::Node current_node, previous_node = INVALID;
     string current_kmer;
-    unordered_map<string, ListDigraph::Node> node_map;
-    unordered_map<int, unordered_set<int>> arc_map;
+    unordered_map<string, int> node_map; // maps the k-mer to the node ID.
+    unordered_map<string, unordered_set<int>> arc_map; // maps the k-mer to the set of node IDs.
     
     for (string& sequence : sequence_vector)
     {
@@ -422,7 +422,45 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	for (size_t i = 0; i != kmers_limit; ++i)
 	{
 	    current_kmer = sequence.substr(i, kmersize);
-	    auto kmer_node_iter = node_map.find(current_kmer);
+	    
+	    if (current_kmer.find("#") != std::string::npos)
+	    {
+		previous_node = INVALID;
+	    }
+	    else
+	    {
+		if (node_map.find(current_kmer) != node_map.end())
+		{
+		    current_node = graph.nodeFromId(node_map[current_kmer]);
+		}
+		else
+		{
+		    current_node = graph.addNode();
+		    node_map[current_kmer] = graph.id(current_node);
+		    length[current_node] = kmersize;
+		    seqStart[current_node] = i;
+		}
+		
+		if (previous_node != INVALID)
+		{
+		    if (arc_map[current_kmer].find(graph.id(previous_node)) == arc_map[current_kmer].end())
+		    {
+			graph.addArc(previous_node, current_node);
+			arc_map[current_kmer].insert(graph.id(previous_node));
+		    }
+		}
+		
+		previous_node = current_node;
+	    }    
+	}
+    }
+	    /*auto kmer_node_iter = node_map.find(current_kmer);
+	    
+	    if (current_kmer.find("#") != string::npos)
+	    {
+		cout << "# shit is here" << endl;
+		abort();
+	    }
 	    
 	    if (kmer_node_iter != node_map.end())
 	    {
@@ -453,9 +491,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	    
 	    ListDigraph::Arc new_arc = graph.addArc(previous_node, new_node);
 	    arc_map[previous_node_id].insert(current_node_id);
-	    previous_node = current_node;
-	}
-    }
+	    previous_node = current_node;*/
     
     cout << "[DEBUG] The result graph has " << countNodes(graph) << " nodes." << endl;
     cout << "[DEBUG] The reuslt graph has " << countArcs(graph) << " arcs." << endl;
