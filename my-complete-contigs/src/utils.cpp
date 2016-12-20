@@ -413,7 +413,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
     string current_kmer;
     unordered_map<string, int> node_map; // maps the k-mer to the node ID.
     unordered_map<string, unordered_set<int>> arc_map; // maps the k-mer to the set of node IDs.
-    
+    int progress = 0;
     for (string& sequence : sequence_vector)
     {
 	size_t kmers_limit = sequence.length();
@@ -421,6 +421,13 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	
 	for (size_t i = 0; i != kmers_limit; ++i)
 	{
+	    
+	    if (progress % 100000 == 0)
+	    {
+		cout << "Progress: " << progress << endl;
+	    }
+	    ++progress;
+	    
 	    current_kmer = sequence.substr(i, kmersize);
 	    
 	    if (current_kmer.find("#") != std::string::npos)
@@ -494,7 +501,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	    previous_node = current_node;*/
     
     cout << "[DEBUG] The result graph has " << countNodes(graph) << " nodes." << endl;
-    cout << "[DEBUG] The reuslt graph has " << countArcs(graph) << " arcs." << endl;
+    cout << "[DEBUG] The result graph has " << countArcs(graph) << " arcs." << endl;
     cout << "[DEBUG] construct_graph_from_multiple_sequences is done!" << endl;
 }
 
