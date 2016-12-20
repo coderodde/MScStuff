@@ -432,7 +432,6 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 		if (node_map.count(current_kmer) > 0)
 		//if (node_map.find(current_kmer) != node_map.end())
 		{
-		    cout << "unshit" << endl;
 		    current_node = graph.nodeFromId(node_map[current_kmer]);
 		}
 		else
@@ -459,6 +458,11 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	
 	previous_node = INVALID;
     }
+    
+    contract_arcs(graph,
+		  length,
+		  seqStart,
+		  kmersize);
 	    /*auto kmer_node_iter = node_map.find(current_kmer);
 	    
 	    if (current_kmer.find("#") != string::npos)
