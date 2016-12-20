@@ -2765,11 +2765,11 @@ int main(int argc, char **argv)
 
 	StaticDigraph graph;
 	StaticDigraph::NodeMap<size_t> length(graph);
-	StaticDigraph::NodeMap<size_t> seqStart(graph);
-	StaticDigraph::NodeMap<string> nodeLabel(graph);
+	StaticDigraph::NodeMap<size_t> seqStart(graph);  
+	StaticDigraph::NodeMap<string> nodeLabel(graph); // I need this shit right here.
 	set_of_pairs safe_pairs(1 << 17,hash_pair);
 
-	string sequence;
+	string sequence;  //  And I need this shit right here, alzo.
 	size_t seqLength;
 	size_t kmersize;
 	string inputFileName;
@@ -2849,11 +2849,14 @@ int main(int argc, char **argv)
 		ListDigraph::NodeMap<size_t> temporary_graph_length(temporary_graph);
 		ListDigraph::NodeMap<size_t> temporary_graph_seq_start(temporary_graph);
 		
+		string entire_sequence;
+		
 		construct_graph_from_multiple_sequences(temporary_graph,
 							temporary_graph_length,
 							temporary_graph_seq_start,
 							kmersize,
-							genome_sequences);
+							genome_sequences,
+							entire_sequence);
 		
 		StaticDigraph graph;
 		

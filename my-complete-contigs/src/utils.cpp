@@ -1,5 +1,7 @@
 #include "utils.h"
 
+#define OUT
+
 struct tm * timeinfo;
 
 size_t hash_pair( const pair_of_ints& p )
@@ -383,9 +385,12 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 					     ListDigraph::NodeMap<size_t>& length,
 					     ListDigraph::NodeMap<size_t>& seqStart,
 					     const size_t kmersize,
-					     vector<string>& sequence_vector)
+					     vector<string>& sequence_vector,
+					     OUT string& output_total_sequence)
 {
     cout << "[DEBUG] construct_graph_from_multiple_sequences is here!" << endl;
+    
+    output_total_sequence.clear();
     
     ListDigraph::Node current_node, previous_node = INVALID;
     unordered_map<string, int> node_map; // maps the k-mer to the node ID.
@@ -395,6 +400,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
     {
 	size_t kmers_limit = sequence.length();
 	sequence = sequence + sequence.substr(0, kmersize - 1);
+	output_total_sequence += sequence;
 	
 	for (size_t i = 0; i != kmers_limit; ++i)
 	{
@@ -439,44 +445,6 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 		  length,
 		  seqStart,
 		  kmersize);
-	    /*auto kmer_node_iter = node_map.find(current_kmer);
-	    
-	    if (current_kmer.find("#") != string::npos)
-	    {
-		cout << "# shit is here" << endl;
-		abort();
-	    }
-	    
-	    if (kmer_node_iter != node_map.end())
-	    {
-		previous_node = current_node;
-		continue;
-	    }
-	    
-	    ListDigraph::Node new_node = graph.addNode();
-	    node_map[current_kmer] = new_node;
-	    
-	    if (previous_node == INVALID)
-	    {
-		previous_node = current_node;
-		continue;
-	    }
-	    
-	    int previous_node_id = graph.id(previous_node);
-	    int current_node_id  = graph.id(new_node);
-	    
-	    auto iter = arc_map[previous_node_id].find(current_node_id);
-	    
-	    if (iter != arc_map[previous_node_id].end())
-	    {
-		// The arc (previous_node, current_node) already present.
-		previous_node = current_node;
-		continue;
-	    }
-	    
-	    ListDigraph::Arc new_arc = graph.addArc(previous_node, new_node);
-	    arc_map[previous_node_id].insert(current_node_id);
-	    previous_node = current_node;*/
     
     cout << "[DEBUG] The result graph has " << countNodes(graph) << " nodes." << endl;
     cout << "[DEBUG] The result graph has " << countArcs(graph) << " arcs." << endl;
