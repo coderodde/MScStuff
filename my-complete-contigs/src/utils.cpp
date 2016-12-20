@@ -629,8 +629,6 @@ void construct_graph(ListDigraph& graph,
     return EXIT_SUCCESS;
 }*/
 
-int my_load_data()
-
 
 int load_data(string& sequence, 
 	size_t& seqLength, 
