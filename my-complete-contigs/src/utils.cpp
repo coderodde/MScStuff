@@ -408,84 +408,52 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 					     vector<string>& sequence_vector)
 {
     cout << "[DEBUG] construct_graph_from_multiple_sequences is here!" << endl;
-    unordered_map<string, int> kmers_to_nodes;
-    unordered_map<string, unordered_set<int>> in_neighbors;
-    
-    // This map maps the ID of a node to the set of IDs of its children:
-    unordered_map<int, unordered_set<int>> node_id_to_child_ids;
     
     ListDigraph::Node current_node, previous_node = INVALID;
     string current_kmer;
-    
+    unordered_map<string, ListDigraph::Node> node_map;
+    unordered_map<int, unordered_set<int>> arc_map;
     
     for (string& sequence : sequence_vector)
     {
 	size_t kmers_limit = sequence.length();
 	sequence = sequence + sequence.substr(0, kmersize - 1);
-	string current_kmer;
 	
-	// Maybe i <= kmers_limit??
 	for (size_t i = 0; i != kmers_limit; ++i)
 	{
 	    current_kmer = sequence.substr(i, kmersize);
-	    auto node_id_iter = kmers_to_nodes.find(current_kmer);
+	    auto kmer_node_iter = node_map.find(current_kmer);
 	    
-	    if (node_id_iter == kmers_to_nodes.end())
+	    if (kmer_node_iter != node_map.end())
 	    {
-		ListDigraph::Node new_node = graph.addNode();
-		int new_node_id = graph.id(new_node);
-		kmers_to_nodes[current_kmer] = new_node_id;
-		
-		if (previous_node != INVALID)
-		{
-		    int prev_node_id = graph.id(previous_node);
-		    
-		    if (node_id_to_child_ids[prev_node_id].find(new_node_id) ==
-			node_id_to_child_ids[prev_node_id].end())
-		    {
-			node_id_to_child_ids[prev_node_id].insert(current_node_id);
-			graph.addArc(previous_node, new_node);
-		    }
-		}
-	    }
-	    else
-	    {
-		
+		previous_node = current_node;
+		continue;
 	    }
 	    
+	    ListDigraph::Node new_node = graph.addNode();
+	    node_map[current_kmer] = new_node;
+	    
+	    if (previous_node == INVALID)
+	    {
+		previous_node = current_node;
+		continue;
+	    }
+	    
+	    int previous_node_id = graph.id(previous_node);
+	    int current_node_id  = graph.id(new_node);
+	    
+	    auto iter = arc_map[previous_node_id].find(current_node_id);
+	    
+	    if (iter != arc_map[previous_node_id].end())
+	    {
+		// The arc (previous_node, current_node) already present.
+		previous_node = current_node;
+		continue;
+	    }
+	    
+	    ListDigraph::Arc new_arc = graph.addArc(previous_node, new_node);
+	    arc_map[previous_node_id].insert(current_node_id);
 	    previous_node = current_node;
-	    /*if (current_kmer.find("#") != std::string::npos)
-	    {
-		cout << "# shit happened" << endl;
-		previous_node = INVALID;
-	    }
-	    else
-	    {
-		// Maybe use find()??
-		if (kmers_to_nodes.count(current_kmer) > 0)
-		{
-		    current_node = graph.nodeFromId(kmers_to_nodes[current_kmer]);
-		}
-		else
-		{
-		    current_node = graph.addNode();
-		    kmers_to_nodes[current_kmer] = graph.id(current_node);
-		    length[current_node] = kmersize;
-		    seqStart[current_node] = i;
-		}
-		
-		if (previous_node != INVALID)
-		{
-		    // Maybe found()?
-		    if (in_neighbors[current_kmer].count(graph.id(previous_node)) == 0)
-		    {
-			graph.addArc(previous_node, current_node);
-			in_neighbors[current_kmer].insert(graph.id(previous_node));
-		    }
-		}
-		
-		previous_node = current_node;*/
-	    }
 	}
     }
     
