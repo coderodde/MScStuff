@@ -2849,11 +2849,11 @@ int main(int argc, char **argv)
 			cout << "                                          " << name << endl;
 		}
 		
-		cout << "[INFO]: Genome sequence length: " << genome_sequences[0].length() << endl;
+		cout << "[INFO]: Genome sequence lengths: " << genome_sequences[0].length() << endl;
 		        
 		for (size_t i = 1; i != genome_sequences.size(); ++i)
 		{
-			cout << "                                " << genome_sequences[i].length() << endl;
+			cout << "                                 " << genome_sequences[i].length() << endl;
 		}
 		
 		ListDigraph temporary_graph;
@@ -2891,15 +2891,10 @@ int main(int argc, char **argv)
 		cout << "[INFO] The entire sequence is of length " << entire_sequence.length() << endl;
 		//cout << "[DEBUG] Number of nodeLabel mappings: " << nodeLabel.size() << endl;
 		
-		string output_file_name = genome_list_file_name;
-		output_file_name += ".k";
-		output_file_name += to_string(kmersize);
-		output_file_name += ".OUTPUT";
-		
 		vector<contig> conting_vector =
 		coderodde_project_algorithm(graph,
 					    nodeLabel,
-					    output_file_name,
+					    genome_list_file_name,
 					    kmersize,
 					    entire_sequence,
 					    true);
