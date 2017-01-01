@@ -662,9 +662,12 @@ get_circular_walk(const StaticDigraph& graph, bool debug_print)
 	
 	int nodes = graph.nodeNum();
 	
+	cout << "[DEBUG] Number of nodes: " << nodes << endl;
+	cout << "[DEBUG] Number of arcs: " << countArcs(graph) << endl;
+	
 	for (int node_id = 0; node_id < nodes; ++node_id)
 	{
-		cout << node_id << endl;
+		//cout << node_id << endl;
 		int source_node_id = node_id;
 		int target_node_id = (node_id + 1) % nodes;
 		
