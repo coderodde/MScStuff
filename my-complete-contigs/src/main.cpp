@@ -2868,6 +2868,13 @@ int main(int argc, char **argv)
 							kmersize,
 							genome_sequences,
 							entire_sequence);
+		cout << "[INFO]: Contracting the arcs of the graph..." << endl;
+		contract_arcs(temporary_graph,
+			      temporary_graph_length,
+			      temporary_graph_seq_start,
+			      kmersize);
+		cout << "[INFO]: Done contracting graph arcs..." << endl;
+		
 		StaticDigraph graph;
 		
 		ListDigraph::NodeMap<StaticDigraph::Node> graph_nodes_to_static_graph_nodes(temporary_graph);
