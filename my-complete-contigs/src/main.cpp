@@ -2864,7 +2864,6 @@ int main(int argc, char **argv)
 							kmersize,
 							genome_sequences,
 							entire_sequence);
-		
 		StaticDigraph graph;
 		
 		ListDigraph::NodeMap<StaticDigraph::Node> graph_nodes_to_static_graph_nodes(temporary_graph);
@@ -2874,8 +2873,19 @@ int main(int argc, char **argv)
 			    graph_nodes_to_static_graph_nodes,
 			    graph_arcs_to_static_graph_arcs);
 		
+		StaticDigraph::NodeMap<string> nodeLabel(graph);
+		
+		for (ListDigraph::NodeIt nodeit(temporary_graph); nodeit != INVALID; ++nodeit)
+		{
+			StaticDigraph::Node current_node = graph_nodes_to_static_graph_nodes[nodeit];
+			size_t length = temporary_graph_length[nodeit];
+			size_t seq_start = temporary_graph_seq_start[nodeit];
+			nodeLabel[current_node] = entire_sequence.substr(seq_start, length);
+		}
+		
 		cout << "[INFO] The static graph has " << countNodes(graph) << " and " << countArcs(graph) << " arcs." << endl;
 		cout << "[INFO] The entire sequence is of length " << entire_sequence.length() << endl;
+		cout << "[DEBUG] Number of nodeLabel mappings: " << nodeLabel.size() << endl;
 		
 		/*vector<contig> conting_vector =
 		coderodde_project_algorithm(graph,

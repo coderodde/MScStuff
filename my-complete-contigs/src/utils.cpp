@@ -395,6 +395,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
     ListDigraph::Node current_node, previous_node = INVALID;
     unordered_map<string, int> node_map; // maps the k-mer to the node ID.
     unordered_map<string, unordered_set<int>> arc_map; // maps the k-mer to the set of node IDs.
+    int char_index = 0;
     
     for (string& sequence : sequence_vector)
     {
@@ -402,14 +403,14 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	sequence = sequence + sequence.substr(0, kmersize - 1);
 	output_total_sequence += sequence;
 	
-	for (size_t i = 0; i != kmers_limit; ++i)
+	for (size_t i = 0; i != kmers_limit; ++i, ++char_index)
 	{
 	    string current_kmer = sequence.substr(i, kmersize);
 	    
 	    if (current_kmer.find("#") != std::string::npos)
 	    {
 		previous_node = INVALID;
-		cout << "yeah" << endl;
+		cout << "yeah" << endl; // Can we really get # in the files?
 	    }
 	    else
 	    {
@@ -422,7 +423,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 		    current_node = graph.addNode();
 		    node_map[current_kmer] = graph.id(current_node);
 		    length[current_node] = kmersize;
-		    seqStart[current_node] = i;
+		    seqStart[current_node] = char_index;
 		}
 		
 		if (previous_node != INVALID)
@@ -438,6 +439,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	    }    
 	}
 	
+	char_index += kmersize - 1;
 	previous_node = INVALID;
     }
     
