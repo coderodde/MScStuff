@@ -2885,13 +2885,17 @@ int main(int argc, char **argv)
 		
 		cout << "[INFO] The static graph has " << countNodes(graph) << " and " << countArcs(graph) << " arcs." << endl;
 		cout << "[INFO] The entire sequence is of length " << entire_sequence.length() << endl;
-		cout << "[DEBUG] Number of nodeLabel mappings: " << nodeLabel.size() << endl;
+		//cout << "[DEBUG] Number of nodeLabel mappings: " << nodeLabel.size() << endl;
 		
-		/*vector<contig> conting_vector =
+		vector<contig> conting_vector =
 		coderodde_project_algorithm(graph,
-					    )
+					    nodeLabel,
+					    genome_list_file_name + ".k" + kmersize + ".OUTPUT",
+					    kmersize,
+					    entire_sequence,
+					    true);
 		
-		vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
+		/*vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 					   const StaticDigraph::NodeMap<string>& nodeLabel,
 					   const string& inputFileName,
 					   const size_t kmersize,
