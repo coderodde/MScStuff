@@ -2887,10 +2887,15 @@ int main(int argc, char **argv)
 		cout << "[INFO] The entire sequence is of length " << entire_sequence.length() << endl;
 		//cout << "[DEBUG] Number of nodeLabel mappings: " << nodeLabel.size() << endl;
 		
+		string output_file_name = genome_list_file_name;
+		output_file_name += ".k";
+		output_file_name += mkersize;
+		output_file_name += ".OUTPUT";
+		
 		vector<contig> conting_vector =
 		coderodde_project_algorithm(graph,
 					    nodeLabel,
-					    genome_list_file_name + ".k" + kmersize + ".OUTPUT",
+					    output_file_name,
 					    kmersize,
 					    entire_sequence,
 					    true);
