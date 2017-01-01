@@ -2870,7 +2870,21 @@ int main(int argc, char **argv)
 							entire_sequence);
 		StaticDigraph graph;
 		
+		////////
+		////////
 		
+		cout << "[DEBUG] ENTIRE SEQUENCE: " << entire_sequence << endl;
+		
+		for (ListDigraph::Node nodeit(temporary_graph); nodeit != INVALID; ++nodeit)
+		{
+			size_t len = temporary_graph_length[nodeit];
+			size_t seq_start = temporary_graph_seq_start[nodeit];
+			
+			cout << "Node len: " << len << ", seq_start: " << seq_start << endl;
+		}
+		
+		////////
+		////////
 		
 		ListDigraph::NodeMap<StaticDigraph::Node> graph_nodes_to_static_graph_nodes(temporary_graph);
 		ListDigraph::ArcMap <StaticDigraph::Arc>  graph_arcs_to_static_graph_arcs  (temporary_graph);
@@ -2890,8 +2904,10 @@ int main(int argc, char **argv)
 		}
 		
 		cout << "[INFO] The static graph has " << countNodes(graph) << " nodes and " << countArcs(graph) << " arcs." << endl;
-		cout << "[INFO] The temp graph has " << countNodes(temporary_graph) << " nodes and " << countArcs(temporary_graph) << "arcs." << endl;
 		cout << "[INFO] The entire sequence is of length " << entire_sequence.length() << endl;
+		
+		
+		
 		//cout << "[DEBUG] Number of nodeLabel mappings: " << nodeLabel.size() << endl;
 		
 		vector<contig> conting_vector =
