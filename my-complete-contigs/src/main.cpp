@@ -2883,13 +2883,13 @@ int main(int argc, char **argv)
 			nodeLabel[current_node] = entire_sequence.substr(seq_start, length);
 		}
 		
-		cout << "[INFO] The static graph has " << countNodes(graph) << " and " << countArcs(graph) << " arcs." << endl;
+		cout << "[INFO] The static graph has " << countNodes(graph) << " nodes and " << countArcs(graph) << " arcs." << endl;
 		cout << "[INFO] The entire sequence is of length " << entire_sequence.length() << endl;
 		//cout << "[DEBUG] Number of nodeLabel mappings: " << nodeLabel.size() << endl;
 		
 		string output_file_name = genome_list_file_name;
 		output_file_name += ".k";
-		output_file_name += kmersize;
+		output_file_name += to_string(kmersize);
 		output_file_name += ".OUTPUT";
 		
 		vector<contig> conting_vector =
