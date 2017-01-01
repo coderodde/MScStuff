@@ -2868,14 +2868,9 @@ int main(int argc, char **argv)
 							kmersize,
 							genome_sequences,
 							entire_sequence);
-		cout << "[INFO]: Contracting the arcs of the graph..." << endl;
-		contract_arcs(temporary_graph,
-			      temporary_graph_length,
-			      temporary_graph_seq_start,
-			      kmersize);
-		cout << "[INFO]: Done contracting graph arcs..." << endl;
-		
 		StaticDigraph graph;
+		
+		
 		
 		ListDigraph::NodeMap<StaticDigraph::Node> graph_nodes_to_static_graph_nodes(temporary_graph);
 		ListDigraph::ArcMap <StaticDigraph::Arc>  graph_arcs_to_static_graph_arcs  (temporary_graph);
@@ -2895,6 +2890,7 @@ int main(int argc, char **argv)
 		}
 		
 		cout << "[INFO] The static graph has " << countNodes(graph) << " nodes and " << countArcs(graph) << " arcs." << endl;
+		cout << "[INFO] The temp graph has " << countNodes(temporary_graph) << " nodes and " << countArcs(temporary_graph) << "arcs." << endl;
 		cout << "[INFO] The entire sequence is of length " << entire_sequence.length() << endl;
 		//cout << "[DEBUG] Number of nodeLabel mappings: " << nodeLabel.size() << endl;
 		
