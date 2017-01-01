@@ -179,4 +179,11 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 					     vector<string>& sequence_vector,
 					     string& entire_sequence);
 
+
+void contract_arcs(ListDigraph& graph, 
+	           ListDigraph::NodeMap<size_t>& length, 
+		   ListDigraph::NodeMap<size_t>& seqStart,
+		   const size_t kmersize);
+
+
 #endif // UTILS_H_INCLUDED
