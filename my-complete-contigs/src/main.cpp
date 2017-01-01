@@ -2889,7 +2889,7 @@ int main(int argc, char **argv)
 		
 		string output_file_name = genome_list_file_name;
 		output_file_name += ".k";
-		output_file_name += mkersize;
+		output_file_name += kmersize;
 		output_file_name += ".OUTPUT";
 		
 		vector<contig> conting_vector =
