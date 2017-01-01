@@ -2875,7 +2875,7 @@ int main(int argc, char **argv)
 		
 		cout << "[DEBUG] ENTIRE SEQUENCE: " << entire_sequence << endl;
 		
-		for (ListDigraph::Node nodeit(temporary_graph); nodeit != INVALID; ++nodeit)
+		for (ListDigraph::NodeIt nodeit(temporary_graph); nodeit != INVALID; ++nodeit)
 		{
 			size_t len = temporary_graph_length[nodeit];
 			size_t seq_start = temporary_graph_seq_start[nodeit];
