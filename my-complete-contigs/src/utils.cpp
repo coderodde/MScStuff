@@ -449,6 +449,9 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	previous_node = INVALID;
     }
     
+    cout << "[DEBUG]: Before contracting, the graph has " << countNodes(graph) << " nodes "
+         << "and " << countArcs(graph) << " arcs." << endl;
+    
     contract_arcs(graph,
 		  length,
 		  seqStart,
