@@ -406,9 +406,11 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
     unordered_map<string, unordered_set<int>> arc_map;
     
     int char_index = 0;
+    string raw_concatenated_sequence;
     
     for (string sequence : sequence_vector)
     {
+	raw_concatenated_sequence += sequence;
 	size_t kmers_limit = sequence.length();
 	sequence = sequence + sequence.substr(0, kmersize - 1);
 	output_total_sequence += sequence;
@@ -529,6 +531,8 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	
 	cout << endl;
     }
+    
+    cout << "Raw concatenated string: " << raw_concatenated_sequence << endl;
     
     cout << "[DEBUG] The result graph has " << countNodes(graph) << " nodes." << endl;
     cout << "[DEBUG] The result graph has " << countArcs(graph) << " arcs." << endl;
