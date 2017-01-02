@@ -422,7 +422,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	    {
 		previous_node = INVALID;
 		cout << "yeah" << endl; // Can we really get # in the files?
-		throw std::runtime_erro{"Found '#' in a k-mer!"};
+		throw std::runtime_error{"Found '#' in a k-mer!"};
 	    }
 	    else
 	    {
