@@ -393,7 +393,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
     output_total_sequence.clear();
     ListDigraph::Node current_node, previous_node = INVALID;
     unordered_map<string, int> node_map; // maps the k-mer to the node ID.
-    unordered_map<string, unordered_set<int>> arc_map; // maps the k-mer to the set of node IDs.
+    unordered_map<string, unordered_set<int>> arc_map; // maps the k-mer to the set of IDs of the parent nodes.
     int char_index = 0;
     
     for (string sequence : sequence_vector)
@@ -405,10 +405,26 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	//cout << "---" << endl;
 	output_total_sequence += sequence;
 	
+	string initial_kmer = sequence.substr(0, kmersize);
+	
 	for (size_t i = 0; i != kmers_limit; ++i, ++char_index)
 	{
 	    string current_kmer = sequence.substr(i, kmersize);
 	    
+	    /*if (i == kmers_limit - 1)
+	    {
+		// Make sure that for the current circular genome, the very last
+		// kmer (that begins with the last character of the genome) is
+		// connected to the very first kmer of the genome:
+		int initial_kmer_id = node_map[initial_kmer];
+		
+		// If last k-mer is not pointing to the 'initial_kmer', add the arc:
+		if (arc_map[initial_kmer_id].find(graph.id()) == arc_map[initial_kmer_id].end())
+		{
+		    
+		}
+	    }
+	    else */
 	    if (current_kmer.find("#") != std::string::npos)
 	    {
 		previous_node = INVALID;
@@ -444,6 +460,28 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 		
 		previous_node = current_node;
 	    }    
+	}
+	
+	// Deal with the closing arc of the circular genome:
+	string first_kmer = sequence.substr(0, kmersize);
+	string last_kmer = sequence.substr(sequence.length() - kmersize, kmersize);
+	
+	unordered_set<int>& parent_node_id_set_of_first_node = arc_map[first_kmer];
+	int last_kmer_node_id = node_map[last_kmer];
+	
+	if (parent_node_id_set_of_first_node.find(last_kmer_node_id) == parent_node_id_set_of_first_node.end())
+	{
+	    cout << "Adding the missing cycle closing arc." << endl;
+	    // The closing arc is not yet in the graph, add it:
+	    ListDigraph::Node first_kmer_node = graph.nodeFromId(node_map[first_kmer]);
+	    ListDigraph::Node last_kmer_node  = graph.nodeFromId(node_map[last_kmer]);
+	    
+	    graph.addArc(last_kmer_node, first_kmer_node);
+	    arc_map[first_kmer].insert(graph.id(last_kmer_node));
+	}
+	else
+	{
+	    cout << "No need for closing the cycle." << endl;
 	}
 	
 	char_index += kmersize - 1;
