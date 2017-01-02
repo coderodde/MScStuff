@@ -420,10 +420,12 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 		
 		if (node_map.find(current_kmer) != node_map.end())
 		{
+		    cout << "... already exists." << endl;
 		    current_node = graph.nodeFromId(node_map[current_kmer]);
 		}
 		else
 		{
+		    cout << "... does not exist." << endl;
 		    current_node = graph.addNode();
 		    node_map[current_kmer] = graph.id(current_node);
 		    length[current_node] = kmersize;
