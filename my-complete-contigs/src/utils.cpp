@@ -515,7 +515,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
     for (ListDigraph::NodeIt nodeit(graph); nodeit != INVALID; ++nodeit)
     {
 	// Compute the node label:
-	string current_kmer = output_total_sequence.substr(segStart[nodeit], length[nodeit]);
+	string current_kmer = output_total_sequence.substr(seqStart[nodeit], length[nodeit]);
 	
 	cout << "Current node: \"" << current_kmer << "\"" << endl;
 	cout << "Children:" << endl;
