@@ -1,4 +1,5 @@
 #include "utils.h"
+#include <stdexcept>
 
 #define OUT
 
@@ -386,23 +387,29 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 					     ListDigraph::NodeMap<size_t>& seqStart,
 					     const size_t kmersize,
 					     vector<string>& sequence_vector,
-					     OUT string& output_total_sequence)
+					     OUT string& output_total_sequence,
+					     bool debugPrint)
 {
-    cout << "[DEBUG] construct_graph_from_multiple_sequences is here!" << endl;
+    if (debugPrint)
+    {
+	cout << "[DEBUG] construct_graph_from_multiple_sequences is here!" << endl;
+    }
 	
     output_total_sequence.clear();
     ListDigraph::Node current_node, previous_node = INVALID;
-    unordered_map<string, int> node_map; // maps the k-mer to the node ID.
-    unordered_map<string, unordered_set<int>> arc_map; // maps the k-mer to the set of IDs of the parent nodes.
+    
+    // maps the k-mer to the node ID.
+    unordered_map<string, int> node_map;
+    
+    // maps the k-mer to the set of IDs of the parent nodes.
+    unordered_map<string, unordered_set<int>> arc_map;
+    
     int char_index = 0;
     
     for (string sequence : sequence_vector)
     {
-	//cout << "Sequence before: " << sequence << endl;
 	size_t kmers_limit = sequence.length();
 	sequence = sequence + sequence.substr(0, kmersize - 1);
-	//cout << "Sequence after:  " << sequence << endl;
-	//cout << "---" << endl;
 	output_total_sequence += sequence;
 	
 	string initial_kmer = sequence.substr(0, kmersize);
@@ -411,37 +418,24 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	{
 	    string current_kmer = sequence.substr(i, kmersize);
 	    
-	    /*if (i == kmers_limit - 1)
-	    {
-		// Make sure that for the current circular genome, the very last
-		// kmer (that begins with the last character of the genome) is
-		// connected to the very first kmer of the genome:
-		int initial_kmer_id = node_map[initial_kmer];
-		
-		// If last k-mer is not pointing to the 'initial_kmer', add the arc:
-		if (arc_map[initial_kmer_id].find(graph.id()) == arc_map[initial_kmer_id].end())
-		{
-		    
-		}
-	    }
-	    else */
 	    if (current_kmer.find("#") != std::string::npos)
 	    {
 		previous_node = INVALID;
 		cout << "yeah" << endl; // Can we really get # in the files?
+		throw std::runtime_erro{"Found '#' in a k-mer!"};
 	    }
 	    else
 	    {
-		cout << "Current k-mer: " << current_kmer << endl;
+		//cout << "Current k-mer: " << current_kmer << endl;
 		
 		if (node_map.find(current_kmer) != node_map.end())
 		{
-		    cout << "... already exists." << endl;
+		    //cout << "... already exists." << endl;
 		    current_node = graph.nodeFromId(node_map[current_kmer]);
 		}
 		else
 		{
-		    cout << "... does not exist." << endl;
+		    //cout << "... does not exist." << endl;
 		    current_node = graph.addNode();
 		    node_map[current_kmer] = graph.id(current_node);
 		    length[current_node] = kmersize;
@@ -452,7 +446,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 		{
 		    if (arc_map[current_kmer].find(graph.id(previous_node)) == arc_map[current_kmer].end())
 		    {
-			cout << "ARC!" << endl;
+			//cout << "ARC!" << endl;
 			graph.addArc(previous_node, current_node);
 			arc_map[current_kmer].insert(graph.id(previous_node));
 		    }
@@ -471,7 +465,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	
 	if (parent_node_id_set_of_first_node.find(last_kmer_node_id) == parent_node_id_set_of_first_node.end())
 	{
-	    cout << "Adding the missing cycle closing arc." << endl;
+	    //cout << "Adding the missing cycle closing arc." << endl;
 	    // The closing arc is not yet in the graph, add it:
 	    ListDigraph::Node first_kmer_node = graph.nodeFromId(node_map[first_kmer]);
 	    ListDigraph::Node last_kmer_node  = graph.nodeFromId(node_map[last_kmer]);
@@ -481,7 +475,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	}
 	else
 	{
-	    cout << "No need for closing the cycle." << endl;
+	    //cout << "No need for closing the cycle." << endl;
 	}
 	
 	char_index += kmersize - 1;
@@ -608,45 +602,6 @@ void construct_graph(ListDigraph& graph,
 	cout << "Constructed the graph" << endl;
 
 }
-
-/*************************************************************************
-* Loads the files and constructs a graph over all k-mers in those files. *
-*************************************************************************/ 
-/*int my_load_data(vector<string>& sequence_file_vector,
-		 vector<string>& output_sequence_vector,
-		 const size_t kmersize,
-	         StaticDigraph& graph)
-{
-    cout << "[DEBUG] my_load_data entered." << endl;
-    cout << "[DEBUG] kmersize: " << kmersize << endl;
-    
-    for (string& sequence_file_name : sequence_file_vector)
-    {
-	ifstream sequence_file_stream;
-	string line;
-	string sequence;
-	
-	sequence_file_stream.open(sequence_file_name);
-	getline(sequence_file_stream, line); // Omit the header.
-	
-	while (getline(sequence_file_stream, line))
-	{
-	    sequence += line;
-	}
-	
-	cout << "Seq length before: " << sequence.length() << endl;
-	make_upper_case(sequence);
-	sequence = sequence + sequence.substr(0, kmersize - 1);
-	cout << "Seg length after:  " << sequence.length() << endl;
-	output_sequence_vector.push_back(sequence);
-    }
-    
-    
-    
-    cout << "[DEBUG] my_load_data exiting." << endl;
-    return EXIT_SUCCESS;
-}*/
-
 
 int load_data(string& sequence, 
 	size_t& seqLength, 
