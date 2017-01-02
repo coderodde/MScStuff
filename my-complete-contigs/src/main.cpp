@@ -2911,20 +2911,13 @@ int main(int argc, char **argv)
 		
 		//cout << "[DEBUG] Number of nodeLabel mappings: " << nodeLabel.size() << endl;
 		
-		vector<contig> conting_vector =
+		/*vector<contig> conting_vector =
 		coderodde_project_algorithm(graph,
 					    nodeLabel,
 					    genome_list_file_name,
 					    kmersize,
 					    entire_sequence,
-					    true);
-		
-		/*vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
-					   const StaticDigraph::NodeMap<string>& nodeLabel,
-					   const string& inputFileName,
-					   const size_t kmersize,
-					   const string& sequence,
-					   const bool debug_print)*/
+					    true);*/
 		
 		cout << "[INFO] Done dealing with this file list." << endl;
 		return 0;
