@@ -436,6 +436,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 		{
 		    if (arc_map[current_kmer].find(graph.id(previous_node)) == arc_map[current_kmer].end())
 		    {
+			cout << "ARC!" << endl;
 			graph.addArc(previous_node, current_node);
 			arc_map[current_kmer].insert(graph.id(previous_node));
 		    }
