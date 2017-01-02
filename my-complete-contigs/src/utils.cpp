@@ -389,9 +389,8 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 					     OUT string& output_total_sequence)
 {
     cout << "[DEBUG] construct_graph_from_multiple_sequences is here!" << endl;
-    
+	
     output_total_sequence.clear();
-    
     ListDigraph::Node current_node, previous_node = INVALID;
     unordered_map<string, int> node_map; // maps the k-mer to the node ID.
     unordered_map<string, unordered_set<int>> arc_map; // maps the k-mer to the set of node IDs.
@@ -399,8 +398,11 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
     
     for (string& sequence : sequence_vector)
     {
+	cout << "Sequence before: " << sequence << endl;
 	size_t kmers_limit = sequence.length();
 	sequence = sequence + sequence.substr(0, kmersize - 1);
+	cout << "Sequence after:  " << sequence << endl;
+	cout << "---" << endl;
 	output_total_sequence += sequence;
 	
 	for (size_t i = 0; i != kmers_limit; ++i, ++char_index)
