@@ -397,6 +397,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	
     output_total_sequence.clear();
     ListDigraph::Node current_node, previous_node = INVALID;
+    ListDigraph::NodeMap nodes_to_kmers_map(graph);
     
     // maps the k-mer to the node ID.
     unordered_map<string, int> node_map;
@@ -421,7 +422,6 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	    if (current_kmer.find("#") != std::string::npos)
 	    {
 		previous_node = INVALID;
-		cout << "yeah" << endl; // Can we really get # in the files?
 		throw std::runtime_error{"Found '#' in a k-mer!"};
 	    }
 	    else
@@ -437,6 +437,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 		{
 		    //cout << "... does not exist." << endl;
 		    current_node = graph.addNode();
+		    nodes_to_kmers_map[current_node] = current_kmer;
 		    node_map[current_kmer] = graph.id(current_node);
 		    length[current_node] = kmersize;
 		    seqStart[current_node] = char_index;
@@ -484,6 +485,13 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
     
     cout << "[DEBUG]: Before contracting, the graph has " << countNodes(graph) << " nodes "
          << "and " << countArcs(graph) << " arcs." << endl;
+	 
+    cout << "Uncontracted graph:" << endl;
+    
+    for (ListDigraph::NodeIt nodeit(graph); nodeit != INVALID; ++nodeit)
+    {
+	cout << "Current node: \"" << nodes_to_kmers_map[nodeit] << "\"" << endl;
+    }
     
     contract_arcs(graph,
 		  length,
