@@ -416,6 +416,8 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	    }
 	    else
 	    {
+		cout << "Current k-mer: " << current_kmer << endl;
+		
 		if (node_map.find(current_kmer) != node_map.end())
 		{
 		    current_node = graph.nodeFromId(node_map[current_kmer]);
