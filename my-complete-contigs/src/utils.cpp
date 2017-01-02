@@ -397,7 +397,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	
     output_total_sequence.clear();
     ListDigraph::Node current_node, previous_node = INVALID;
-    ListDigraph::NodeMap nodes_to_kmers_map(graph);
+    ListDigraph::NodeMap<string> nodes_to_kmers_map(graph);
     
     // maps the k-mer to the node ID.
     unordered_map<string, int> node_map;
