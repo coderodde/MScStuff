@@ -2867,7 +2867,8 @@ int main(int argc, char **argv)
 							temporary_graph_seq_start,
 							kmersize,
 							genome_sequences,
-							entire_sequence);
+							entire_sequence,
+							true);
 		StaticDigraph graph;
 		
 		////////
