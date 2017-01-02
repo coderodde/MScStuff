@@ -177,7 +177,8 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 					     ListDigraph::NodeMap<size_t>& seqStart,
 					     const size_t kmersize,
 					     vector<string>& sequence_vector,
-					     string& entire_sequence);
+					     string& entire_sequence,
+					     bool printDebug);
 
 
 void contract_arcs(ListDigraph& graph, 
