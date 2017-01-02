@@ -491,6 +491,15 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
     for (ListDigraph::NodeIt nodeit(graph); nodeit != INVALID; ++nodeit)
     {
 	cout << "Current node: \"" << nodes_to_kmers_map[nodeit] << "\"" << endl;
+	cout << "Children:" << endl;
+	
+	for (ListDigraph::OutArcIt outArcIt(graph, nodeit); outArcIt != INVALID; ++outArcIt)
+	{
+	    ListDigraph::Node child = graph.target(outArcIt);
+	    cout << "    " << nodes_to_kmers_map[child] << endl;
+	}
+	
+	cout << endl;
     }
     
     contract_arcs(graph,
