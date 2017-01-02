@@ -507,6 +507,29 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 		  seqStart,
 		  kmersize);
     
+    cout << "[DEBUG]: After contracting, the graph has " << countNodes(graph) << " nodes "
+         << "and " << countArcs(graph) << " arcs." << endl;
+	 
+    cout << "Contracted graph:" << endl;
+    
+    for (ListDigraph::NodeIt nodeit(graph); nodeit != INVALID; ++nodeit)
+    {
+	// Compute the node label:
+	string current_kmer = output_total_sequence.substr(segStart[nodeit], length[nodeit]);
+	
+	cout << "Current node: \"" << current_kmer << "\"" << endl;
+	cout << "Children:" << endl;
+	
+	for (ListDigraph::OutArcIt outArcIt(graph, nodeit); outArcIt != INVALID; ++outArcIt)
+	{
+	    ListDigraph::Node child = graph.target(outArcIt);
+	    string child_kmer = output_total_sequence.substr(seqStart[child], length[child]);
+	    cout << "    " << child_kmer << endl;
+	}
+	
+	cout << endl;
+    }
+    
     cout << "[DEBUG] The result graph has " << countNodes(graph) << " nodes." << endl;
     cout << "[DEBUG] The result graph has " << countArcs(graph) << " arcs." << endl;
     cout << "[DEBUG] construct_graph_from_multiple_sequences is done!" << endl;
