@@ -406,11 +406,9 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
     unordered_map<string, unordered_set<int>> arc_map;
     
     int char_index = 0;
-    string raw_concatenated_sequence;
     
     for (string sequence : sequence_vector)
     {
-	raw_concatenated_sequence += sequence;
 	size_t kmers_limit = sequence.length();
 	//sequence = sequence + sequence.substr(0, kmersize - 1);
 	sequence = sequence + sequence;
@@ -462,7 +460,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	
 	// Deal with the closing arc of the circular genome:
 	string first_kmer = sequence.substr(0, kmersize);
-	string last_kmer = sequence.substr(kmer_limit - 1, kmersize);
+	string last_kmer = sequence.substr(kmers_limit - 1, kmersize);
 	//string last_kmer = sequence.substr(sequence.length() - kmersize, kmersize);
 	
 	unordered_set<int>& parent_node_id_set_of_first_node = arc_map[first_kmer];
@@ -483,7 +481,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	    //cout << "No need for closing the cycle." << endl;
 	}
 	
-	char_index += kmersize - 1;
+	char_index += kmers_limit;
 	previous_node = INVALID;
     }
     
@@ -533,8 +531,6 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	
 	cout << endl;
     }
-    
-    cout << "Raw concatenated string: " << raw_concatenated_sequence << endl;
     
     cout << "[DEBUG] The result graph has " << countNodes(graph) << " nodes." << endl;
     cout << "[DEBUG] The result graph has " << countArcs(graph) << " arcs." << endl;
