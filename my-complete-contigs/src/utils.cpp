@@ -412,7 +412,8 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
     {
 	raw_concatenated_sequence += sequence;
 	size_t kmers_limit = sequence.length();
-	sequence = sequence + sequence.substr(0, kmersize - 1);
+	//sequence = sequence + sequence.substr(0, kmersize - 1);
+	sequence = sequence + sequence;
 	output_total_sequence += sequence;
 	
 	string initial_kmer = sequence.substr(0, kmersize);
@@ -461,7 +462,8 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	
 	// Deal with the closing arc of the circular genome:
 	string first_kmer = sequence.substr(0, kmersize);
-	string last_kmer = sequence.substr(sequence.length() - kmersize, kmersize);
+	string last_kmer = sequence.substr(kmer_limit - 1, kmersize);
+	//string last_kmer = sequence.substr(sequence.length() - kmersize, kmersize);
 	
 	unordered_set<int>& parent_node_id_set_of_first_node = arc_map[first_kmer];
 	int last_kmer_node_id = node_map[last_kmer];
