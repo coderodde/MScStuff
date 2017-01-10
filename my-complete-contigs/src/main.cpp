@@ -1308,10 +1308,10 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	cout << "[ALEXANDRU] Populating strings..." << endl;
 	
 	populate_with_strings_from_node_labels(sequence, kmersize, graph, nodeLabel, ret);
-	string outputFileName = inputFileName + ".k" + std::to_string(kmersize) + ".OUTPUT";
+	string outputFileName = inputFileName + ".k" + std::to_string(kmersize);
 	cout << "[ALEXANDRU] Populated! Printing to a file '" << outputFileName << "'." << endl;
 	
-	print_collection(ret, outputFileName /*inputFileName + ".k" + std::to_string(kmersize), ".alexandru_omnitigs"*/);
+	print_collection(ret, outputFileName /*inputFileName + ".k" + std::to_string(kmersize)*/, ".coderodde_omnitigs"*/);
 	
 	cout << "[ALEXANDRU] Done!" << endl;
 	return ret;
