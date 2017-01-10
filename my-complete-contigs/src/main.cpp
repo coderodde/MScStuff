@@ -1308,10 +1308,10 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	cout << "[ALEXANDRU] Populating strings..." << endl;
 	
 	populate_with_strings_from_node_labels(sequence, kmersize, graph, nodeLabel, ret);
+	string outputFileName = inputFileName + ".k" + std::to_string(kmersize) + ".OUTPUT";
+	cout << "[ALEXANDRU] Populated! Printing to a file '" << outputFileName << "'." << endl;
 	
-	cout << "[ALEXANDRU] Populated! Printing to a file..." << endl;
-	
-	print_collection(ret, inputFileName + ".k" + std::to_string(kmersize), ".alexandru_omnitigs");
+	print_collection(ret, outputFileName /*inputFileName + ".k" + std::to_string(kmersize), ".alexandru_omnitigs"*/);
 	
 	cout << "[ALEXANDRU] Done!" << endl;
 	return ret;
@@ -2874,7 +2874,7 @@ int main(int argc, char **argv)
 		////////
 		////////
 		
-		cout << "[DEBUG] ENTIRE SEQUENCE: " << entire_sequence << endl;
+		/*cout << "[DEBUG] ENTIRE SEQUENCE: " << entire_sequence << endl;
 		
 		for (ListDigraph::NodeIt nodeit(temporary_graph); nodeit != INVALID; ++nodeit)
 		{
@@ -2882,7 +2882,7 @@ int main(int argc, char **argv)
 			size_t seq_start = temporary_graph_seq_start[nodeit];
 			
 			cout << "Node len: " << len << ", seq_start: " << seq_start << endl;
-		}
+		}*/
 		
 		////////
 		////////
@@ -2909,15 +2909,15 @@ int main(int argc, char **argv)
 		
 		
 		
-		//cout << "[DEBUG] Number of nodeLabel mappings: " << nodeLabel.size() << endl;
+		cout << "[DEBUG] Number of nodeLabel mappings: " << nodeLabel.size() << endl;
 		
-		/*vector<contig> conting_vector =
+		vector<contig> conting_vector =
 		coderodde_project_algorithm(graph,
 					    nodeLabel,
 					    genome_list_file_name,
 					    kmersize,
 					    entire_sequence,
-					    true);*/
+					    true);
 		
 		cout << "[INFO] Done dealing with this file list." << endl;
 		return 0;
