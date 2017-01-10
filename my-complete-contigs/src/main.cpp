@@ -2907,9 +2907,8 @@ int main(int argc, char **argv)
 		cout << "[INFO] The static graph has " << countNodes(graph) << " nodes and " << countArcs(graph) << " arcs." << endl;
 		cout << "[INFO] The entire sequence is of length " << entire_sequence.length() << endl;
 		
-		
-		
-		cout << "[DEBUG] Number of nodeLabel mappings: " << nodeLabel.size() << endl;
+		// nodeLabel has no member function size().
+		// cout << "[DEBUG] Number of nodeLabel mappings: " << nodeLabel.size() << endl;
 		
 		vector<contig> conting_vector =
 		coderodde_project_algorithm(graph,
