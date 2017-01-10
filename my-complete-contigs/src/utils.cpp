@@ -488,7 +488,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
     cout << "[DEBUG]: Before contracting, the graph has " << countNodes(graph) << " nodes "
          << "and " << countArcs(graph) << " arcs." << endl;
 	 
-    cout << "Uncontracted graph:" << endl;
+    /*cout << "Uncontracted graph:" << endl;
     
     for (ListDigraph::NodeIt nodeit(graph); nodeit != INVALID; ++nodeit)
     {
@@ -502,7 +502,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	}
 	
 	cout << endl;
-    }
+    }*/
     
     contract_arcs(graph,
 		  length,
@@ -512,7 +512,7 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
     cout << "[DEBUG]: After contracting, the graph has " << countNodes(graph) << " nodes "
          << "and " << countArcs(graph) << " arcs." << endl;
 	 
-    cout << "Contracted graph:" << endl;
+    /*cout << "Contracted graph:" << endl;
     
     for (ListDigraph::NodeIt nodeit(graph); nodeit != INVALID; ++nodeit)
     {
@@ -530,10 +530,10 @@ void construct_graph_from_multiple_sequences(ListDigraph& graph,
 	}
 	
 	cout << endl;
-    }
+    }*/
     
-    cout << "[DEBUG] The result graph has " << countNodes(graph) << " nodes." << endl;
-    cout << "[DEBUG] The result graph has " << countArcs(graph) << " arcs." << endl;
+    //cout << "[DEBUG] The result graph has " << countNodes(graph) << " nodes." << endl;
+    //cout << "[DEBUG] The result graph has " << countArcs(graph) << " arcs." << endl;
     cout << "[DEBUG] construct_graph_from_multiple_sequences is done!" << endl;
 }
 
