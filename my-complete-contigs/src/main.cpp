@@ -1311,7 +1311,7 @@ vector<contig> coderodde_project_algorithm(const StaticDigraph& graph,
 	string outputFileName = inputFileName + ".k" + std::to_string(kmersize);
 	cout << "[ALEXANDRU] Populated! Printing to a file '" << outputFileName << "'." << endl;
 	
-	print_collection(ret, outputFileName /*inputFileName + ".k" + std::to_string(kmersize)*/, ".coderodde_omnitigs"*/);
+	print_collection(ret, outputFileName /*inputFileName + ".k" + std::to_string(kmersize)*/, ".coderodde_omnitigs");
 	
 	cout << "[ALEXANDRU] Done!" << endl;
 	return ret;
